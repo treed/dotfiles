@@ -113,6 +113,10 @@ function edit {
         echo $FOUND
         return
     else
-        gvim $FOUND;
+        if ps x | grep -q [g]vim; then
+            gvim --remote-send ":tabnew $FOUND<CR>"
+        else
+            gvim $FOUND;
+        fi
     fi
 }
