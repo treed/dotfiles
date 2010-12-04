@@ -1,3 +1,3 @@
-for file in bashrc vimrc; do
+for file in bashrc vimrc gitconfig; do
 	ln -sf "$(pwd)/$file" ~/.$file
 done
