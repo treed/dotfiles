@@ -102,3 +102,17 @@ export LEDGER_FILE=~/ledger.dat
 alias funds="ledger --no-cache -d \"l<=3\" bal Funds"
 alias cash="ledger --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
 export PATH=$PATH:/home/treed/android-sdk-linux_86/tools:/home/treed/local/rakudo/bin
+function edit {
+    FOUND=$(find . -name $1)
+    NUM_FOUND=$(echo $FOUND | wc -l)
+    if [ $NUM_FOUND == 0 ]; then
+        echo "None found."
+        return
+    elif [ $NUM_FOUND -gt 1 ]; then
+        echo "Many found:"
+        echo $FOUND
+        return
+    else
+        gvim $FOUND;
+    fi
+}
