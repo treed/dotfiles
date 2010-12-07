@@ -5,6 +5,8 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+export EDITOR=gvim
+
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
 HISTCONTROL=ignoredups:ignorespace
@@ -98,25 +100,6 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-export LEDGER_FILE=~/ledger.dat
-alias funds="ledger --no-cache -d \"l<=3\" bal Funds"
-alias cash="ledger --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
-export PATH=$PATH:/home/treed/android-sdk-linux_86/tools:/home/treed/local/rakudo/bin
-function edit {
-    FOUND=$(find . -name $1)
-    NUM_FOUND=$(echo $FOUND | wc -l)
-    if [ $NUM_FOUND == 0 ]; then
-        echo "None found."
-        return
-    elif [ $NUM_FOUND -gt 1 ]; then
-        echo "Many found:"
-        echo $FOUND
-        return
-    else
-        if ps x | grep -q [g]vim; then
-            gvim --remote-send ":tabnew $FOUND<CR>"
-        else
-            gvim $FOUND;
-        fi
-    fi
-}
+if [ $HOSTNAME eq "eunice" ]; then
+    export PATH=$PATH:/home/treed/android-sdk-linux_86/tools:/home/treed/local/rakudo/bin
+fi
