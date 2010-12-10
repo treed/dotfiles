@@ -11,7 +11,7 @@ export LEDGER_FILE=~/ledger.dat
 alias funds="ledger --no-cache -d \"l<=3\" bal Funds"
 alias cash="ledger --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
 
-if [ $HOSTNAME eq 'treed-laptop' ]; then
+if [ "$HOSTNAME" = "treed-laptop" ]; then
     alias codepush='rsync -ruvz --delete /home/treed/code/operations/ superadmin.imvu.com:/home/treed/code/operations/'
     alias codepull='rsync -ruvz superadmin.imvu.com:/home/treed/code/operations/ /home/treed/code/operations/'
     function pull() { git mv $1 $1.pulled && git commit -m "Pulled test $1"; }
@@ -22,7 +22,7 @@ fi
 function edit {
     FOUND=$(find . -name $1)
     NUM_FOUND=$(echo $FOUND | wc -l)
-    if [ $NUM_FOUND == 0 ]; then
+    if [ $NUM_FOUND -eq 0 ]; then
         echo "None found."
         return
     elif [ $NUM_FOUND -gt 1 ]; then
