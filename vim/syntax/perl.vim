@@ -1,25 +1,29 @@
 " Vim syntax file
-" Language:     Perl 5
-" Maintainer:   Andy Lester <andy@petdance.com>
-" URL:          http://github.com/petdance/vim-perl/tree/master
-" Last Change:  2009-09-2
-" Contributors: Andy Lester <andy@petdance.com>
-"               Hinrik Örn Sigurðsson <hinrik.sig@gmail.com>
-"               Lukas Mai <l.mai.web.de>
-"               Nick Hibma <nick@van-laarhoven.org>
-"               Sonia Heimann <niania@netsurf.org>
-"               and many others.
 "
-" Please download most recent version first before mailing
-" any comments.
+" Language:     Perl with MooseX::Declare and Moose keywords
+" Maintainer:   Rafael Kitover <rkitover@cpan.org>
+" Last Change:  2011-01-03
+" Contributors: Denis Pokataev, Oleg Kostyuk
 "
+" ORIGINAL VERSION:
+"
+" Language:	Perl
+" Maintainer:	Lukas Mai <l.mai@web.de>
+" Last Change:	2008-08-08
+"
+" Standard perl syntax file for vim by Nick Hibma <nick@van-laarhoven.org>
+" Modified by Lukas Mai
+"
+" Original version: Sonia Heimann <niania@netsurf.org>
+" Thanks to many people for their contribution.
+
 " The following parameters are available for tuning the
 " perl syntax highlighting, with defaults given:
 "
-" unlet perl_include_pod
+" let perl_include_pod=1
 " unlet perl_no_scope_in_variables
 " unlet perl_no_extended_vars
-" unlet perl_string_as_statement
+" let perl_string_as_statement=1
 " unlet perl_no_sync_on_sub
 " unlet perl_no_sync_on_global_var
 " let perl_sync_dist = 100
@@ -28,6 +32,74 @@
 " let perl_nofold_packages = 1
 " let perl_nofold_subs = 1
 
+" *** MOOSE STUFF ***
+" TODO:
+" fix $foo->Bar->baz(23)->dongs highlighting
+" make the -> for method calls a different color
+" make methods a different color than variables
+
+" set some nice defaults people usually don't set, unless overridden
+if !exists("perl_include_pod")
+  let perl_include_pod=1
+endif
+if !exists("perl_string_as_statement")
+  let perl_string_as_statement=1
+endif
+
+" Moose, HTML::FormHandler and some other common functions
+syn match perlStatementProc		"\<\%(blessed\|reftype\|confess\|carp\|croak\|class_has\|has\|has_field\|inner\|is\|mutable\|immutable\|super\|requires\)\>"
+
+" Moose typelib stuff
+syn match perlStatementProc		"\<\%(subtype\|coerce\|as\|from\|via\|message\|enum\|class_type\|role_type\|maybe_type\|duck_type\|optimize_as\|type\|where\)\>"
+
+" Test::More, Test::Moose and Test::Exception stuff (except for "is", which is
+" already highlighted.)
+syn match perlStatementProc             "\<\%(plan\|use_ok\|require_ok\|ok\|isnt\|diag\|note\|explain\|like\|unlike\|cmp_ok\|is_deeply\|skip\|can_ok\|isa_ok\|new_ok\|pass\|fail\|skip\|todo_skip\|done_testing\|BAIL_OUT\|meta_ok\|does_ok\|has_attribute_ok\|throws_ok\|dies_ok\|lives_ok\|lives_and\|subtest\)\>"
+
+" Test::Differences
+syn match perlStatementProc             "\<\%(eq_or_diff\|eq_or_diff_data\|eq_or_diff_text\|table_diff\|unified_diff\|oldstyle_diff\|context_diff\)\>"
+
+" Test::*, all functions like all_perl_files_ok/all_pod_coverage_ok/etc
+" may be, will be better something like: \<\%(all_[a-z_]\+_ok\)\>
+syn match perlStatementProc             "\<\%(all_perl_files_ok\|all_critic_ok\|all_pod_coverage_ok\|all_pod_files_spelling_ok\|all_pod_files_ok\|all_cover_ok\)\>"
+
+" Try::Tiny
+syn match perlStatementProc		"\<\%(try\|catch\|finally\)\>"
+
+syn match perlMethodName +\%(\h\|::\|['"]\)\%(\w\|::\|\$\)\+["']\?\_s*\|+ contained nextgroup=perlPossibleComma
+
+syn match perlPossibleComma +\_s*\%(=>\|,\)\?\_s*\|+ contained nextgroup=perlAnonSubOrMethod
+
+syn match perlAnonSubOrMethod +\_s*\%(sub\|method\)\_s*\|+ contained contains=perlFunction nextgroup=perlMethodSignature
+
+syn match perlMethodSignature +\_s*\%((\_[^)]*)\)\?\_s*\|+ nextgroup=perlSubAttributes contained contains=@perlExpr,perlStatementProc
+
+syn match perlFunction +\<\%(class\|role\|extends\|with\)\>\_s*+ nextgroup=perlPackageRef
+
+syn match perlFunction +\<\%(method\|before\|after\|around\|override\|augment\)\>\_s*+ nextgroup=perlMethodName
+
+command -nargs=+ HiLink hi def link <args>
+HiLink perlMethodName Function
+delcommand HiLink
+
+"hilite Moose types
+syn match perlString "\<Any\>\|\<Item\>\|\<Bool\>\|\<Maybe\>\|\<Undef\>\|\<Defined\>\|\<Value\>\|\<Num\>\|\<Int\>\|\<Str\>\|\<ClassName\>\|\<Ref\>\|\<ScalarRef\>\|\<ArrayRef\>\|\<HashRef\>\|\<CodeRef\>\|\<RegexpRef\>\|\<GlobRef\>\|\<FileHandle\>\|\<Object\>\|\<Role\>"
+
+if !exists("perl_no_sync_on_sub")
+  syn sync match perlSync	grouphere NONE "^\s*\<method\>"
+  syn sync match perlSync	grouphere NONE "^\s*\<class\>"
+  syn sync match perlSync	grouphere NONE "^\s*\<role\>"
+endif
+
+if exists("perl_fold")
+  if !exists("perl_nofold_subs")
+    syn region perlSubFold     start="^\z(\s*\)\<class\>.*[^};]$" end="^\z1}\s*\%(#.*\)\=$" transparent fold keepend
+    syn region perlSubFold     start="^\z(\s*\)\<method\>.*[^};]$" end="^\z1}\s*\%(#.*\)\=$" transparent fold keepend
+  endif
+endif
+
+" *** END OF MOOSE STUFF, ORIGINAL FOLLOWS ***
+
 if version < 600
   echoerr ">=vim-6.0 is required to run perl.vim"
   finish
@@ -35,36 +107,9 @@ elseif exists("b:current_syntax")
   finish
 endif
 
-"
-" Folding
-
-if exists("perl_fold")
-  " Note: this bit must come before the actual highlighting of the "package"
-  " keyword, otherwise this will screw up Pod lines that match /^package/
-  if !exists("perl_nofold_packages")
-    syn region perlPackageFold start="^package \S\+;\s*\%(#.*\)\=$" end="^1;\=\s*\%(#.*\)\=$" end="\n\+package"me=s-1 transparent fold keepend
-  endif
-  if !exists("perl_nofold_subs")
-    syn region perlSubFold     start="^\z(\s*\)\<sub\>.*[^};]$" end="^\z1}\s*\%(#.*\)\=$" transparent fold keepend
-    syn region perlSubFold start="^\z(\s*\)\<\%(BEGIN\|END\|CHECK\|INIT\|UNITCHECK\)\>.*[^};]$" end="^\z1}\s*$" transparent fold keepend
-  endif
-
-  if exists("perl_fold_blocks")
-    syn region perlBlockFold start="^\z(\s*\)\%(if\|elsif\|unless\|for\|while\|until\|given\)\s*(.*)\%(\s*{\)\=\s*\%(#.*\)\=$" start="^\z(\s*\)foreach\s*\%(\%(my\|our\)\=\s*\S\+\s*\)\=(.*)\%(\s*{\)\=\s*\%(#.*\)\=$" end="^\z1}\s*;\=\%(#.*\)\=$" transparent fold keepend
-    syn region perlBlockFold start="^\z(\s*\)\%(do\|else\)\%(\s*{\)\=\s*\%(#.*\)\=$" end="^\z1}\s*while" end="^\z1}\s*;\=\%(#.*\)\=$" transparent fold keepend
-  endif
-
-  setlocal foldmethod=syntax
-  syn sync fromstart
-else
-  " fromstart above seems to set minlines even if perl_fold is not set.
-  syn sync minlines=0
-endif
-
-
 " POD starts with ^=<word> and ends with ^=cut
 
-if exists("perl_include_pod")
+if perl_include_pod
   " Include a while extra syntax file
   syn include @Pod syntax/pod.vim
   unlet b:current_syntax
@@ -91,7 +136,7 @@ syn region  perlGenericBlock	matchgroup=perlGenericBlock start="{" end="}" conta
 
 " All keywords
 "
-syn match perlConditional		"\<\%(if\|elsif\|unless\|given\|when\|default\)\>"
+syn match perlConditional		"\<\%(if\|elsif\|unless\|given\|when\|default\|switch\|case\)\>"
 syn match perlConditional		"\<else\>" nextgroup=perlElseIfError skipwhite skipnl skipempty
 syn match perlRepeat			"\<\%(while\|for\%(each\)\=\|do\|until\|continue\)\>"
 syn match perlOperator			"\<\%(defined\|undef\|eq\|ne\|[gl][et]\|cmp\|not\|and\|or\|xor\|not\|bless\|ref\|do\)\>"
@@ -179,10 +224,9 @@ if !exists("perl_no_extended_vars")
   syn match  perlVarPlain2	"[%&*]\$*{\I\i*}" nextgroup=perlVarMember,perlVarSimpleMember,perlMethod
   syn match  perlVarPlain	"\%(\$#\|[@$]\)\$*{\I\i*}" nextgroup=perlVarMember,perlVarSimpleMember,perlMethod
   syn region perlVarMember	matchgroup=perlVarPlain start="\%(->\)\={" skip="\\}" end="}" contained contains=@perlExpr nextgroup=perlVarMember,perlVarSimpleMember,perlMethod
-  syn match  perlVarSimpleMember	"\%(->\)\={\s*\I\i*\s*}" nextgroup=perlVarMember,perlVarSimpleMember,perlMethod contains=perlVarSimpleMemberName contained
+  syn match  perlVarSimpleMember	"\%(->\)\={\I\i*}" nextgroup=perlVarMember,perlVarSimpleMember,perlMethod contains=perlVarSimpleMemberName contained
   syn match  perlVarSimpleMemberName	"\I\i*" contained
   syn region perlVarMember	matchgroup=perlVarPlain start="\%(->\)\=\[" skip="\\]" end="]" contained contains=@perlExpr nextgroup=perlVarMember,perlVarSimpleMember,perlMethod
-  syn match perlPackageConst	"__PACKAGE__" nextgroup=perlMethod
   syn match  perlMethod		"->\$*\I\i*" contained nextgroup=perlVarSimpleMember,perlVarMember,perlMethod
 endif
 
@@ -269,7 +313,7 @@ syn region perlMatch	matchgroup=perlMatchStartEnd start=+\<\%(::\|'\|->\)\@<!m\s
 
 " Below some hacks to recognise the // variant. This is virtually impossible to catch in all
 " cases as the / is used in so many other ways, but these should be the most obvious ones.
-syn region perlMatch	matchgroup=perlMatchStartEnd start="\%([$@%&*]\@<!\%(\<split\|\<while\|\<if\|\<unless\|\.\.\|[-+*!~(\[{=]\)\s*\)\@<=/\%(/=\)\@!" start=+^/\%(/=\)\@!+ start=+\s\@<=/\%(/=\)\@![^[:space:][:digit:]$@%=]\@=\%(/\_s*\%([([{$@%&*[:digit:]"'`]\|\_s\w\|[[:upper:]_abd-fhjklnqrt-wyz]\)\)\@!+ skip=+\\/+ end=+/[cgimopsx]*+ contains=@perlInterpSlash
+syn region perlMatch	matchgroup=perlMatchStartEnd start="\%([$@%&*]\@<!\%(\<split\|\<while\|\<if\|\<unless\|\.\.\|[-+*!~(\[{=]\)\s*\)\@<=/" start=+^/+ start=+\s\@<=/[^[:space:][:digit:]$@%=]\@=\%(/\_s*\%([([{$@%&*[:digit:]"'`]\|\_s\w\|[[:upper:]_abd-fhjklnqrt-wyz]\)\)\@!+ skip=+\\/+ end=+/[cgimopsx]*+ contains=@perlInterpSlash
 
 
 " Substitutions
@@ -368,7 +412,6 @@ syn match   perlPackageDecl		"\<package\s\+\%(\h\|::\)\%(\w\|::\)*" contains=per
 syn keyword perlStatementPackage	package contained
 
 " Functions
-"       sub [name] [(prototype)] {
 "
 syn match perlSubError "[^[:space:];{#]" contained
 if v:version == 701 && !has('patch221')  " XXX I hope that's the right one
@@ -395,10 +438,10 @@ endif
 
 " The => operator forces a bareword to the left of it to be interpreted as
 " a string
-syn match  perlString "\I\@<!-\?\I\i*\%(\s*=>\)\@="
+syn match  perlString "\<\I\i*\%(\s*=>\)\@="
 
 " All other # are comments, except ^#!
-syn match  perlComment		"#.*" contains=perlTodo,@Spell
+syn match  perlComment		"#.*" contains=perlTodo
 syn match  perlSharpBang	"^#!.*"
 
 " Formats
@@ -416,6 +459,32 @@ if exists("perl_fold")
 else
   syntax region perlDATA		start="^__\%(DATA\|END\)__$" skip="." end="." contains=perlPOD,@perlDATA
 endif
+
+
+"
+" Folding
+
+if exists("perl_fold")
+  if !exists("perl_nofold_packages")
+    syn region perlPackageFold start="^package \S\+;\s*\%(#.*\)\=$" end="^1;\=\s*\%(#.*\)\=$" end="\n\+package"me=s-1 transparent fold keepend
+  endif
+  if !exists("perl_nofold_subs")
+    syn region perlSubFold     start="^\z(\s*\)\<sub\>.*[^};]$" end="^\z1}\s*\%(#.*\)\=$" transparent fold keepend
+    syn region perlSubFold start="^\z(\s*\)\<\%(BEGIN\|END\|CHECK\|INIT\|UNITCHECK\)\>.*[^};]$" end="^\z1}\s*$" transparent fold keepend
+  endif
+
+  if exists("perl_fold_blocks")
+    syn region perlBlockFold start="^\z(\s*\)\%(if\|elsif\|unless\|for\|while\|until\|given\)\s*(.*)\%(\s*{\)\=\s*\%(#.*\)\=$" start="^\z(\s*\)foreach\s*\%(\%(my\|our\)\=\s*\S\+\s*\)\=(.*)\%(\s*{\)\=\s*\%(#.*\)\=$" end="^\z1}\s*;\=\%(#.*\)\=$" transparent fold keepend
+    syn region perlBlockFold start="^\z(\s*\)\%(do\|else\)\%(\s*{\)\=\s*\%(#.*\)\=$" end="^\z1}\s*while" end="^\z1}\s*;\=\%(#.*\)\=$" transparent fold keepend
+  endif
+
+  setlocal foldmethod=syntax
+  syn sync fromstart
+else
+  " fromstart above seems to set minlines even if perl_fold is not set.
+  syn sync minlines=3000
+endif
+
 
 command -nargs=+ HiLink hi def link <args>
 
@@ -442,7 +511,7 @@ HiLink perlSubAttributes	PreProc
 HiLink perlSubAttributesCont	perlSubAttributes
 HiLink perlComment		Comment
 HiLink perlTodo			Todo
-if exists("perl_string_as_statement")
+if perl_string_as_statement
   HiLink perlStringStartEnd	perlStatement
 else
   HiLink perlStringStartEnd	perlString
@@ -530,15 +599,12 @@ endif
 if exists("perl_sync_dist")
   execute "syn sync maxlines=" . perl_sync_dist
 else
-  syn sync maxlines=100
+  syn sync maxlines=5000
 endif
 
-syn sync match perlSyncPOD	grouphere perlPOD "^=pod"
-syn sync match perlSyncPOD	grouphere perlPOD "^=head"
-syn sync match perlSyncPOD	grouphere perlPOD "^=item"
+syn sync match perlSyncPOD	grouphere perlPOD "^=[a-z]\S*"
 syn sync match perlSyncPOD	grouphere NONE "^=cut"
 
 let b:current_syntax = "perl"
 
-" XXX Change to sts=4:sw=4
-" vim:ts=8:sts=2:sw=2:expandtab:ft=vim
+" vim: ts=8
