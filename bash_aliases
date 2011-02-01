@@ -31,7 +31,7 @@ function edit {
         return
     else
         if ps x | grep -q [g]vim; then
-            gvim --remote-send ":tabnew $FOUND<CR>"
+            gvim --remote-send ":tabnew $PWD/$FOUND<CR>"
         else
             gvim $FOUND;
         fi
