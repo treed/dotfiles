@@ -5,10 +5,12 @@ set bs=2
 set viminfo='20,\"500
 set history=50
 set ruler
+set hidden
 
 set go-=T
 set go-=r
 set go-=m
+set go-=L
 
 set ai
 set tabstop=4
@@ -45,5 +47,11 @@ nnoremap < <C-O>
 
 let @t = "/^\\s*plan<"
 nnoremap <C-T> @t
+nnoremap <C-N> :bn
+nnoremap <C-P> :bp
+nnoremap <C-H> h
+nnoremap <C-L> l
+nnoremap <C-J> j
+nnoremap <C-K> k
 
 autocmd BufNewFile,BufRead *.p6 setf perl6
