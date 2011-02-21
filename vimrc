@@ -55,3 +55,5 @@ nnoremap <C-J> j
 nnoremap <C-K> k
 
 autocmd BufNewFile,BufRead *.p6 setf perl6
+
+helptags ~/.vim/doc
