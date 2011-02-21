@@ -3,7 +3,7 @@ colorscheme	inkpot
 set nocompatible
 set bs=2
 set viminfo='20,\"500
-set history=50
+set history=100
 set ruler
 set hidden
 
@@ -53,6 +53,13 @@ nnoremap <C-H> h
 nnoremap <C-L> l
 nnoremap <C-J> j
 nnoremap <C-K> k
+nnoremap ' `
+nnoremap ` '
+let mapleader = ","
+set scrolloff=3
+
+set listchars=tab:>-,trail:·,eol:$
+nmap <silent> <leader>s :set nolist!<CR>
 
 autocmd BufNewFile,BufRead *.p6 setf perl6
 
