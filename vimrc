@@ -1,5 +1,5 @@
 set t_Co=256
-colorscheme	inkpot
+colorscheme	zenburn
 set nocompatible
 set bs=2
 set viminfo='20,\"500
