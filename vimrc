@@ -55,6 +55,7 @@ nnoremap <C-J> j
 nnoremap <C-K> k
 nnoremap ' `
 nnoremap ` '
+nmap <C-X> <Plug>Kwbd
 let mapleader = ","
 set scrolloff=3
 
