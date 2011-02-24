@@ -47,16 +47,17 @@ nnoremap < <C-O>
 
 let @t = "/^\\s*plan<"
 nnoremap <C-T> @t
-nnoremap <C-N> :bn
-nnoremap <C-P> :bp
-nnoremap <C-H> h
-nnoremap <C-L> l
-nnoremap <C-J> j
-nnoremap <C-K> k
+let mapleader = " "
+nnoremap <leader>n :bn
+nnoremap <leader>p :bp
+nnoremap <leader>h h
+nnoremap <leader>l l
+nnoremap <leader>j j
+nnoremap <leader>k k
+nnoremap <leader>x <Plug>Kwbd
 nnoremap ' `
 nnoremap ` '
-nmap <C-X> <Plug>Kwbd
-let mapleader = ","
+
 set scrolloff=3
 
 set listchars=tab:>-,trail:·,eol:$
