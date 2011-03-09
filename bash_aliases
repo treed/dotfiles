@@ -12,7 +12,7 @@ alias funds="ledger --no-cache -d \"l<=3\" bal Funds"
 alias cash="ledger --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
 
 if [ "$HOSTNAME" = "treed-laptop" ]; then
-    alias codepush='rsync -ruvz --delete /home/treed/code/operations/ superadmin.imvu.com:/home/treed/code/operations/'
+    alias codepush='rsync -ruvz --delete --exclude=.git /home/treed/code/operations/ superadmin.imvu.com:/home/treed/code/operations/'
     alias codepull='rsync -ruvz superadmin.imvu.com:/home/treed/code/operations/ /home/treed/code/operations/'
     function pull() { git mv $1 $1.pulled && git commit -m "Pulled test $1"; }
     alias super='ssh -A superadmin.imvu.com'
