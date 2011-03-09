@@ -54,7 +54,7 @@ nnoremap <leader>h h
 nnoremap <leader>l l
 nnoremap <leader>j j
 nnoremap <leader>k k
-nnoremap <leader>x <Plug>Kwbd
+nnoremap <leader>x :Kwbd
 nnoremap ' `
 nnoremap ` '
 
