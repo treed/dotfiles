@@ -1,0 +1,377 @@
+<!--
+  Ginn Wishes better suited for Mutlitouch trackpad use, such as Apple Magic trackpad.
+  Original by Douglas Baigrie <dbaigrie@gmail.com> - January 11 2011
+  Modified by Pop Qvarnström <pop.qvarnstrom@gmail.com> - February 23 2011
+-->
+<ginn>
+  <global>
+<!--Trackpad Buttons -->
+    <wish gesture="Tap" fingers="3">
+      <action name="rightclick" when="update">
+        <trigger prop="tap time" min="20" max="400"/>
+        <button>2</button>
+      </action>
+    </wish>
+    <wish gesture="Tap" fingers="2">
+      <action name="middleclick" when="update">
+        <trigger prop="tap time" min="20" max="400"/>
+        <button>3</button>
+      </action>
+    </wish>
+<!-- Application control -->
+    <wish gesture="Drag" fingers="2">
+      <action name="down" when="update">
+        <trigger prop="delta y" min="20" max="80"/>
+<!--        <key>Down</key> -->
+        <button>5</button>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="up" when="update">
+        <trigger prop="delta y" min="-80" max="-20"/>
+<!--        <key>Up</key> -->
+        <button>4</button>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="left" when="update">
+        <trigger prop="delta x" min="20" max="80"/>
+<!--        <key>Left</key> -->
+        <button>7</button>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="right" when="update">
+        <trigger prop="delta x" min="-80" max="-20"/>
+<!--        <key>Right</key> -->
+        <button>6</button>
+      </action>
+    </wish>
+
+<!-- Windows control -->
+    <wish gesture="Pinch" fingers="3">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="-80" max="-20"/>
+        <key modifier1="Alt_L">F10</key>
+      </action>
+    </wish>
+    <wish gesture="Pinch" fingers="3">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="20" max="80"/>
+        <key modifier1="Alt_L">F10</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="3">
+      <action name="ringswitcher" when="finish">
+        <trigger prop="delta x" min="100" max="800"/>
+        <key modifier1="Shift_L" modifier2="Super_L">s</key>
+        <!--<key modifier1="Super_L">Tab</key>-->
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="3">
+      <action name="previouswindow" when="update">
+        <trigger prop="delta x" min="-600" max="-200"/>
+        <key modifier1="Super_L" modifier2="Shift_L">Tab</key>
+      </action>
+    </wish>
+    
+    
+
+<!-- System wide - control desktop  -->
+    <wish gesture="Tap" fingers="4">
+      <action name="action1" when="update">
+        <trigger prop="tap time" min="20" max="400"/>
+        <key modifier1="Super_L">E</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="4">
+      <action name="movedown" when="finish">
+        <trigger prop="delta x" min="-30" max="30"/>
+        <trigger prop="delta y" min="5" max="600"/>
+        <key modifier1="Super_L">Down</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="4">
+      <action name="moveup" when="finish">
+        <trigger prop="delta x" min="-30" max="30"/>
+        <trigger prop="delta y" min="-600" max="-5"/>
+        <key modifier1="Super_L">Up</key>
+      </action>
+    </wish>
+    <wish gesture="Pinch" fingers="4">
+      <action name="zoomout" when="update">
+        <trigger prop="radius delta" min="-80" max="-50"/>
+        <!--key modifier1="Super_L">A</key-->
+        <button modifier1="Super_L">5</button>
+      </action>
+    </wish>
+    <wish gesture="Pinch" fingers="4">
+      <action name="zoomin" when="update">
+        <trigger prop="radius delta" min="50" max="80"/>
+        <!--key modifier1="Super_L">A</key-->
+        <button modifier1="Super_L">4</button>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="4">
+      <action name="action3" when="finish">
+        <trigger prop="delta x" min="5" max="600"/>
+        <trigger prop="delta y" min="-30" max="30"/>
+        <key modifier1="Super_L">Right</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="4">
+      <action name="action4" when="finish">
+        <trigger prop="delta x" min="-600" max="-5"/>
+        <trigger prop="delta y" min="-30" max="30"/>
+        <key modifier1="Super_L">Left</key>
+      </action>
+    </wish>
+  </global>
+
+<!-- Applications specific gestures  -->
+  <applications>
+    <application name="inkscape">
+    <wish gesture="Pinch" fingers="2">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="-200" max="-40"/>
+        <key>KP_Subtract</key>
+      </action>
+    </wish>
+    <wish gesture="Pinch" fingers="2">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="40" max="200"/>
+        <key>KP_Add</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="action5" when="update">
+        <trigger prop="delta x" min="20" max="80"/>
+        <key modifier1="Control_L">Left</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="action6" when="update">
+        <trigger prop="delta x" min="-80" max="-20"/>
+        <key modifier1="Control_L">Right</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="action5" when="update">
+        <trigger prop="delta y" min="20" max="80"/>
+        <key modifier1="Control_L">Up</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="action6" when="update">
+        <trigger prop="delta y" min="-80" max="-20"/>
+        <key modifier1="Control_L">Down</key>
+      </action>
+    </wish>
+    </application>
+
+    <application name="evince">
+<!--
+    <wish gesture="Drag" fingers="2">
+      <action name="action5" when="update">
+        <trigger prop="delta y" min="20" max="80"/>
+        <key>Page_Up</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="action6" when="update">
+        <trigger prop="delta y" min="-80" max="-20"/>
+        <key>Page_Down</key>
+      </action>
+    </wish>
+-->
+    <wish gesture="Pinch" fingers="2">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="-200" max="-40"/>
+        <key modifier1="Control_L">KP_Subtract</key>
+      </action>
+    </wish>
+    <wish gesture="Pinch" fingers="2">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="40" max="200"/>
+        <key modifier1="Control_L">KP_Add</key>
+      </action>
+    </wish>
+<!--
+    <wish gesture="Drag" fingers="2">
+      <action name="action5" when="update">
+        <trigger prop="delta x" min="20" max="80"/>
+        <key>Left</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="action6" when="update">
+        <trigger prop="delta x" min="-80" max="-20"/>
+        <key>Right</key>
+      </action>
+    </wish>
+-->
+    <wish gesture="Rotate" fingers="2">
+      <action name="rotatecw" when="finish">
+        <trigger prop="angle delta" min="0.03" max="1.5"/>
+       	<key modifier1="Control_L">Right</key>     
+      </action>
+    </wish>
+    <wish gesture="Rotate" fingers="2">
+      <action name="rotateccw" when="finish">
+        <trigger prop="angle delta" min="-1.5" max="-0.03"/>
+        <key modifier1="Control_L">Left</key>     
+      </action>
+    </wish>
+    </application>
+
+    <application name="okular">
+    <wish gesture="Pinch" fingers="2">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="-200" max="-40"/>
+        <key modifier1="Control_L">KP_Subtract</key>
+      </action>
+    </wish>
+    <wish gesture="Pinch" fingers="2">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="40" max="200"/>
+        <key modifier1="Control_L">KP_Add</key>
+      </action>
+    </wish>
+    </application>
+
+    <application name="openoffice.org-writer">
+    <wish gesture="Pinch" fingers="2">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="40" max="200"/>
+        <button modifier1="Control_L">4</button>
+      </action>
+    </wish>
+    <wish gesture="Pinch" fingers="2">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="-200" max="-40"/>
+        <button modifier1="Control_L">5</button>
+      </action>
+    </wish>
+    </application>
+
+    <application name="eog">
+    <wish gesture="Pinch" fingers="2">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="-200" max="-40"/>
+        <key>KP_Subtract</key>
+      </action>
+    </wish>
+    <wish gesture="Pinch" fingers="2">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="40" max="200"/>
+        <key>KP_Add</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="action5" when="update">
+        <trigger prop="delta y" min="20" max="80"/>
+        <key>Page_Up</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="action6" when="update">
+        <trigger prop="delta y" min="-80" max="-20"/>
+        <key>Page_Down</key>
+      </action>
+    </wish>
+    <wish gesture="Rotate" fingers="2">
+      <action name="rotatecw" when="finish">
+        <trigger prop="angle delta" min="0.08" max="1.5"/>
+        <key modifier1="Control_L">R</key>     
+      </action>
+    </wish>
+    <wish gesture="Rotate" fingers="2">
+      <action name="rotateccw" when="finish">
+        <trigger prop="angle delta" min="-1.5" max="-0.08"/>
+        <key modifier1="Control_L" modifier2="Shift_L">R</key>     
+      </action>
+    </wish>
+    </application>
+
+    <application name="chromium-browser">
+    <!--
+    <wish gesture="Drag" fingers="2">
+      <action name="action5" when="update">
+        <trigger prop="delta y" min="20" max="80"/>
+        <key>Page_Up</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="action6" when="update">
+        <trigger prop="delta y" min="-80" max="-20"/>
+        <key>Page_Down</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="action5" when="update">
+        <trigger prop="delta x" min="20" max="80"/>
+        <key>Left</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="2">
+      <action name="action6" when="update">
+        <trigger prop="delta x" min="-80" max="-20"/>
+        <key>Right</key>
+      </action>
+    </wish>
+    -->
+    <wish gesture="Drag" fingers="5">
+      <action name="historyforward" when="finish">
+        <trigger prop="delta x" min="20" max="600"/>
+        <key modifier1="Alt_L">Right</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="5">
+      <action name="historyback" when="finish">
+        <trigger prop="delta x" min="-600" max="-20"/>
+        <key modifier1="Alt_L">Left</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="3">
+      <action name="nexttab" when="update">
+        <trigger prop="delta y" min="80" max="300"/>
+        <key modifier1="Control_L">Tab</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="3">
+      <action name="prevtab" when="update">
+        <trigger prop="delta y" min="-300" max="-80"/>
+        <key modifier1="Control_L" modifier2="Shift_L">Tab</key>
+      </action>
+    </wish>
+    <wish gesture="Pinch" fingers="2">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="-200" max="-40"/>
+        <key modifier1="Control_L">KP_Subtract</key>
+      </action>
+    </wish>
+    <wish gesture="Pinch" fingers="2">
+      <action name="action1" when="update">
+        <trigger prop="radius delta" min="40" max="200"/>
+        <key modifier1="Control_L">KP_Add</key>
+      </action>
+    </wish>
+    </application>
+    <application name="totem">
+    <wish gesture="Drag" fingers="5">
+      <action name="scrubforward" when="finish">
+        <trigger prop="delta x" min="20" max="600"/>
+        <key>Right</key>
+      </action>
+    </wish>
+    <wish gesture="Drag" fingers="5">
+      <action name="scrubback" when="finish">
+        <trigger prop="delta x" min="-600" max="-20"/>
+        <key>Left</key>
+      </action>
+    </wish>
+    </application>
+
+  </applications>
+</ginn>
+
