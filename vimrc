@@ -1,3 +1,4 @@
+call pathogen#runtime_append_all_bundles()
 set t_Co=256
 colorscheme	inkpot
 set nocompatible
