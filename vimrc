@@ -45,7 +45,6 @@ set pastetoggle=<F4>
 
 inoremap <Tab> <C-T>
 inoremap <S-Tab> <C-D>
-nnoremap d "_d
 nnoremap < <C-O>
 
 let @t = "/^\\s*plan<"
