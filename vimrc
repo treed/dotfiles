@@ -1,6 +1,8 @@
 call pathogen#runtime_append_all_bundles()
 set t_Co=256
-colorscheme	inkpot
+syntax enable
+set background=dark
+colorscheme solarized
 set nocompatible
 set bs=2
 set viminfo='20,\"500
