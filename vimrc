@@ -57,7 +57,8 @@ nnoremap <leader>h h
 nnoremap <leader>l l
 nnoremap <leader>j j
 nnoremap <leader>k k
-nnoremap <leader>x :Kwbd
+nnoremap <leader>x :Kwbd<CR>
+nnoremap <leader>t :TagbarToggle<CR>
 nnoremap ' `
 nnoremap ` '
 
