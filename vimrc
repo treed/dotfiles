@@ -77,7 +77,7 @@ nnoremap <leader>o :CommandT<CR>
 nnoremap ' `
 nnoremap ` '
 
-set scrolloff=3
+set scrolloff=10
 
 set listchars=tab:>-,trail:·,eol:$
 nmap <silent> <leader>s :set nolist!<CR>
