@@ -59,6 +59,8 @@ nnoremap <C-T> @t
 
 " Common keypresses that I want to be fast to hit
 let mapleader = " "
+" Open a new split
+nnoremap <leader>s :sp<CR>
 " Move around between splits
 nnoremap <leader>h <C-W>h
 nnoremap <leader>l <C-W>l
@@ -78,9 +80,6 @@ nnoremap ' `
 nnoremap ` '
 
 set scrolloff=10
-
-set listchars=tab:>-,trail:·,eol:$
-nmap <silent> <leader>s :set nolist!<CR>
 
 autocmd BufNewFile,BufRead *.p6 setf perl6
 
