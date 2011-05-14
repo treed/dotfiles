@@ -59,6 +59,7 @@ nnoremap <leader>k k
 nnoremap <leader>x :Kwbd<CR>
 nnoremap <leader>t :TagbarToggle<CR>
 nnoremap <leader>r :NERDTreeToggle<CR>
+nnoremap <leader>f :CommandT<CR>
 nnoremap ' `
 nnoremap ` '
 
