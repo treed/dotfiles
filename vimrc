@@ -1,16 +1,22 @@
+" Must come first
 call pathogen#runtime_append_all_bundles()
+filetype plugin on
+filetype indent on
+
+" Woo Colors!
 set t_Co=256
-syntax enable
 set background=dark
 colorscheme solarized
+syntax on
+
+" Various Options
 set nocompatible
 set bs=2
 set viminfo='20,\"500
 set history=100
 set ruler
 set hidden
-" I find highlighting on search terms distracting
-set nohlsearch
+set nohlsearch " I find highlighting on search terms distracting
 
 " Remove GUI chrome
 set go-=T
@@ -18,24 +24,19 @@ set go-=r
 set go-=m
 set go-=L
 
-" Indentation options"
+" Indentation options
 set ai
 set tabstop=4
 set shiftwidth=4
 set expandtab
-
-syntax on
 
 " fix mouse scrolling
 set t_Sb=^[4%dm
 set t_Sf=^[3%dm
 set ttymouse=xterm2
 
-filetype plugin on
-
+" I'm not sure that I ever actually use this from vim
 set grepprg=grep\ -nH\ $*
-
-filetype indent on
 
 " different tabbing semantics
 vnoremap <C-T> >
@@ -76,6 +77,7 @@ nnoremap ` '
 
 set scrolloff=10
 
+" Need to associate p6 files, the plugin doesn't for some reason
 autocmd BufNewFile,BufRead *.p6 setf perl6
 
 helptags ~/.vim/doc
