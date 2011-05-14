@@ -32,8 +32,6 @@ set shiftwidth=4
 set expandtab
 
 " fix mouse scrolling
-set t_Sb=^[4%dm
-set t_Sf=^[3%dm
 set ttymouse=xterm2
 
 " I'm not sure that I ever actually use this from vim
@@ -72,9 +70,6 @@ nnoremap <leader>x :Kwbd<CR>
 nnoremap <leader>t :TagbarToggle<CR>
 nnoremap <leader>r :NERDTreeToggle<CR>
 nnoremap <leader>o :CommandT<CR>
-" Don't remember, heh
-nnoremap ' `
-nnoremap ` '
 
 set scrolloff=10
 
