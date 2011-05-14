@@ -56,6 +56,8 @@ nnoremap <C-T> @t
 let mapleader = " "
 " Open a new split
 nnoremap <leader>s :sp<CR>
+" Close
+nnoremap <leader>q :q<CR>
 " Move around between splits
 nnoremap <leader>h <C-W>h
 nnoremap <leader>l <C-W>l
