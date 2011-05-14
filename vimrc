@@ -57,16 +57,16 @@ nnoremap < <C-O>
 let @t = "/^\\s*plan<"
 nnoremap <C-T> @t
 
-" Common keypresses
+" Common keypresses that I want to be fast to hit
 let mapleader = " "
 " Move around between splits
-nnoremap <leader>h h
-nnoremap <leader>l l
-nnoremap <leader>j j
-nnoremap <leader>k k
+nnoremap <leader>h <C-W>h
+nnoremap <leader>l <C-W>l
+nnoremap <leader>j <C-W>j
+nnoremap <leader>k <C-W>k
 " Cycle through buffers in the current split
-nnoremap <leader>n :bn
-nnoremap <leader>p :bp
+nnoremap <leader>n :bn<CR>
+nnoremap <leader>p :bp<CR>
 " Remove the current buffer without closing the window
 nnoremap <leader>x :Kwbd<CR>
 " Open various panels or whatever
