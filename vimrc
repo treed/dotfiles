@@ -9,20 +9,24 @@ set viminfo='20,\"500
 set history=100
 set ruler
 set hidden
+" I find highlighting on search terms distracting
+set nohlsearch
 
+" Remove GUI chrome
 set go-=T
 set go-=r
 set go-=m
 set go-=L
 
+" Indentation options"
 set ai
 set tabstop=4
 set shiftwidth=4
 set expandtab
 
 syntax on
-set nohlsearch
 
+" fix mouse scrolling
 set t_Sb=^[4%dm
 set t_Sf=^[3%dm
 set ttymouse=xterm2
@@ -33,33 +37,43 @@ set grepprg=grep\ -nH\ $*
 
 filetype indent on
 
+" different tabbing semantics
 vnoremap <C-T> >
 vnoremap <C-D> <LT>
 vmap <Tab> <C-T>
 vmap <S-Tab> <C-D>
+inoremap <Tab> <C-T>
+inoremap <S-Tab> <C-D>
 
 nnoremap \tp :set invpaste paste?<CR>
 nmap <F4> \tp
 imap <F4> <C-O> \tp
 set pastetoggle=<F4>
 
-inoremap <Tab> <C-T>
-inoremap <S-Tab> <C-D>
+" I like to have a faster way to go back after jumping around
 nnoremap < <C-O>
 
+" Make Ctrl-T increment the number of tests with Test::More
 let @t = "/^\\s*plan<"
 nnoremap <C-T> @t
+
+" Common keypresses
 let mapleader = " "
-nnoremap <leader>n :bn
-nnoremap <leader>p :bp
+" Move around between splits
 nnoremap <leader>h h
 nnoremap <leader>l l
 nnoremap <leader>j j
 nnoremap <leader>k k
+" Cycle through buffers in the current split
+nnoremap <leader>n :bn
+nnoremap <leader>p :bp
+" Remove the current buffer without closing the window
 nnoremap <leader>x :Kwbd<CR>
+" Open various panels or whatever
 nnoremap <leader>t :TagbarToggle<CR>
 nnoremap <leader>r :NERDTreeToggle<CR>
 nnoremap <leader>o :CommandT<CR>
+" Don't remember, heh
 nnoremap ' `
 nnoremap ` '
 
