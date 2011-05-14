@@ -45,11 +45,6 @@ vmap <S-Tab> <C-D>
 inoremap <Tab> <C-T>
 inoremap <S-Tab> <C-D>
 
-nnoremap \tp :set invpaste paste?<CR>
-nmap <F4> \tp
-imap <F4> <C-O> \tp
-set pastetoggle=<F4>
-
 " I like to have a faster way to go back after jumping around
 nnoremap < <C-O>
 
