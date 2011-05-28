@@ -78,7 +78,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
  
     -- launch dmenu
     , ((modm,               xK_c     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
- 
+
+    -- lock screen
+    , ((modm,               xK_l     ), spawn "gnome-screensaver-command -l")
+
     -- launch gmrun
     , ((modm .|. shiftMask, xK_r     ), spawn "gmrun")
  
