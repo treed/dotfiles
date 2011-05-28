@@ -7,13 +7,19 @@
 -- Normally, you'd only override those defaults you care about.
 --
  
+import Data.IORef
 import XMonad
 import XMonad.Actions.CycleWS
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName               (setWMName)
+import XMonad.Util.Run
 import System.Exit
  
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
+import qualified System.IO.UTF8  as UTF8
+
  
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -125,7 +131,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
  
     -- toggle the status bar gap (used with avoidStruts from Hooks.ManageDocks)
-    --, ((modm , xK_b ), sendMessage ToggleStruts)
+    , ((modm              , xK_b ), sendMessage ToggleStruts)
  
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
@@ -191,7 +197,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = tiled ||| Mirror tiled ||| Full
+myLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -224,7 +230,8 @@ myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    , resource  =? "kdesktop"       --> doIgnore
+    , manageDocks ]
  
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -241,7 +248,6 @@ myFocusFollowsMouse = True
 --
 -- > logHook = dynamicLogDzen
 --
-myLogHook = return ()
  
 ------------------------------------------------------------------------
 -- Startup hook
@@ -258,15 +264,10 @@ myStartupHook = setWMName "LG3D"
  
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = xmonad defaults
- 
--- A structure containing your configuration settings, overriding
--- fields in the default config. Any you don't override, will 
--- use the defaults defined in xmonad/XMonad/Config.hs
--- 
--- No need to modify this.
---
-defaults = defaultConfig {
+main = do
+    xmobar <- spawnPipe "xmobar"
+    floatNextWindows <- newIORef 0
+    xmonad $ defaultConfig {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
@@ -284,6 +285,16 @@ defaults = defaultConfig {
       -- hooks, layouts
         layoutHook         = myLayout,
         manageHook         = myManageHook,
-        logHook            = myLogHook,
+        logHook            = dynamicLogWithPP $ xmobarPP
+                              { ppOutput = UTF8.hPutStrLn xmobar
+                              , ppUrgent = xmobarColor "#ff0000" ""
+                              , ppTitle  = xmobarColor "#ffff00" ""
+                              , ppExtras = [do
+                                              i <- io $ readIORef floatNextWindows
+                                              return $ Just $ if i == 0
+                                                                  then "-"
+                                                                  else show i
+                                           ]
+                              },
         startupHook        = myStartupHook
     }
