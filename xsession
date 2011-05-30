@@ -47,6 +47,4 @@ try update-notifier
 try ginn
 try dropbox start
 try junglediskdesktop
-gconftool -t float -s /desktop/gnome/peripherals/Apple@32@Wireless@32@Trackpad/maximum_speed 10
-gconftool -t float -s /desktop/gnome/peripherals/Apple@32@Wireless@32@Trackpad/minimum_speed 5
 exec xmonad
