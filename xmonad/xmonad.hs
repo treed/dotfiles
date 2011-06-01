@@ -9,6 +9,7 @@
  
 import Data.IORef
 import XMonad
+import XMonad.Layout.Dishes
 import XMonad.Actions.CycleWS
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog
@@ -200,7 +201,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full
+myLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full ||| Dishes 1 (1/5)
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
