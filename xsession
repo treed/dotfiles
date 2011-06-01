@@ -38,8 +38,8 @@ try_eval() {
 }
 
 gnome-settings-daemon
+export `gnome-keyring-daemon`
 try gnome-screensaver
-try nautilus --no-default-window
 try trayer --SetDockType true --SetPartialStrut true --SetDockType true --edge top --widthtype percent --width 10 --align right --transparent true --tint 000000
 try nm-applet --sm-disable
 try bluetooth-applet
