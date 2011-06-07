@@ -185,7 +185,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask, button2), (\w -> focus w >> windows W.swapMaster))
  
     -- mod-button3, Set the window to floating mode and resize by dragging
-    , ((modMask, button3), (\w -> focus w >> mouseResizeWindow w))
+    , ((modMask .|. shiftMask, button1), (\w -> focus w >> mouseResizeWindow w))
  
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
@@ -233,6 +233,7 @@ myLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full ||| Dishes 1 (1/5)
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
+    , className =? "Dia"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , manageDocks ]
