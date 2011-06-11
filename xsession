@@ -43,7 +43,7 @@ try nautilus --no-default-window
 try trayer --SetDockType true --SetPartialStrut true --SetDockType true --edge top --widthtype percent --width 10 --align right --transparent true --tint 000000
 try nm-applet --sm-disable
 try bluetooth-applet
-try update-notifier
+try gnome-power-manager
 try ginn
 try dropbox start
 try junglediskdesktop
