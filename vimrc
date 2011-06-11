@@ -66,6 +66,8 @@ nnoremap <leader>k <C-W>k
 " Cycle through buffers in the current split
 nnoremap <leader>n :bn<CR>
 nnoremap <leader>p :bp<CR>
+" Quick buffer list
+nnoremap <Leader>f :LustyJuggler<CR>
 " Remove the current buffer without closing the window
 nnoremap <leader>x :Kwbd<CR>
 " Open various panels or whatever
