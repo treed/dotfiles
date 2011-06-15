@@ -8,6 +8,10 @@
 --
  
 import Data.IORef
+import Control.OldException(catchDyn,try)
+import DBus
+import DBus.Connection
+import DBus.Message
 import XMonad
 import XMonad.Layout.Dishes
 import XMonad.Actions.CycleWS
@@ -253,6 +257,51 @@ myFocusFollowsMouse = True
 --
 -- > logHook = dynamicLogDzen
 --
+
+logPrinter :: Connection -> PP
+logPrinter dbus = defaultPP {
+    ppOutput  = outputThroughDBus dbus
+  , ppTitle   = pangoColor "#00DDFF" . shorten 50 . pangoSanitize
+  , ppCurrent = pangoColor "#00CCCC" . wrap "[" "]" . pangoSanitize
+  , ppVisible = pangoColor "#FFEEFF" . wrap "(" ")" . pangoSanitize
+  , ppHidden  = wrap " " " "
+  , ppUrgent  = pangoColor "red"
+  }
+
+-- This retry is really awkward, but sometimes DBus won't let us get our
+-- name unless we retry a couple times.
+getWellKnownName :: Connection -> IO ()
+getWellKnownName dbus = tryGetName `catchDyn` (\ (DBus.Error _ _) ->
+                                                getWellKnownName dbus)
+ where
+  tryGetName = do
+    namereq <- newMethodCall serviceDBus pathDBus interfaceDBus "RequestName"
+    addArgs namereq [String "org.xmonad.Log", Word32 5]
+    sendWithReplyAndBlock dbus namereq 0
+    return ()
+
+outputThroughDBus :: Connection -> String -> IO ()
+outputThroughDBus dbus str = do
+  let str' = "<span font=\"Terminus 9 Bold\">" ++ str ++ "</span>"
+  msg <- newSignal "/org/xmonad/Log" "org.xmonad.Log" "Update"
+  addArgs msg [String str']
+  send dbus msg 0 `catchDyn` (\ (DBus.Error _ _ ) -> return 0)
+  return ()
+
+pangoColor :: String -> String -> String
+pangoColor fg = wrap left right
+ where
+  left  = "<span foreground=\"" ++ fg ++ "\">"
+  right = "</span>"
+
+pangoSanitize :: String -> String
+pangoSanitize = foldr sanitize ""
+ where
+  sanitize '>'  acc = "&gt;" ++ acc
+  sanitize '<'  acc = "&lt;" ++ acc
+  sanitize '\"' acc = "&quot;" ++ acc
+  sanitize '&'  acc = "&amp;" ++ acc
+  sanitize x    acc = x:acc
  
 ------------------------------------------------------------------------
 -- Startup hook
@@ -269,8 +318,8 @@ myStartupHook = setWMName "LG3D"
  
 -- Run xmonad with the settings you specify. No need to modify this.
 --
-main = do
-    xmobar <- spawnPipe "xmobar"
+main = withConnection Session $ \ dbus -> do
+    getWellKnownName dbus
     floatNextWindows <- newIORef 0
     xmonad $ defaultConfig {
       -- simple stuff
@@ -290,16 +339,6 @@ main = do
       -- hooks, layouts
         layoutHook         = myLayout,
         manageHook         = myManageHook,
-        logHook            = dynamicLogWithPP $ xmobarPP
-                              { ppOutput = UTF8.hPutStrLn xmobar
-                              , ppUrgent = xmobarColor "#ff0000" ""
-                              , ppTitle  = xmobarColor "#ffff00" ""
-                              , ppExtras = [do
-                                              i <- io $ readIORef floatNextWindows
-                                              return $ Just $ if i == 0
-                                                                  then "-"
-                                                                  else show i
-                                           ]
-                              },
+        logHook            = dynamicLogWithPP (logPrinter dbus),
         startupHook        = myStartupHook
     }

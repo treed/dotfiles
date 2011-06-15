@@ -40,7 +40,7 @@ try_eval() {
 gnome-settings-daemon
 export `gnome-keyring-daemon`
 try gnome-screensaver
-try trayer --SetDockType true --SetPartialStrut true --SetDockType true --edge top --widthtype percent --width 10 --align right --transparent true --tint 000000
+try gnome-panel
 try nm-applet --sm-disable
 try bluetooth-applet
 try gnome-power-manager
