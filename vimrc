@@ -74,6 +74,7 @@ nnoremap <leader>x :Kwbd<CR>
 nnoremap <leader>t :TagbarToggle<CR>
 nnoremap <leader>r :NERDTreeToggle<CR>
 nnoremap <leader>o :CommandT<CR>
+nnoremap <leader>b :LustyBufferExplorer<CR>
 
 set scrolloff=10
 
