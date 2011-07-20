@@ -74,6 +74,8 @@ nnoremap <leader>x :Kwbd<CR>
 nnoremap <silent> <leader>t :TagbarToggle<CR>
 nnoremap <silent> <leader>r :NERDTreeToggle<CR>
 nnoremap <leader>o :CommandT<CR>
+" Clear trailing whitespace and save
+nnoremap <silent> <leader>w :%s/\s\+$//g<CR>:w<CR>
 
 set scrolloff=10
 
