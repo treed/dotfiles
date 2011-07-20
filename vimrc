@@ -49,8 +49,7 @@ inoremap <S-Tab> <C-D>
 nnoremap < <C-O>
 
 " Make Ctrl-T increment the number of tests with Test::More
-let @t = "/^\\s*plan<"
-nnoremap <C-T> @t
+nnoremap <silent> <C-T> :%s/plan tests => \zs\d\+/\=submatch(0) + 1/<CR>
 
 " Common keypresses that I want to be fast to hit
 let mapleader = " "
