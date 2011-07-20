@@ -54,9 +54,9 @@ nnoremap <silent> <C-T> :%s/plan tests => \zs\d\+/\=submatch(0) + 1/<CR>
 " Common keypresses that I want to be fast to hit
 let mapleader = " "
 " Open a new split
-nnoremap <leader>s :sp<CR>
+nnoremap <silent> <leader>s :sp<CR>
 " Close
-nnoremap <leader>q :q<CR>
+nnoremap <silent> <leader>q :q<CR>
 " Move around between splits
 nnoremap <leader>h <C-W>h
 nnoremap <leader>l <C-W>l
@@ -67,13 +67,13 @@ nnoremap <leader>n :bn<CR>
 nnoremap <leader>p :bp<CR>
 " Quick buffer list
 nnoremap <Leader>f :LustyJuggler<CR>
+nnoremap <leader>b :LustyBufferExplorer<CR>
 " Remove the current buffer without closing the window
 nnoremap <leader>x :Kwbd<CR>
 " Open various panels or whatever
-nnoremap <leader>t :TagbarToggle<CR>
-nnoremap <leader>r :NERDTreeToggle<CR>
+nnoremap <silent> <leader>t :TagbarToggle<CR>
+nnoremap <silent> <leader>r :NERDTreeToggle<CR>
 nnoremap <leader>o :CommandT<CR>
-nnoremap <leader>b :LustyBufferExplorer<CR>
 
 set scrolloff=10
 
