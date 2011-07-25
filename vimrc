@@ -1,8 +1,8 @@
 " Must come first
+filetype off
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 
 " Woo Colors!
 set t_Co=256
@@ -17,7 +17,16 @@ set viminfo='20,\"500
 set history=100
 set ruler
 set hidden
-set nohlsearch " I find highlighting on search terms distracting
+set encoding=utf-8
+set cursorline
+set laststatus=2
+set undofile
+set ignorecase
+set smartcase
+set gdefault
+set incsearch
+set showmatch
+set hlsearch
 
 " Remove GUI chrome
 set go-=T
@@ -34,48 +43,45 @@ set expandtab
 " fix mouse scrolling
 set ttymouse=xterm2
 
-" I'm not sure that I ever actually use this from vim
-set grepprg=grep\ -nH\ $*
-
-" different tabbing semantics
-vnoremap <C-T> >
-vnoremap <C-D> <LT>
-vmap <Tab> <C-T>
-vmap <S-Tab> <C-D>
+" different tabb semantics
 inoremap <Tab> <C-T>
 inoremap <S-Tab> <C-D>
+vmap <Tab> >>
+vmap <S-Tab> <<
+nnoremap <Tab> >>
+nnoremap <S-Tab> <<
 
 " I like to have a faster way to go back after jumping around
 nnoremap < <C-O>
+nnoremap > <C-I>
 
 " Make Ctrl-T increment the number of tests with Test::More
 nnoremap <silent> <C-T> :%s/plan tests => \zs\d\+/\=submatch(0) + 1/<CR>
 
-" Common keypresses that I want to be fast to hit
-let mapleader = " "
 " Open a new split
-nnoremap <silent> <leader>s :sp<CR>
+nnoremap <silent> <Space>s :sp<CR>
 " Close
-nnoremap <silent> <leader>q :q<CR>
+nnoremap <silent> <Space>q :q<CR>
 " Move around between splits
-nnoremap <leader>h <C-W>h
-nnoremap <leader>l <C-W>l
-nnoremap <leader>j <C-W>j
-nnoremap <leader>k <C-W>k
+nnoremap <Space>h <C-W>h
+nnoremap <Space>l <C-W>l
+nnoremap <Space>j <C-W>j
+nnoremap <Space>k <C-W>k
 " Cycle through buffers in the current split
-nnoremap <leader>n :bn<CR>
-nnoremap <leader>p :bp<CR>
+nnoremap <Space>n :bn<CR>
+nnoremap <Space>p :bp<CR>
 " Quick buffer list
-nnoremap <Leader>f :LustyJuggler<CR>
-nnoremap <leader>b :LustyBufferExplorer<CR>
+nnoremap <Space>b :LustyBufferExplorer<CR>
 " Remove the current buffer without closing the window
-nnoremap <leader>x :Kwbd<CR>
+nnoremap <Space>x :Kwbd<CR>
 " Open various panels or whatever
-nnoremap <silent> <leader>t :TagbarToggle<CR>
-nnoremap <silent> <leader>r :NERDTreeToggle<CR>
-nnoremap <leader>o :CommandT<CR>
+nnoremap <silent> <Space>t :TagbarToggle<CR>
+nnoremap <silent> <Space>r :NERDTreeToggle<CR>
+nnoremap <Space>o :CommandT<CR>
 " Clear trailing whitespace and save
-nnoremap <silent> <leader>w :%s/\s\+$//g<CR>:w<CR>
+nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
+" Clear of highlighted search results
+nnoremap <Space>c :nohlsearch<CR>
 
 set scrolloff=10
 
