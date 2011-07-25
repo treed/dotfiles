@@ -21,6 +21,8 @@ set encoding=utf-8
 set cursorline
 set laststatus=2
 set undofile
+set undodir=~/.vimundo/,/tmp
+set backupdir=~/.vimbackup/,/tmp
 set ignorecase
 set smartcase
 set gdefault
@@ -82,6 +84,8 @@ nnoremap <Space>o :CommandT<CR>
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Clear of highlighted search results
 nnoremap <Space>c :nohlsearch<CR>
+" Fast access to Ack
+nnoremap <Space>a :Ack! 
 
 set scrolloff=10
 
