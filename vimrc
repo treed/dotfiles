@@ -58,7 +58,7 @@ nnoremap < <C-O>
 nnoremap > <C-I>
 
 " Make Ctrl-T increment the number of tests with Test::More
-nnoremap <silent> <C-T> :%s/plan tests => \zs\d\+/\=submatch(0) + 1/<CR>
+nnoremap <silent> <C-T> :%s/plan tests => \zs\d\+/\=submatch(0) + 1/<CR><C-O>
 
 " Open a new split
 nnoremap <silent> <Space>s :sp<CR>
