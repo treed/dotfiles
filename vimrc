@@ -84,6 +84,9 @@ nnoremap <Space>o :CommandT<CR>
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Fast access to Ack
 nnoremap <Space>a :Ack! 
+" Comment toggle
+nnoremap <Space>c \cc
+vnoremap <Space>c \cc
 
 set scrolloff=10
 
