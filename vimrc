@@ -28,7 +28,7 @@ set smartcase
 set gdefault
 set incsearch
 set showmatch
-set hlsearch
+set nohlsearch
 
 " Remove GUI chrome
 set go-=T
@@ -82,8 +82,6 @@ nnoremap <silent> <Space>r :NERDTreeToggle<CR>
 nnoremap <Space>o :CommandT<CR>
 " Clear trailing whitespace and save
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
-" Clear of highlighted search results
-nnoremap <Space>c :nohlsearch<CR>
 " Fast access to Ack
 nnoremap <Space>a :Ack! 
 
