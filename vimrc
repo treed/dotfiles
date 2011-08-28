@@ -92,6 +92,7 @@ set scrolloff=10
 
 " Need to associate p6 files, the plugin doesn't for some reason
 autocmd BufNewFile,BufRead *.p6 setf perl6
+autocmd BufNewFile,BufRead *.nel setf nel
 
 let g:CommandTMaxHeight=20
 
