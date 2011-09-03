@@ -237,7 +237,8 @@ myLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full ||| Dishes 1 (1/5)
 myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
-    , className =? "Dia"           --> doFloat
+    , className =? "Dia"            --> doFloat
+    , className =? "vncviewer"      --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , manageDocks ]
