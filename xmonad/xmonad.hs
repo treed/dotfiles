@@ -239,6 +239,7 @@ myManageHook = composeAll
     , className =? "Gimp"           --> doFloat
     , className =? "Dia"            --> doFloat
     , className =? "vncviewer"      --> doFloat
+    , className =? "Virt-viewer"    --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , manageDocks ]
