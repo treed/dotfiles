@@ -7,6 +7,9 @@ filetype plugin indent on
 " Woo Colors!
 set t_Co=256
 set background=dark
+if has("gui_running")
+    set guifont=Inconsolata\ 12
+endif
 colorscheme solarized
 syntax on
 
