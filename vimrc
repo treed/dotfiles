@@ -99,5 +99,6 @@ autocmd BufNewFile,BufRead *.p6 setf perl6
 autocmd BufNewFile,BufRead *.nel setf nel
 
 let g:CommandTMaxHeight=20
+let g:CommandTMaxFiles=20000
 
 helptags ~/.vim/doc
