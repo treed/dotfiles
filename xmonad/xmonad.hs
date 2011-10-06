@@ -18,6 +18,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName               (setWMName)
+import XMonad.Config.Gnome
 import XMonad.Util.Run
 import System.Exit
 
@@ -322,7 +323,7 @@ myStartupHook = setWMName "LG3D"
 main = withConnection Session $ \ dbus -> do
     getWellKnownName dbus
     floatNextWindows <- newIORef 0
-    xmonad $ defaultConfig {
+    xmonad $ gnomeConfig {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,

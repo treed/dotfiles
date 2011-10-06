@@ -8,7 +8,7 @@ filetype plugin indent on
 set t_Co=256
 set background=dark
 if has("gui_running")
-    set guifont=Inconsolata\ 12
+    set guifont=Inconsolata\ 16
 endif
 colorscheme solarized
 syntax on
