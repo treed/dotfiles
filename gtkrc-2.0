@@ -3,3 +3,11 @@ style "vim-background" {
 }
 
 widget "vim-main-window.*.GtkForm" style "vim-background"
+
+style "default-style"
+{
+  GtkWindow::resize-grip-height = 0
+  GtkWindow::resize-grip-width = 0
+}
+
+class "GtkWidget" style "default-style"
