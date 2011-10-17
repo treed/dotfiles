@@ -4,3 +4,6 @@
 [submodule "vim/bundle/textile"]
 	path = vim/bundle/textile
 	url = https://github.com/timcharper/textile.vim.git
+[submodule "vim/bundle/vim-repeat"]
+	path = vim/bundle/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
