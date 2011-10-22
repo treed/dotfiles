@@ -13,3 +13,6 @@
 [submodule "vim/bundle/vim-supertab"]
 	path = vim/bundle/vim-supertab
 	url = https://github.com/tsaleh/vim-supertab.git
+[submodule "vim/bundle/vim-extradite"]
+	path = vim/bundle/vim-extradite
+	url = https://github.com/int3/vim-extradite.git
