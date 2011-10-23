@@ -61,6 +61,9 @@ nnoremap <S-Tab> <<
 nnoremap < <C-O>
 nnoremap > <C-I>
 
+" Y should work like D
+map Y y$
+
 " Make Ctrl-T increment the number of tests with Test::More
 nnoremap <silent> <C-T> :%s/plan tests => \zs\d\+/\=submatch(0) + 1/<CR><C-O>
 
