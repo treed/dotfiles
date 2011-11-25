@@ -38,14 +38,12 @@ try_eval() {
 }
 
 try xcompmgr
-gnome-settings-daemon
+try gnome-settings-daemon
 export `gnome-keyring-daemon`
 try gnome-screensaver
 try gnome-panel
 try nm-applet --sm-disable
 try bluetooth-applet
 try gnome-power-manager
-try ginn
 try dropbox start
-try junglediskdesktop
 exec xmonad
