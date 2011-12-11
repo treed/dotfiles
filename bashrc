@@ -6,6 +6,8 @@
 [ -z "$PS1" ] && return
 
 export EDITOR=gvim
+export GOBASE=/home/treed/code/golang
+export PATH=$GOBASE/bin:$PATH
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
