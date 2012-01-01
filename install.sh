@@ -2,4 +2,4 @@ for file in Xmodmap xsession xmobarrc bashrc bash_aliases vimrc gitconfig gtkrc-
 	ln -sf "$(pwd)/$file" ~/.$file
 done
 
-test -d ~/.vim/ || ln -sfT "$(pwd)/vim/" ~/.vim/
+test -d ~/.vim/ || ln -sfT "$(pwd)/vi/" ~/.vim
