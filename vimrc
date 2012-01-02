@@ -23,8 +23,10 @@ set hidden
 set encoding=utf-8
 set cursorline
 set laststatus=2
-set undofile
-set undodir=~/.vimundo/,/var/tmp
+if version >= 730
+    set undofile
+    set undodir=~/.vimundo/,/var/tmp
+endif
 set backupdir=~/.vimbackup/,/var/tmp
 set directory=~/.vimswap/,/var/tmp
 set ignorecase
