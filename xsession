@@ -37,7 +37,7 @@ try_eval() {
     return $ret
 }
 
-try xcompmgr
+try xcompmgr -a
 try gnome-settings-daemon
 export `gnome-keyring-daemon`
 try gnome-screensaver
