@@ -1,2 +1,4 @@
+keycode 9 = Caps_Lock
 remove Lock = Caps_Lock
 keysym Caps_Lock = Escape
+keysym Control_R = Multi_key
