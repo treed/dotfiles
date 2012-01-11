@@ -106,4 +106,7 @@ autocmd BufNewFile,BufRead *.nel setf nel
 let g:CommandTMaxHeight=20
 let g:CommandTMaxFiles=20000
 
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<space><space>"
+
 helptags ~/.vim/doc
