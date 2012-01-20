@@ -51,7 +51,7 @@
 "                  PURPOSE.
 "                  See the GNU General Public License version 2 for more details.
 "        Credits:  see perlsupport.txt
-"       Revision:  $Id: perl-support.vim,v 1.116 2011/04/21 07:33:24 mehner Exp $
+"       Revision:  $Id: perl-support.vim,v 1.138 2011/10/25 17:29:04 mehner Exp $
 "-------------------------------------------------------------------------------
 "
 " Prevent duplicate loading:
@@ -59,7 +59,7 @@
 if exists("g:Perl_Version") || &compatible
   finish
 endif
-let g:Perl_Version= "4.11"
+let g:Perl_Version= "4.14"
 "
 "#################################################################################
 "
@@ -71,6 +71,12 @@ let g:Perl_Version= "4.11"
 function! Perl_SetGlobalVariable ( name, default )
   if !exists('g:'.a:name)
     exe 'let g:'.a:name."  = '".a:default."'"
+	else
+		" check for an empty initialization
+		exe 'let	val	= g:'.a:name
+		if empty(val)
+			exe 'let g:'.a:name."  = '".a:default."'"
+		endif
   endif
 endfunction   " ---------- end of function  Perl_SetGlobalVariable  ----------
 "
@@ -98,49 +104,55 @@ call Perl_SetGlobalVariable( "Perl_Root",'&Perl.' )
 let s:MSWIN = has("win16") || has("win32")   || has("win64")    || has("win95")
 let s:UNIX	= has("unix")  || has("macunix") || has("win32unix")
 "
-let g:Perl_Installation				= 'local'
-let s:vimfiles								= $VIM
-let	s:sourced_script_file			= expand("<sfile>")
+let g:Perl_Installation				= '*undefined*'
 let s:Perl_GlobalTemplateFile	= ''
 let s:Perl_GlobalTemplateDir	= ''
 "
 if  s:MSWIN
   " ==========  MS Windows  ======================================================
 	"
-	if match( s:sourced_script_file, escape( s:vimfiles, ' \' ) ) == 0
-		" system wide installation
-		let g:Perl_Installation				= 'system'
-		let s:plugin_dir							= $VIM.'/vimfiles/'
-		let s:Perl_GlobalTemplateDir	= s:plugin_dir.'perl-support/templates'
-		let s:Perl_GlobalTemplateFile	= s:Perl_GlobalTemplateDir.'/Templates'
+	" change '\' to '/' to avoid interpretation as escape character
+	if match(	substitute( expand("<sfile>"), '\', '/', 'g' ), 
+				\		substitute( expand("$HOME"),   '\', '/', 'g' ) ) == 0
+		" USER INSTALLATION ASSUMED
+		let g:Perl_Installation				= 'local'
+		let s:plugin_dir  						= expand('<sfile>:p:h:h')
+		let s:Perl_LocalTemplateFile	= s:plugin_dir.'/perl-support/templates/Templates'
+		let s:Perl_LocalTemplateDir		= fnamemodify( s:Perl_LocalTemplateFile, ":p:h" ).'/'
 	else
-		" user installation assumed
-		let s:plugin_dir  						= $HOME.'/vimfiles/'
-	endif
+		" SYSTEM WIDE INSTALLATION
+		let g:Perl_Installation				= 'system'
+		let s:plugin_dir  						= $VIM.'/vimfiles'
+		let s:Perl_GlobalTemplateDir	= s:plugin_dir.'/perl-support/templates'
+		let s:Perl_GlobalTemplateFile	= s:Perl_GlobalTemplateDir.'/Templates'
+		let s:Perl_LocalTemplateFile	= $HOME.'/vimfiles/perl-support/templates/Templates'
+		let s:Perl_LocalTemplateDir		= fnamemodify( s:Perl_LocalTemplateFile, ":p:h" ).'/'
+	end
 	"
-	let s:Perl_LocalTemplateFile		= $HOME.'/vimfiles/perl-support/templates/Templates'
-	let s:Perl_LocalTemplateDir			= fnamemodify( s:Perl_LocalTemplateFile, ":p:h" ).'/'
-	let s:Perl_CodeSnippets  				= $HOME.'/vimfiles/perl-support/codesnippets/'
+	let s:Perl_CodeSnippets  				= s:plugin_dir.'/perl-support/codesnippets/'
   let s:escfilename 	  					= ''
 	let s:Perl_Display  						= ''
 	"
 else
   " ==========  Linux/Unix  ======================================================
 	"
-	if match( expand("<sfile>"), expand( "$HOME" ) ) == 0
-		" user installation assumed
-		let s:plugin_dir  						= $HOME.'/.vim/'
+	if match( expand("<sfile>"), expand("$HOME") ) == 0
+		" USER INSTALLATION ASSUMED
+		let g:Perl_Installation				= 'local'
+		let s:plugin_dir  						= expand("<sfile>:p:h:h")
+		let s:Perl_LocalTemplateFile	= s:plugin_dir.'/perl-support/templates/Templates'
+		let s:Perl_LocalTemplateDir		= fnamemodify( s:Perl_LocalTemplateFile, ":p:h" ).'/'
 	else
-		" system wide installation
+		" SYSTEM WIDE INSTALLATION
 		let g:Perl_Installation				= 'system'
-		let s:plugin_dir  						= $VIM.'/vimfiles/'
-		let s:Perl_GlobalTemplateDir	= s:plugin_dir.'perl-support/templates'
+		let s:plugin_dir  						= $VIM.'/vimfiles'
+		let s:Perl_GlobalTemplateDir	= s:plugin_dir.'/perl-support/templates'
 		let s:Perl_GlobalTemplateFile	= s:Perl_GlobalTemplateDir.'/Templates'
+		let s:Perl_LocalTemplateFile	= $HOME.'/.vim/perl-support/templates/Templates'
+		let s:Perl_LocalTemplateDir		= fnamemodify( s:Perl_LocalTemplateFile, ":p:h" ).'/'
 	endif
 	"
-	let s:Perl_LocalTemplateFile		= $HOME.'/.vim/perl-support/templates/Templates'
-	let s:Perl_LocalTemplateDir			= fnamemodify( s:Perl_LocalTemplateFile, ":p:h" ).'/'
-	let s:Perl_CodeSnippets  				= $HOME.'/.vim/perl-support/codesnippets/'
+	let s:Perl_CodeSnippets  				= s:plugin_dir.'/perl-support/codesnippets/'
 	let s:escfilename   						= ' \%#[]'
 	let s:Perl_Display							= "$DISPLAY"
 	"
@@ -152,20 +164,20 @@ endif
 call Perl_SetGlobalVariable( 'Perl_CodeSnippets', s:Perl_CodeSnippets )
 "
 "
-call Perl_SetGlobalVariable( 'Perl_PerlTags', 'enabled' )
+call Perl_SetGlobalVariable( 'Perl_PerlTags', 'off' )
 "
 "  Key word completion is enabled by the filetype plugin 'perl.vim'
 "  g:Perl_Dictionary_File  must be global
 "
 if !exists("g:Perl_Dictionary_File")
-  let g:Perl_Dictionary_File       = s:plugin_dir.'perl-support/wordlists/perl.list'
+  let g:Perl_Dictionary_File       = s:plugin_dir.'/perl-support/wordlists/perl.list'
 endif
 "
 "
 "  Modul global variables (with default values) which can be overridden.     {{{1
 "
 let s:Perl_LoadMenus             = 'yes'
-let s:Perl_TemplateOverwrittenMsg= 'yes'
+let s:Perl_TemplateOverriddenMsg = 'no'
 let s:Perl_Ctrl_j								 = 'on'
 "
 let s:Perl_FormatDate						 = '%x'
@@ -173,7 +185,7 @@ let s:Perl_FormatTime						 = '%X'
 let s:Perl_FormatYear						 = '%Y'
 let s:Perl_TimestampFormat       = '%Y%m%d.%H%M%S'
 
-let s:Perl_PerlModuleList        = s:plugin_dir.'perl-support/modules/perl-modules.list'
+let s:Perl_PerlModuleList        = s:plugin_dir.'/perl-support/modules/perl-modules.list'
 let s:Perl_XtermDefaults         = "-fa courier -fs 12 -geometry 80x24"
 let s:Perl_Debugger              = "perl"
 let s:Perl_ProfilerTimestamp     = "no"
@@ -186,22 +198,23 @@ let s:Perl_Printheader           = "%<%f%h%m%<  %=%{strftime('%x %X')}     Page 
 let s:Perl_GuiSnippetBrowser     = 'gui'										" gui / commandline
 let s:Perl_GuiTemplateBrowser    = 'gui'										" gui / explorer / commandline
 "
-let s:Perl_Wrapper                 = s:plugin_dir.'perl-support/scripts/wrapper.sh'
-let s:Perl_EfmPerl                 = s:plugin_dir.'perl-support/scripts/efm_perl.pl'
-let s:Perl_PerlModuleListGenerator = s:plugin_dir.'perl-support/scripts/pmdesc3.pl'
+let s:Perl_Wrapper                 = s:plugin_dir.'/perl-support/scripts/wrapper.sh'
+let s:Perl_EfmPerl                 = s:plugin_dir.'/perl-support/scripts/efm_perl.pl'
+let s:Perl_PerlModuleListGenerator = s:plugin_dir.'/perl-support/scripts/pmdesc3.pl'
+let s:Perl_PerltidyBackup			     = "no"
 "
 "------------------------------------------------------------------------------
 "
 "  Look for global variables (if any), to override the defaults.
 "
-call Perl_SetLocalVariable('Perl_GuiSnippetBrowser      ')
-call Perl_SetLocalVariable('Perl_GuiTemplateBrowser     ')
 call Perl_SetLocalVariable("Perl_Ctrl_j                 ")
 call Perl_SetLocalVariable("Perl_Debugger               ")
 call Perl_SetLocalVariable("Perl_FormatDate             ")
 call Perl_SetLocalVariable("Perl_FormatTime             ")
 call Perl_SetLocalVariable("Perl_FormatYear             ")
-call Perl_SetLocalVariable("Perl_TimestampFormat        ")
+call Perl_SetLocalVariable("Perl_GlobalTemplateFile     ")
+call Perl_SetLocalVariable('Perl_GuiSnippetBrowser      ')
+call Perl_SetLocalVariable('Perl_GuiTemplateBrowser     ')
 call Perl_SetLocalVariable("Perl_LineEndCommColDefault  ")
 call Perl_SetLocalVariable("Perl_LoadMenus              ")
 call Perl_SetLocalVariable("Perl_NYTProf_browser        ")
@@ -211,14 +224,15 @@ call Perl_SetLocalVariable("Perl_PerlcriticSeverity     ")
 call Perl_SetLocalVariable("Perl_PerlcriticVerbosity    ")
 call Perl_SetLocalVariable("Perl_PerlModuleList         ")
 call Perl_SetLocalVariable("Perl_PerlModuleListGenerator")
+call Perl_SetLocalVariable('Perl_PerltidyBackup         ')
 call Perl_SetLocalVariable("Perl_PodcheckerWarnings     ")
 call Perl_SetLocalVariable("Perl_Printheader            ")
 call Perl_SetLocalVariable("Perl_ProfilerTimestamp      ")
-call Perl_SetLocalVariable("Perl_TemplateOverwrittenMsg ")
+call Perl_SetLocalVariable("Perl_TemplateOverriddenMsg  ")
+call Perl_SetLocalVariable("Perl_TimestampFormat        ")
 call Perl_SetLocalVariable("Perl_XtermDefaults          ")
-call Perl_SetLocalVariable("Perl_GlobalTemplateFile     ")
 
-if exists('g:Perl_GlobalTemplateFile') && g:Perl_GlobalTemplateFile != ''
+if exists('g:Perl_GlobalTemplateFile') && !empty(g:Perl_GlobalTemplateFile)
 	let s:Perl_GlobalTemplateDir	= fnamemodify( s:Perl_GlobalTemplateFile, ":h" )
 endif
 "
@@ -272,6 +286,7 @@ let s:Perl_TJT									= '[ 0-9a-zA-Z_]*'
 let s:Perl_TemplateJumpTarget1  = '<+'.s:Perl_TJT.'+>\|{+'.s:Perl_TJT.'+}'
 let s:Perl_TemplateJumpTarget2  = '<-'.s:Perl_TJT.'->\|{-'.s:Perl_TJT.'-}'
 let s:Perl_Template             = {}
+let s:Perl_TemplatesLoaded			= 'no'
 let s:Perl_Macro                = {'|AUTHOR|'         : 'first name surname',
 											\						 '|AUTHORREF|'      : '',
 											\						 '|EMAIL|'          : '',
@@ -287,6 +302,8 @@ let	s:Perl_MacroFlag						= {	':l' : 'lowercase'			,
 											\						}
 
 let s:MsgInsNotAvail	= "insertion not available for a fold"
+let g:Perl_PerlRegexAnalyser			= 'no'
+let g:Perl_InterfaceInitialized		= 'no'
 "
 "------------------------------------------------------------------------------
 "-----   variables for internal use   -----------------------------------------
@@ -298,7 +315,7 @@ let s:MsgInsNotAvail	= "insertion not available for a fold"
 function! Perl_Input ( promp, text, ... )
 	echohl Search																					" highlight prompt
 	call inputsave()																			" preserve typeahead
-	if a:0 == 0 || a:1 == ''
+	if a:0 == 0 || empty(a:1)
 		let retval	=input( a:promp, a:text )
 	else
 		let retval	=input( a:promp, a:text, a:1 )
@@ -329,20 +346,26 @@ endfunction   " ---------- end of function  Perl_GetLineEndCommCol  ----------
 "------------------------------------------------------------------------------
 "  Comments : single line-end comment     {{{1
 "------------------------------------------------------------------------------
-function! Perl_LineEndComment ( comment )
-  if !exists("b:Perl_LineEndCommentColumn")
-    let b:Perl_LineEndCommentColumn = s:Perl_LineEndCommColDefault
-  endif
-  " ----- trim whitespaces -----
-	exe 's/\s*$//'
-  let linelength= virtcol("$") - 1
-	let	diff	= 1
-	if linelength < b:Perl_LineEndCommentColumn
-		let diff	= b:Perl_LineEndCommentColumn -1 -linelength
+function! Perl_EndOfLineComment ( ) range
+	if !exists("b:Perl_LineEndCommentColumn")
+		let	b:Perl_LineEndCommentColumn	= s:Perl_LineEndCommColDefault
 	endif
-	exe "normal	".diff."A "
-	call Perl_InsertTemplate('comment.end-of-line-comment')
-endfunction   " ---------- end of function  Perl_LineEndComment  ----------
+	" ----- trim whitespaces -----
+	exe a:firstline.','.a:lastline.'s/\s*$//'
+
+	for line in range( a:lastline, a:firstline, -1 )
+		let linelength	= virtcol( [line, "$"] ) - 1
+		let	diff				= 1
+		if linelength < b:Perl_LineEndCommentColumn
+			let diff	= b:Perl_LineEndCommentColumn -1 -linelength
+		endif
+		exe "normal	".diff."A "
+		call Perl_InsertTemplate('comment.end-of-line-comment')
+		if line > a:firstline
+			normal k
+		endif
+	endfor
+endfunction		" ---------- end of function  Perl_EndOfLineComment  ----------
 "
 "------------------------------------------------------------------------------
 "  Perl_AlignLineEndComm: adjust line-end comments     {{{1
@@ -365,7 +388,7 @@ let	s:AlignRegex	= [
 	\	'\(s\|tr\){[^}]\+}{[^}]\+}' ,
 	\	]
 
-function! Perl_AlignLineEndComm ( mode ) range
+function! Perl_AlignLineEndComm ( ) range
 	"
 	if !exists("b:Perl_LineEndCommentColumn")
 		let	b:Perl_LineEndCommentColumn	= s:Perl_LineEndCommColDefault
@@ -376,18 +399,10 @@ function! Perl_AlignLineEndComm ( mode ) range
 	let	save_expandtab	= &expandtab
 	exe	":set expandtab"
 
-	if a:mode == 'v'
-		let pos0	= line("'<")
-		let pos1	= line("'>")
-	else
-		let pos0	= line(".")
-		let pos1	= pos0
-	endif
+	let	linenumber	= a:firstline
+	exe ":".a:firstline
 
-	let	linenumber	= pos0
-	exe ":".pos0
-
-	while linenumber <= pos1
+	while linenumber <= a:lastline
 		let	line= getline(".")
 		"
 		" line is not a pure comment but may contains a comment:
@@ -603,45 +618,22 @@ endfunction    " ----------  end of function Perl_UncommentBlock ----------
 "------------------------------------------------------------------------------
 "  toggle comments     {{{1
 "------------------------------------------------------------------------------
-function! Perl_CommentToggle ()
-	let	linenumber	= line(".")
-	let line				= getline(linenumber)
-	if match( line, '^#' ) == 0
-		call setline( linenumber, strpart(line, 1) )
-	else
-		call setline( linenumber, '#'.line )
-	endif
-endfunction    " ----------  end of function Perl_CommentToggle  ----------
-"
-"------------------------------------------------------------------------------
-"  Comments : toggle comments (range)   {{{1
-"------------------------------------------------------------------------------
-function! Perl_CommentToggleRange ()
+function! Perl_CommentToggle () range
 	let	comment=1									" 
-	let pos0	= line("'<")
-	let pos1	= line("'>")
-	for line in getline( pos0, pos1 )
-		if match( line, '^\s*$' ) != 0					" skip empty lines
-			if match( line, '^#') == -1						" no comment 
-				let comment = 0
-				break
-			endif
+	for line in range( a:firstline, a:lastline )
+		if match( getline(line), '^#') == -1					" no comment 
+			let comment = 0
+			break
 		endif
 	endfor
 
 	if comment == 0
-		for linenumber in range( pos0, pos1 )
-			if match( line, '^\s*$' ) != 0					" skip empty lines
-				call setline( linenumber, '#'.getline(linenumber) )
-			endif
-		endfor
+			exe a:firstline.','.a:lastline."s/^/#/"
 	else
-		for linenumber in range( pos0, pos1 )
-			call setline( linenumber, substitute( getline(linenumber), '^#', '', '' ) )
-		endfor
+			exe a:firstline.','.a:lastline."s/^#//"
 	endif
 
-endfunction    " ----------  end of function Perl_CommentToggleRange  ----------
+endfunction    " ----------  end of function Perl_CommentToggle ----------
 "
 "------------------------------------------------------------------------------
 "  Comments : vim modeline     {{{1
@@ -687,7 +679,7 @@ function! Perl_CodeSnippet(mode)
 			else
 				let	l:snippetfile=input("edit snippet ", g:Perl_CodeSnippets, "file" )
 			endif
-      if l:snippetfile != ""
+      if !empty(l:snippetfile)
         :execute "update! | split | edit ".l:snippetfile
       endif
     endif
@@ -700,7 +692,7 @@ function! Perl_CodeSnippet(mode)
 			else
 				let	l:snippetfile=input("write snippet ", g:Perl_CodeSnippets, "file" )
 			endif
-      if l:snippetfile != ""
+      if !empty(l:snippetfile)
         if filereadable(l:snippetfile)
           if confirm("File ".l:snippetfile." exists ! Overwrite ? ", "&Cancel\n&No\n&Yes") != 3
             return
@@ -741,7 +733,7 @@ function! Perl_perldoc()
   else
 		let cuc		= getline(".")[col(".") - 1]	" character under the cursor
     let item	= expand("<cword>")       		" word under the cursor
-		if item == "" || match( item, cuc ) == -1
+		if empty(item) || match( item, cuc ) == -1
 			let item=Perl_Input("perldoc - module, function or FAQ keyword : ", "", '')
 		endif
   endif
@@ -773,7 +765,8 @@ function! Perl_perldoc()
     " search order:  library module --> builtin function --> FAQ keyword
     "
     let delete_perldoc_errors = ""
-    if s:UNIX
+    if s:UNIX && ( match( $shell, '\ccsh$' ) >= 0 ) 
+			" not for csh, tcsh
       let delete_perldoc_errors = " 2>/dev/null"
     endif
     setlocal  modifiable
@@ -806,6 +799,9 @@ function! Perl_perldoc()
         redraw!
         let s:Perl_PerldocTry         = 'function'
       endif
+      if s:MSWIN
+				call s:perl_RemoveSpecialCharacters()
+			endif
     endif
     "
     " function documentation
@@ -847,6 +843,25 @@ function! Perl_perldoc()
 		:match Search '^\S.*$'
   endif
 endfunction   " ---------- end of function  Perl_perldoc  ----------
+"
+"------------------------------------------------------------------------------
+"  remove <backspace><any character> in CYGWIN man(1) output   {{{1
+"  remove           _<any character> in CYGWIN man(1) output   {{{1
+"------------------------------------------------------------------------------
+"
+function! s:perl_RemoveSpecialCharacters ( )
+	let	patternunderline	= '_\%x08'
+	let	patternbold				= '\%x08.'
+	setlocal modifiable
+	if search(patternunderline) != 0
+		silent exe ':%s/'.patternunderline.'//g'
+	endif
+	if search(patternbold) != 0
+		silent exe ':%s/'.patternbold.'//g'
+	endif
+	setlocal nomodifiable
+	silent normal gg
+endfunction		" ---------- end of function  s:perl_RemoveSpecialCharacters   ----------
 "
 "------------------------------------------------------------------------------
 "  Perl-Run : Perl_perldoc - show module list     {{{1
@@ -936,7 +951,7 @@ function! Perl_Settings ()
 		let txt = txt.'           xterm defaults :  '.s:Perl_XtermDefaults."\n"
 	endif
 	" ----- dictionaries ------------------------
-  if g:Perl_Dictionary_File != ""
+  if !empty(g:Perl_Dictionary_File)
 		let ausgabe= &dictionary
     let ausgabe = substitute( ausgabe, ",", ",\n                          + ", "g" )
     let txt     = txt."       dictionary file(s) :  ".ausgabe."\n"
@@ -946,7 +961,7 @@ function! Perl_Settings ()
 				\				.' ['.s:PCseverityName[s:Perl_PerlcriticSeverity].']'
 				\				."  -verbosity ".s:Perl_PerlcriticVerbosity
 				\				."  ".s:Perl_PerlcriticOptions."\n"
-	if s:Perl_InterfaceVersion != ''
+	if !empty(s:Perl_InterfaceVersion)
 		let txt = txt."  Perl interface version  :  ".s:Perl_InterfaceVersion."\n"
 	endif
   let txt = txt."\n"
@@ -1025,36 +1040,30 @@ endfunction   " ---------- end of function  Perl_SyntaxCheck  ----------
 function! Perl_Toggle_Gvim_Xterm ()
 
 	if g:Perl_OutputGvim == "vim"
-		if has("gui_running")
-			exe "aunmenu  <silent>  ".g:Perl_Root.'&Run.&output:\ VIM->buffer->xterm'
-			exe "amenu    <silent>  ".g:Perl_Root.'&Run.&output:\ BUFFER->xterm->vim              :call Perl_Toggle_Gvim_Xterm()<CR>'
-		endif
+		exe "aunmenu  <silent>  ".g:Perl_Root.'&Run.&output:\ VIM->buffer->xterm'
+		exe "amenu    <silent>  ".g:Perl_Root.'&Run.&output:\ BUFFER->xterm->vim<Tab>\\ro              :call Perl_Toggle_Gvim_Xterm()<CR>'
 		let	g:Perl_OutputGvim	= "buffer"
 	else
 		if g:Perl_OutputGvim == "buffer"
-			if has("gui_running")
-				exe "aunmenu  <silent>  ".g:Perl_Root.'&Run.&output:\ BUFFER->xterm->vim'
-				if (!s:MSWIN)
-					exe "amenu    <silent>  ".g:Perl_Root.'&Run.&output:\ XTERM->vim->buffer             :call Perl_Toggle_Gvim_Xterm()<CR>'
-				else
-					exe "amenu    <silent>  ".g:Perl_Root.'&Run.&output:\ VIM->buffer->xterm            :call Perl_Toggle_Gvim_Xterm()<CR>'
-				endif
+			exe "aunmenu  <silent>  ".g:Perl_Root.'&Run.&output:\ BUFFER->xterm->vim'
+			if (!s:MSWIN)
+				exe "amenu    <silent>  ".g:Perl_Root.'&Run.&output:\ XTERM->vim->buffer<Tab>\\ro             :call Perl_Toggle_Gvim_Xterm()<CR>'
+			else
+				exe "amenu    <silent>  ".g:Perl_Root.'&Run.&output:\ VIM->buffer->xterm <Tab>\\ro           :call Perl_Toggle_Gvim_Xterm()<CR>'
 			endif
-			if (!s:MSWIN) && (s:Perl_Display != '')
+			if (!s:MSWIN) && (!empty(s:Perl_Display))
 				let	g:Perl_OutputGvim	= "xterm"
 			else
 				let	g:Perl_OutputGvim	= "vim"
 			endif
 		else
 			" ---------- output : xterm -> gvim
-			if has("gui_running")
-				exe "aunmenu  <silent>  ".g:Perl_Root.'&Run.&output:\ XTERM->vim->buffer'
-				exe "amenu    <silent>  ".g:Perl_Root.'&Run.&output:\ VIM->buffer->xterm            :call Perl_Toggle_Gvim_Xterm()<CR>'
-			endif
+			exe "aunmenu  <silent>  ".g:Perl_Root.'&Run.&output:\ XTERM->vim->buffer'
+			exe "amenu    <silent>  ".g:Perl_Root.'&Run.&output:\ VIM->buffer->xterm<Tab>\\ro            :call Perl_Toggle_Gvim_Xterm()<CR>'
 			let	g:Perl_OutputGvim	= "vim"
 		endif
 	endif
-  echomsg "output destination is '".g:Perl_OutputGvim."'"
+	echomsg "output destination is '".g:Perl_OutputGvim."'"
 
 endfunction    " ----------  end of function Perl_Toggle_Gvim_Xterm ----------
 "
@@ -1064,7 +1073,7 @@ endfunction    " ----------  end of function Perl_Toggle_Gvim_Xterm ----------
 "------------------------------------------------------------------------------
 function! Perl_PerlSwitches ()
   let filename = fnameescape( expand("%:p") )
-  if filename == ""
+  if empty(filename)
     redraw!
     echohl WarningMsg | echo " no file name " | echohl None
     return
@@ -1205,12 +1214,15 @@ function! Perl_Debugger ()
   "
   silent exe  ":update"
   let l:arguments 	= exists("b:Perl_CmdLineArgs") ? " ".b:Perl_CmdLineArgs : ""
+  let l:switches    = exists("b:Perl_Switches") ? b:Perl_Switches.' ' : ""
   let filename      = expand("%:p")
   let filename_esc  = fnameescape( expand("%:p") )
   "
   if  s:MSWIN
     let l:arguments = substitute( l:arguments, '^\s\+', ' ', '' )
     let l:arguments = substitute( l:arguments, '\s\+', "\" \"", 'g')
+		let l:switches  = substitute( l:switches,  '^\s\+', ' ', '' )
+		let l:switches  = substitute( l:switches,  '\s\+', "\" \"", 'g')
   endif
   "
   " debugger is ' perl -d ... '
@@ -1220,14 +1232,14 @@ function! Perl_Debugger ()
       exe '!perl -d "'.filename.l:arguments.'"'
     else
       if has("gui_running") || &term == "xterm"
-        silent exe "!xterm ".s:Perl_XtermDefaults.' -e perl -d '.filename_esc.l:arguments.' &'
+     	 	silent exe "!xterm ".s:Perl_XtermDefaults.' -e perl ' . l:switches . ' -d '.filename_esc.l:arguments.' &'
       else
-        silent exe '!clear; perl -d '.filename_esc.l:arguments
+        silent exe '!clear; perl ' . l:switches . ' -d '.filename_esc.l:argument
       endif
     endif
   endif
   "
-  if has("gui_running")
+  if v:windowid != 0
     "
     " grapical debugger is 'ptkdb', uses a PerlTk interface
     "
@@ -1263,7 +1275,7 @@ endfunction   " ---------- end of function  Perl_Debugger  ----------
 "------------------------------------------------------------------------------
 function! Perl_Arguments ()
   let filename = fnameescape( expand("%") )
-  if filename == ""
+  if empty(filename)
     redraw!
     echohl WarningMsg | echo " no file name " | echohl None
     return
@@ -1400,7 +1412,7 @@ function! Perl_RereadTemplates ( msg )
 			if filereadable( s:Perl_GlobalTemplateFile )
 				call Perl_ReadTemplates( s:Perl_GlobalTemplateFile )
 			else
-				echomsg "Global template file '.s:Perl_GlobalTemplateFile.' not readable."
+				echomsg "Global template file '".s:Perl_GlobalTemplateFile."' not readable."
 				return
 			endif
 			let	messsage	= "Templates read from '".s:Perl_GlobalTemplateFile."'"
@@ -1445,7 +1457,7 @@ function! Perl_BrowseTemplateFiles ( type )
 				let	l:templatefile	= input("edit a template file", templatedir, "file" )
 			endif
 		endif
-		if l:templatefile != ""
+		if !empty(l:templatefile)
 			:execute "update! | split | edit ".l:templatefile
 		endif
 	else
@@ -1527,7 +1539,7 @@ function! Perl_ReadTemplates ( templatefile )
       if name != ''
         let part  = split( name, '\s*==\s*')
         let item  = part[0]
-        if has_key( s:Perl_Template, item ) && s:Perl_TemplateOverwrittenMsg == 'yes'
+        if has_key( s:Perl_Template, item ) && s:Perl_TemplateOverriddenMsg == 'yes'
           echomsg "existing Perl Support template '".item."' overwritten"
         endif
         let s:Perl_Template[item] = ''
@@ -1583,6 +1595,11 @@ endfunction    " ----------  end of function Perl_OpenFold  ----------
 "------------------------------------------------------------------------------
 function! Perl_InsertTemplate ( key, ... )
 
+	if s:Perl_TemplatesLoaded == 'no'
+		call Perl_RereadTemplates('no')        
+		let s:Perl_TemplatesLoaded	= 'yes'
+	endif
+
 	if !has_key( s:Perl_Template, a:key )
 		echomsg "Template '".a:key."' not found. Please check your template file in '".s:Perl_GlobalTemplateDir."'"
 		return
@@ -1608,7 +1625,7 @@ function! Perl_InsertTemplate ( key, ... )
 	"
 	if a:0 == 0
 		let val = Perl_ExpandUserMacros (a:key)
-		if val	== ""
+		if empty(val)
 			return
 		endif
 		let val	= Perl_ExpandSingleMacro( val, '<SPLIT>', '' )
@@ -1692,7 +1709,7 @@ function! Perl_InsertTemplate ( key, ... )
 		if  a:1 == 'v'
 			let val = Perl_ExpandUserMacros (a:key)
 			let val	= Perl_ExpandSingleMacro( val, s:Perl_TemplateJumpTarget2, '' )
-			if val	== ""
+			if empty(val)
 				return
 			endif
 
@@ -1866,7 +1883,7 @@ function! Perl_ExpandUserMacros ( key )
 			else
 				let	name	= Perl_Input( match[1].flagaction.' : ', '' )
 			endif
-			if name == ""
+			if empty(name)
 				return ""
 			endif
 			"
@@ -2049,34 +2066,38 @@ function! Perl_Perltidy (mode)
       return
     endif
   endif
+	"
   " ----- normal mode ----------------
   if a:mode=="n"
     if Perl_Input("reformat whole file [y/n/Esc] : ", "y", '' ) != "y"
       return
     endif
+    if s:Perl_PerltidyBackup == 'yes'
+    	exe ':write! '.Sou.'.bak'
+		endif
     silent exe  ":update"
     let pos1  = line(".")
-    if  s:MSWIN
-      silent exe  "%!perltidy"
-    else
-      silent exe  "%!perltidy 2>/dev/null"
-    endif
+    exe '%!perltidy'
     exe ':'.pos1
     echo 'File "'.Sou.'" reformatted.'
   endif
   " ----- visual mode ----------------
   if a:mode=="v"
-
     let pos1  = line("'<")
     let pos2  = line("'>")
-    if  s:MSWIN
-      silent exe  pos1.",".pos2."!perltidy"
-    else
-      silent exe  pos1.",".pos2."!perltidy 2>/dev/null"
-    endif
+		if s:Perl_PerltidyBackup == 'yes'
+			exe pos1.','.pos2.':write! '.Sou.'.bak'
+		endif
+    silent exe pos1.','.pos2.'!perltidy'
     echo 'File "'.Sou.'" (lines '.pos1.'-'.pos2.') reformatted.'
   endif
   "
+  if v:shell_error
+    echohl WarningMsg
+    echomsg 'perltidy reported error code '.v:shell_error.' !'
+    echohl None
+  endif
+	"
   if filereadable("perltidy.ERR")
     echohl WarningMsg
     echo 'Perltidy detected an error when processing file "'.Sou.'". Please see file perltidy.ERR'
@@ -2091,7 +2112,7 @@ endfunction   " ---------- end of function  Perl_Perltidy  ----------
 "------------------------------------------------------------------------------
 function! Perl_SaveWithTimestamp ()
   let file   = fnameescape( expand("%") ) " name of the file in the current buffer
-  if file == ""
+  if empty(file)
 		" do we have a quickfix buffer : syntax errors / profiler report
 		if &filetype == 'qf'
 			let file	= getcwd().'/Quickfix-List'
@@ -2114,7 +2135,7 @@ endfunction   " ---------- end of function  Perl_SaveWithTimestamp  ----------
 "------------------------------------------------------------------------------
 function! Perl_Hardcopy (mode)
   let outfile = expand("%")
-  if outfile == ""
+  if empty(outfile)
     redraw!
     echohl WarningMsg | echo " no file name " | echohl None
     return
@@ -2153,7 +2174,7 @@ function! Perl_HelpPerlsupport ()
   try
     :help perlsupport
   catch
-    exe ':helptags '.s:plugin_dir.'doc'
+    exe ':helptags '.s:plugin_dir.'/doc'
     :help perlsupport
   endtry
 endfunction    " ----------  end of function Perl_HelpPerlsupport ----------
@@ -2394,21 +2415,7 @@ endfunction    " ----------  end of function Perl_ToolMenu  ----------
 "------------------------------------------------------------------------------
 function! Perl_RemoveGuiMenus ()
   if s:Perl_MenuVisible == 1
-    if g:Perl_Root == ""
-      aunmenu <silent> Comments
-      aunmenu <silent> Statements
-      aunmenu <silent> Idioms
-      aunmenu <silent> Snippets
-      aunmenu <silent> Regex
-      aunmenu <silent> File-Tests
-      aunmenu <silent> Spec-Var
-      aunmenu <silent> POD
-      aunmenu <silent> Profiling
-      aunmenu <silent> Run
-      aunmenu <silent> help
-    else
-      exe "aunmenu <silent> ".g:Perl_Root
-    endif
+		exe "aunmenu <silent> ".g:Perl_Root
     "
     aunmenu <silent> &Tools.Unload\ Perl\ Support
 		call Perl_ToolMenu()
@@ -2438,89 +2445,89 @@ function! Perl_do_tags(filename, tagsfile)
 EOF
 
 endfunction    " ----------  end of function Perl_do_tags  ----------
+
+"------------------------------------------------------------------------------
+"  Perl_ModuleListFold     {{{1
+"  compute foldlevel for a module list
+"	 debug with "set debug=msg"
+"------------------------------------------------------------------------------
+function! Perl_ModuleListFold (lnum)
+	let line1 		= split( getline(a:lnum-1), '::' )
+	let line2 		= split( getline(a:lnum  ), '::' )
+	let foldlevel	= 0
+
+	if !empty(line1)
+		while foldlevel < len(line1) && foldlevel < len(line2) && line1[foldlevel] == line2[foldlevel]
+			let	foldlevel	+= 1
+		endwhile
+	endif
+
+	return foldlevel
+endfunction    " ----------  end of function Perl_ModuleListFold  ----------
 "
 "------------------------------------------------------------------------------
 "  show / hide the menus
 "  define key mappings (gVim only)
 "------------------------------------------------------------------------------
 "
-if has("gui_running")
-	"
-	call Perl_ToolMenu()
+call Perl_ToolMenu()
 
-  if s:Perl_LoadMenus == 'yes'
-    call Perl_CreateGuiMenus()
-  endif
-  "
-  nmap	<silent>  <Leader>lps		:call Perl_CreateGuiMenus()<CR>
-  nmap	<silent>  <Leader>ups		:call Perl_RemoveGuiMenus()<CR>
-  "
+if s:Perl_LoadMenus == 'yes'
+	call Perl_CreateGuiMenus()
 endif
+"
+nmap	<silent>  <Leader>lps		:call Perl_CreateGuiMenus()<CR>
+nmap	<silent>  <Leader>ups		:call Perl_RemoveGuiMenus()<CR>
+"
 "
 "------------------------------------------------------------------------------
 "  Automated header insertion
 "------------------------------------------------------------------------------
 if has("autocmd")
 
-	autocmd BufNewFile  *.pl  call Perl_InsertTemplate('comment.file-description-pl')
-	autocmd BufNewFile  *.pm  call Perl_InsertTemplate('comment.file-description-pm')
-	autocmd BufNewFile  *.t   call Perl_InsertTemplate('comment.file-description-t')
+	autocmd BufNewFile  *.pl  silent call Perl_InsertTemplate('comment.file-description-pl')
+	autocmd BufNewFile  *.pm  silent call Perl_InsertTemplate('comment.file-description-pm')
+	autocmd BufNewFile  *.t   silent call Perl_InsertTemplate('comment.file-description-t')
+
+	autocmd BufNewFile  *.pl  silent call Perl_InitializePerlInterface()
+	autocmd BufNewFile  *.pm  silent call Perl_InitializePerlInterface()
+	autocmd BufNewFile  *.t   silent call Perl_InitializePerlInterface()
 
 	autocmd BufRead  *.pl  call Perl_HighlightJumpTargets()
 	autocmd BufRead  *.pm  call Perl_HighlightJumpTargets()
 	autocmd BufRead  *.t   call Perl_HighlightJumpTargets() 
   "
-  autocmd BufRead            *.pod  set filetype=perl
-  autocmd BufNewFile         *.pod  set filetype=perl | call Perl_InsertTemplate('comment.file-description-pod')
+  autocmd BufNewFile         *.pod  silent call Perl_InsertTemplate('comment.file-description-pod')
   autocmd BufNewFile,BufRead *.t    set filetype=perl
   "
   " Wrap error descriptions in the quickfix window.
   autocmd BufReadPost quickfix  setlocal wrap | setlocal linebreak
   "
+	exe 'autocmd BufReadPost,BufEnter  '.s:Perl_PerlModuleList.' setlocal foldmethod=expr | setlocal foldexpr=Perl_ModuleListFold(v:lnum)'
 endif
 "
-let g:Perl_PerlRegexAnalyser			= 'yes'
 "
 "-------------------------------------------------------------------------------
 "   initialize the Perl interface     {{{1
 "-------------------------------------------------------------------------------
 function! Perl_InitializePerlInterface( )
-	if has('perl')
-    perl <<INITIALIZE_PERL_INTERFACE
-		#
-    use utf8;                                   # Perl pragma to enable/disable UTF-8 in source
-		use encoding ("utf8");
-
-		# ---------------------------------------------------------------
-		# find out the version of the Perl interface
-		# ---------------------------------------------------------------
-		my $perlversion=sprintf "%vd", $^V;
-		VIM::DoCommand("let s:Perl_InterfaceVersion = \"$perlversion\"");
-		#
-		# ---------------------------------------------------------------
-		# Perl_RegexVisualize (function)
-		# ---------------------------------------------------------------
-		# -- empty --
-		#
-		# ---------------------------------------------------------------
-		# Perl_RegexExplain (function)
-		# try to load the regex analyzer module; report failure
-		# ---------------------------------------------------------------
-		eval "require YAPE::Regex::Explain";
-		if ( $@ ) {
-			VIM::DoCommand("let g:Perl_PerlRegexAnalyser = 'no'");
-			}
-		#
+	if g:Perl_InterfaceInitialized == 'no'
+		if has('perl')
+			perl <<INITIALIZE_PERL_INTERFACE
+			#
+			use utf8;                                   # Perl pragma to enable/disable UTF-8 in source
+			use encoding ("utf8");
+			#
+			# ---------------------------------------------------------------
+			# find out the version of the Perl interface
+			# ---------------------------------------------------------------
+			my $perlversion=sprintf "%vd", $^V;
+			VIM::DoCommand("let s:Perl_InterfaceVersion = \"$perlversion\"");
+			#
+			#
 INITIALIZE_PERL_INTERFACE
-
-	endif		" ----- has('perl')
+		endif
+	endif
 endfunction    " ----------  end of function Perl_InitializePerlInterface  ----------
-"
-"------------------------------------------------------------------------------
-"  READ THE TEMPLATE FILES
-"------------------------------------------------------------------------------
-call Perl_RereadTemplates('no')
-"
-call Perl_InitializePerlInterface()
 "
 " vim: tabstop=2 shiftwidth=2 foldmethod=marker

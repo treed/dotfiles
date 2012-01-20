@@ -1,38 +1,38 @@
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-== idioms.scalar ==
-my $<CURSOR>;
+== idioms.scalar == insert ==
+my	$<CURSOR>;
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-== idioms.scalar-assign ==
-my $<CURSOR> = <+val+>;
+== idioms.scalar-assign == insert ==
+my	$<CURSOR>	= <+val+>;
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-== idioms.scalar2 ==
-my ($<CURSOR>, $<+name+>);
+== idioms.scalar2 == insert ==
+my	( $<CURSOR>, $<+name+> );
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-== idioms.array ==
-my @<CURSOR>;
+== idioms.array == insert ==
+my	@<CURSOR>;
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-== idioms.array-assign ==
-my @<CURSOR> = (<+val+>, <+val+>,);
+== idioms.array-assign == insert ==
+my	@<CURSOR>	= ( <+val+>, <+val+>, );
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 == idioms.hash ==
-my %<CURSOR>;
+my	%<CURSOR>;
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-== idioms.hash-assign ==
-my %<CURSOR> = (
-    <+key1+> => <+val1+>,
-    <+key2+> => <+val2+>,
-);
+== idioms.hash-assign == insert ==
+my	%<CURSOR>	= (
+	<+key1+> => <+val1+>,
+	<+key2+> => <+val2+>,
+	);
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-== idioms.regex ==
-my $<CURSOR> = qr/<+regexp+>/;
+== idioms.regex == insert ==
+my	$rgx_<CURSOR>	= qr/<+regexp+>/;
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 == idioms.match == insert ==
-$<CURSOR> =~ m/<+regexp+>/
+$<CURSOR> =~ m/<+regexp+>/xm
 §---------- PBP : use m{} in preference to m// in multiline expressions
 §$<CURSOR> =~ m{}xm
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 == idioms.substitute == insert ==
-$<CURSOR> =~ s/<+pattern+>/<+replacement+>/
+$<CURSOR> =~ s/<+pattern+>/<+replacement+>/xm
 §---------- PBP : use s{} in preference to s// in multiline expressions
 §$<CURSOR> =~ s{}xm
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,9 +41,9 @@ $<CURSOR> =~ tr/<+searchlist+>/<+replacementlist+>/
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 == idioms.subroutine ==
 sub |?FUNCTION_NAME| {
-    my ($<CURSOR>) = @_;
-<SPLIT>    return;
-}
+	my	( $par1<CURSOR> )	= @_;
+<SPLIT>	return ;
+} ## --- end sub |FUNCTION_NAME|
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 == idioms.print == insert ==
 print "<CURSOR>\n";

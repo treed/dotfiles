@@ -1,4 +1,31 @@
 ---------------------------------------------------------------------------------------
+  RELEASE NOTES FOR VERSION 4.13
+---------------------------------------------------------------------------------------
+- Several hotkeys allow a range, e.g. '3\cl' (see help text and perl-hot-key.pdf).
+- perltidy backup files optional.
+- POD files have no longer filetype 'perl' (preserves proper syntyx highlighting).
+- Running Perl as debugger (\rd, F9) uses Perl switches set with \rw (thanks to Sébastien Nobili).
+- Minor improvements.
+
+---------------------------------------------------------------------------------------
+  RELEASE NOTES FOR VERSION 4.12
+---------------------------------------------------------------------------------------
+- New: folding for the plugin list.
+- perltidy can be used as standard beautifier (commands "={motion}" ).
+- perltidy writes backup files.
+- perltidy error handling improved.
+- Bugfix: ddd not running from Vim under a display manager.
+- Minor improvements.
+
+---------------------------------------------------------------------------------------
+  RELEASE NOTES FOR VERSION 4.11
+---------------------------------------------------------------------------------------
+- Perl::Critic integration: severity and verbosity will be taken from the
+	configuration file if specificed.
+- Bugfix (Windows only): wrong quoting with command line parameters.
+- Several minor improvements.
+
+---------------------------------------------------------------------------------------
   RELEASE NOTES FOR VERSION 4.10
 ---------------------------------------------------------------------------------------
 - Bugfix: detection of a systemwide installation can fail.

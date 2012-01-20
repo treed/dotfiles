@@ -1,10 +1,10 @@
 
 sub new {
-    my ($class) = @_;
-
-    my $self = {
-
+    my  $class  = shift;
+    my  $self   = {
+        _name1  => $_[0],
+        _name2  => $_[1],
     };
-
-    return bless($self, $class);
-}
+    bless( $self, $class );
+    return $self;
+}   # ----------  end of subroutine new  ----------
