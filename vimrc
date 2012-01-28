@@ -7,10 +7,12 @@ filetype plugin indent on
 " Woo Colors!
 set t_Co=256
 set background=dark
+colorscheme desert
 if has("gui_running")
     set guifont=Inconsolata\ 14
+    set cursorline
+    colorscheme solarized
 endif
-colorscheme solarized
 syntax on
 
 " Various Options
@@ -21,7 +23,6 @@ set history=100
 set ruler
 set hidden
 set encoding=utf-8
-set cursorline
 set laststatus=2
 if version >= 730
     set undofile
