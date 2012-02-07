@@ -110,4 +110,6 @@ let g:CommandTMaxFiles=20000
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<space><space>"
 
+let g:Powerline_symbols="unicode"
+
 helptags ~/.vim/doc
