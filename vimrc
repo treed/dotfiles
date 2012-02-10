@@ -39,11 +39,8 @@ set incsearch
 set showmatch
 set nohlsearch
 
-" Remove GUI chrome
-set go-=T
-set go-=r
-set go-=m
-set go-=L
+" Set GUI options: use console mode for dialogs
+set guioptions=c
 
 " Indentation options
 set ai
