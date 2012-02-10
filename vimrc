@@ -6,11 +6,13 @@ filetype plugin indent on
 
 " Woo Colors!
 set t_Co=256
-set background=dark
+let g:Powerline_symbols="unicode"
 colorscheme desert
 if has("gui_running")
-    set guifont=Inconsolata\ 14
+    set guifont=Inconsolata-dz\ \ for\ Powerline\ 14
+    let g:Powerline_symbols="fancy"
     set cursorline
+    set background=dark
     colorscheme solarized
 endif
 syntax on
@@ -110,6 +112,5 @@ let g:CommandTMaxFiles=20000
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<space><space>"
 
-let g:Powerline_symbols="unicode"
 
 helptags ~/.vim/doc
