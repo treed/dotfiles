@@ -5,7 +5,7 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-export EDITOR=gvim
+export EDITOR="gvim -f"
 export GOBASE=/home/treed/code/golang
 export PATH=$GOBASE/bin:$PATH
 
