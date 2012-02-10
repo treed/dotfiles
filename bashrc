@@ -8,6 +8,7 @@
 export EDITOR="gvim -f"
 export GOBASE=/home/treed/code/golang
 export PATH=$GOBASE/bin:$PATH
+[ -s $HOME/.tmuxinator/scripts/tmuxinator ] && source $HOME/.tmuxinator/scripts/tmuxinator
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
