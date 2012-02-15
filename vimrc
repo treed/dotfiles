@@ -39,8 +39,9 @@ set incsearch
 set showmatch
 set nohlsearch
 
-" Set GUI options: use console mode for dialogs
-set guioptions=c
+" Set GUI options: use console mode for dialogs, and enable X11 copying from
+" VISUAL mode
+set guioptions=ca
 
 " Indentation options
 set ai
