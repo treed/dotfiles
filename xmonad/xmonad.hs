@@ -96,7 +96,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((0,                  xK_Print ), spawn "scrot")
 
     -- screenshot current window
-    , ((shiftMask,          xK_Print ), spawn "scrot -u")
+    , ((controlMask,        xK_Print ), spawn "scrot -u")
+
+    -- screenshot selection
+    , ((shiftMask,          xK_Print ), spawn "scrot -s")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
