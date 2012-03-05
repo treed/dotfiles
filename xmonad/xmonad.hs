@@ -93,10 +93,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_r     ), spawn "gmrun")
 
     -- screenshot
-    , ((0,                  xK_Print ), spawn "gnome-screenshot")
+    , ((0,                  xK_Print ), spawn "scrot")
 
-    -- screenshot just an area
-    , ((shiftMask,          xK_Print ), spawn "gnome-screenshot -a")
+    -- screenshot current window
+    , ((shiftMask,          xK_Print ), spawn "scrot -u")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
