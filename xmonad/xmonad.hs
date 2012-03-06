@@ -10,7 +10,8 @@ import XMonad.Layout.Dishes
 import XMonad.Actions.CycleWS
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.SetWMName               (setWMName)
+import XMonad.Hooks.SetWMName (setWMName)
+import XMonad.StackSet hiding (focus, workspaces)
 import XMonad.Config.Gnome
 import XMonad.Util.Run
 import XMonad.Util.NamedScratchpad
@@ -70,10 +71,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
 
     -- Cycling Workspaces
-    , ((modm,               xK_Right),  nextWS)
-    , ((modm,               xK_Left),   prevWS)
-    , ((modm .|. shiftMask, xK_Right),  shiftToNext >> nextWS)
-    , ((modm .|. shiftMask, xK_Left),   shiftToPrev >> prevWS)
+    , ((modm,               xK_Right),  moveTo Next viewableWS)
+    , ((modm,               xK_Left),   moveTo Prev viewableWS)
+    , ((modm .|. shiftMask, xK_Right),  (shiftTo Next viewableWS) >> (moveTo Next viewableWS))
+    , ((modm .|. shiftMask, xK_Left),   (shiftTo Prev viewableWS) >> (moveTo Prev viewableWS))
     , ((modm,               xK_Down),   nextScreen)
     , ((modm,               xK_Up),     prevScreen)
     , ((modm .|. shiftMask, xK_Down),   shiftNextScreen >> nextScreen)
@@ -101,6 +102,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
+viewableWS = WSIs $ return (("NSP" /=) . tag)
 
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
