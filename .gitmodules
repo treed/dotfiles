@@ -37,3 +37,6 @@
 [submodule "autojump"]
 	path = autojump
 	url = https://github.com/joelthelion/autojump.git
+[submodule "vim/bundle/tabular"]
+	path = vim/bundle/tabular
+	url = https://github.com/godlygeek/tabular.git
