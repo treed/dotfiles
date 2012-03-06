@@ -292,7 +292,7 @@ logPrinter dbus = defaultPP {
   , ppCurrent = pangoColor "#00CCCC" . wrap "[" "]" . pangoSanitize
   , ppVisible = pangoColor "#00CCCC" . pangoSanitize
   , ppHidden  = hiddenPrinter
-  , ppHiddenNoWindows  = (\ _ -> "")
+  , ppHiddenNoWindows  = const ""
   , ppUrgent  = pangoColor "red"
   }
 
