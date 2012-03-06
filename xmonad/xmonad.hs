@@ -262,6 +262,7 @@ myManageHook = composeAll
     , className =? "Virt-viewer"    --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
+    , namedScratchpadManageHook scratchpads
     , manageDocks ]
 
 -- Whether focus follows the mouse pointer.
