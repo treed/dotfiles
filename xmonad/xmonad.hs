@@ -285,6 +285,10 @@ hiddenPrinter :: WorkspaceId -> String
 hiddenPrinter "NSP" = ""
 hiddenPrinter a = a
 
+layoutPrinter :: String -> String
+layoutPrinter "Dishes 1 (1 % 5)" = "Dishes"
+layoutPrinter a = a
+
 logPrinter :: Connection -> PP
 logPrinter dbus = defaultPP {
     ppOutput  = outputThroughDBus dbus
@@ -292,6 +296,7 @@ logPrinter dbus = defaultPP {
   , ppCurrent = pangoColor "#00CCCC" . wrap "[" "]" . pangoSanitize
   , ppVisible = pangoColor "#00CCCC" . pangoSanitize
   , ppHidden  = hiddenPrinter
+  , ppLayout  = layoutPrinter
   , ppHiddenNoWindows  = const ""
   , ppUrgent  = pangoColor "red"
   }
