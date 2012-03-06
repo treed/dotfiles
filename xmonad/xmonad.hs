@@ -21,6 +21,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName               (setWMName)
 import XMonad.Config.Gnome
 import XMonad.Util.Run
+import XMonad.Util.NamedScratchpad
 import System.Exit
 
 import qualified XMonad.StackSet as W
@@ -74,6 +75,10 @@ myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 --
 myNormalBorderColor  = "#000000"
 myFocusedBorderColor = "#000000"
+
+scratchpads =
+    [ NS "calc" "gnome-calculator" (title =? "Calculator") defaultFloating
+    ]
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -167,6 +172,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_Up),     prevScreen)
     , ((modm .|. shiftMask, xK_Down),   shiftNextScreen >> nextScreen)
     , ((modm .|. shiftMask, xK_Up),     shiftPrevScreen >> prevScreen)
+
+    -- scratchpads
+    , ((modm .|. mod1Mask,   xK_c),      namedScratchpadAction scratchpads "calc")
     ]
     ++
 
