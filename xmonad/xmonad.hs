@@ -281,13 +281,18 @@ myFocusFollowsMouse = True
 -- > logHook = dynamicLogDzen
 --
 
+hiddenPrinter :: WorkspaceId -> String
+hiddenPrinter "NSP" = ""
+hiddenPrinter a = a
+
 logPrinter :: Connection -> PP
 logPrinter dbus = defaultPP {
     ppOutput  = outputThroughDBus dbus
-  , ppTitle   = pangoColor "#00DDFF" . shorten 50 . pangoSanitize
+  , ppTitle   = pangoColor "#00DDFF" . pangoSanitize
   , ppCurrent = pangoColor "#00CCCC" . wrap "[" "]" . pangoSanitize
-  , ppVisible = pangoColor "#FFEEFF" . wrap "(" ")" . pangoSanitize
-  , ppHidden  = wrap " " " "
+  , ppVisible = pangoColor "#00CCCC" . pangoSanitize
+  , ppHidden  = hiddenPrinter
+  , ppHiddenNoWindows  = (\ _ -> "")
   , ppUrgent  = pangoColor "red"
   }
 
