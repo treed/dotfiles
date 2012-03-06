@@ -64,6 +64,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
     , ((modm              , xK_q     ), restart "xmonad" True)
+    --  Reset the layouts on the current workspace to default
+    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+
 
     -- Cycling Workspaces
     , ((modm,               xK_Right),  nextWS)
@@ -115,7 +118,14 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
-myLayout = avoidStruts $ Tall 1 1/2 3/100 ||| Full ||| Dishes 1 (1/5)
+myLayout = avoidStruts $ tiled ||| Full ||| dishes
+    where
+        tiled = Tall nmaster delta tiled_ratio
+        dishes = Dishes nmaster dishes_ratio
+        nmaster = 1
+        delta = 1/100
+        tiled_ratio = 1/2
+        dishes_ratio = 1/5
 
 -- To find the property name associated with a program, use
 -- > xprop | grep WM_CLASS
