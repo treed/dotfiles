@@ -1,12 +1,3 @@
---
--- xmonad example config file.
---
--- A template showing all available configuration hooks,
--- and how to override the defaults in your own xmonad.hs conf file.
---
--- Normally, you'd only override those defaults you care about.
---
-
 import Data.IORef
 import Control.OldException(catchDyn,try)
 import Control.Monad
@@ -29,138 +20,49 @@ import qualified Data.Map        as M
 import qualified System.IO.UTF8  as UTF8
 
 
--- The preferred terminal program, which is used in a binding below and by
--- certain contrib modules.
---
-myTerminal      = "gnome-terminal"
-
--- Width of the window border in pixels.
---
-myBorderWidth   = 0
-
--- modMask lets you specify which modkey you want to use. The default
--- is mod1Mask ("left alt").  You may also consider using mod3Mask
--- ("right alt"), which does not conflict with emacs keybindings. The
--- "windows key" is usually mod4Mask.
---
-myModMask       = mod4Mask
+myTerminal           = "gnome-terminal"
+myBorderWidth        = 0
+myNormalBorderColor  = "#000000"
+myFocusedBorderColor = "#000000"
+myModMask            = mod4Mask
+myFocusFollowsMouse  = True
 
 -- The mask for the numlock key. Numlock status is "masked" from the
 -- current modifier status, so the keybindings will work with numlock on or
 -- off. You may need to change this on some systems.
---
--- You can find the numlock modifier by running "xmodmap" and looking for a
--- modifier with Num_Lock bound to it:
---
--- > $ xmodmap | grep Num
--- > mod2        Num_Lock (0x4d)
---
--- Set numlockMask = 0 if you don't have a numlock key, or want to treat
--- numlock status separately.
---
 myNumlockMask   = mod2Mask
 
--- The default number of workspaces (virtual screens) and their names.
--- By default we use numeric strings, but any string may be used as a
--- workspace name. The number of workspaces is determined by the length
--- of this list.
---
--- A tagging example:
---
--- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
---
 myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 
--- Border colors for unfocused and focused windows, respectively.
---
-myNormalBorderColor  = "#000000"
-myFocusedBorderColor = "#000000"
+myStartupHook = setWMName "LG3D"
 
-scratchpads =
+myScratchpads =
     [ NS "calc" "gnome-calculator" (title =? "Calculator") defaultFloating
     ]
 
-------------------------------------------------------------------------
--- Key bindings. Add, modify or remove key bindings here.
---
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
-    -- launch a terminal
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
-
-    -- launch dmenu
     , ((modm,               xK_c     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
-
-    -- lock screen
     , ((modm,               xK_l     ), spawn "gnome-screensaver-command -l")
-
-    -- launch gmrun
-    , ((modm .|. shiftMask, xK_r     ), spawn "gmrun")
-
-    -- screenshot
     , ((0,                  xK_Print ), spawn "scrot")
-
-    -- screenshot current window
     , ((controlMask,        xK_Print ), spawn "scrot -u")
-
-    -- screenshot selection
     , ((shiftMask,          xK_Print ), spawn "sleep 0.2; scrot -s")
-
-    -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
-
-     -- Rotate through the available layout algorithms
     , ((modm,               xK_space ), sendMessage NextLayout)
-
-    --  Reset the layouts on the current workspace to default
-    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
-
-    -- Resize viewed windows to the correct size
-    --, ((modm,               xK_n     ), refresh)
-
-    -- Move focus to the next window
-    , ((modm,               xK_Tab   ), windows W.focusDown)
-
-    -- Move focus to the next window
-    , ((modm,               xK_n     ), windows W.focusDown)
-
-    -- Move focus to the previous window
-    , ((modm,               xK_p     ), windows W.focusUp  )
-
-    -- Move focus to the master window
-    , ((modm,               xK_m     ), windows W.focusMaster  )
-
-    -- Swap the focused window and the master window
-    , ((modm,               xK_Return), windows W.swapMaster)
-
-    -- Swap the focused window with the next window
-    , ((modm .|. shiftMask, xK_n     ), windows W.swapDown  )
-
-    -- Swap the focused window with the previous window
-    , ((modm .|. shiftMask, xK_p     ), windows W.swapUp    )
-
-    -- Shrink the master area
-    , ((modm .|. shiftMask, xK_comma ), sendMessage Shrink)
-
-    -- Expand the master area
-    , ((modm .|. shiftMask, xK_period), sendMessage Expand)
-
-    -- Push window back into tiling
-    , ((modm,               xK_t     ), withFocused $ windows . W.sink)
-
-    -- Increment the number of windows in the master area
-    , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
-
-    -- Deincrement the number of windows in the master area
-    , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
-
-    -- toggle the status bar gap (used with avoidStruts from Hooks.ManageDocks)
     , ((modm              , xK_b ), sendMessage ToggleStruts)
 
-    -- Quit xmonad
-    , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
+    -- Window Motion
+    , ((modm,               xK_Tab   ), windows W.focusDown)
+    , ((modm,               xK_n     ), windows W.focusDown)
+    , ((modm,               xK_p     ), windows W.focusUp  )
+    , ((modm .|. shiftMask, xK_n     ), windows W.swapDown  )
+    , ((modm .|. shiftMask, xK_p     ), windows W.swapUp    )
+    , ((modm .|. shiftMask, xK_comma ), sendMessage Shrink)
+    , ((modm .|. shiftMask, xK_period), sendMessage Expand)
 
-    -- Restart xmonad
+    , ((modm,               xK_t     ), withFocused $ windows . W.sink)
+    , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
     , ((modm              , xK_q     ), restart "xmonad" True)
 
     -- Cycling Workspaces
@@ -173,8 +75,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_Down),   shiftNextScreen >> nextScreen)
     , ((modm .|. shiftMask, xK_Up),     shiftPrevScreen >> prevScreen)
 
-    -- scratchpads
-    , ((modm .|. mod1Mask,   xK_c),      namedScratchpadAction scratchpads "calc")
+    -- Scratchpads
+    , ((modm .|. mod1Mask,   xK_c),      namedScratchpadAction myScratchpads "calc")
     ]
     ++
 
@@ -213,39 +115,8 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
-------------------------------------------------------------------------
--- Layouts:
+myLayout = avoidStruts $ Tall 1 1/2 3/100 ||| Full ||| Dishes 1 (1/5)
 
--- You can specify and transform your layouts by modifying these values.
--- If you change layout bindings be sure to use 'mod-shift-space' after
--- restarting (with 'mod-q') to reset your layout state to the new
--- defaults, as xmonad preserves your old layout settings by default.
---
--- The available layouts.  Note that each layout is separated by |||,
--- which denotes layout choice.
---
-myLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full ||| Dishes 1 (1/5)
-  where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
-
-     -- The default number of windows in the master pane
-     nmaster = 1
-
-     -- Default proportion of screen occupied by master pane
-     ratio   = 1/2
-
-     -- Percent of screen to increment by when resizing panes
-     delta   = 3/100
-
-------------------------------------------------------------------------
--- Window rules:
-
--- Execute arbitrary actions and WindowSet manipulations when managing
--- a new window. You can use this to, for example, always float a
--- particular program, or have a client always appear on a particular
--- workspace.
---
 -- To find the property name associated with a program, use
 -- > xprop | grep WM_CLASS
 -- and click on the client you're interested in.
@@ -262,32 +133,8 @@ myManageHook = composeAll
     , className =? "Virt-viewer"    --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
-    , namedScratchpadManageHook scratchpads
+    , namedScratchpadManageHook myScratchpads
     , manageDocks ]
-
--- Whether focus follows the mouse pointer.
-myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = True
-
-
-------------------------------------------------------------------------
--- Status bars and logging
-
--- Perform an arbitrary action on each internal state change or X event.
--- See the 'DynamicLog' extension for examples.
---
--- To emulate dwm's status bar
---
--- > logHook = dynamicLogDzen
---
-
-hiddenPrinter :: WorkspaceId -> String
-hiddenPrinter "NSP" = ""
-hiddenPrinter a = a
-
-layoutPrinter :: String -> String
-layoutPrinter "Dishes 1 (1 % 5)" = "Dishes"
-layoutPrinter a = a
 
 logPrinter :: Connection -> PP
 logPrinter dbus = defaultPP {
@@ -295,11 +142,19 @@ logPrinter dbus = defaultPP {
   , ppTitle   = pangoColor "#00DDFF" . pangoSanitize
   , ppCurrent = pangoColor "#00CCCC" . wrap "[" "]" . pangoSanitize
   , ppVisible = pangoColor "#00CCCC" . pangoSanitize
-  , ppHidden  = hiddenPrinter
-  , ppLayout  = layoutPrinter
+  , ppHidden  = hiddenFilter
+  , ppLayout  = layoutFilter
   , ppHiddenNoWindows  = const ""
   , ppUrgent  = pangoColor "red"
   }
+
+hiddenFilter :: WorkspaceId -> String
+hiddenFilter "NSP" = ""
+hiddenFilter a = a
+
+layoutFilter :: String -> String
+layoutFilter "Dishes 1 (1 % 5)" = "Dishes"
+layoutFilter a = a
 
 -- This retry is really awkward, but sometimes DBus won't let us get our
 -- name unless we retry a couple times.
@@ -336,21 +191,6 @@ pangoSanitize = foldr sanitize ""
   sanitize '&'  acc = "&amp;" ++ acc
   sanitize x    acc = x:acc
 
-------------------------------------------------------------------------
--- Startup hook
-
--- Perform an arbitrary action each time xmonad starts or is restarted
--- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
--- per-workspace layout choices.
---
--- By default, do nothing.
-myStartupHook = setWMName "LG3D"
-
-------------------------------------------------------------------------
--- Now run xmonad with all the defaults we set up.
-
--- Run xmonad with the settings you specify. No need to modify this.
---
 main = withConnection Session $ \ dbus -> do
     getWellKnownName dbus
     floatNextWindows <- newIORef 0
