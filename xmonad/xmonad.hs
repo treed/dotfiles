@@ -1,5 +1,6 @@
 import Data.IORef
 import Control.OldException(catchDyn,try)
+import Control.Category ((>>>))
 import Control.Monad
 import DBus
 import DBus.Connection
@@ -147,15 +148,17 @@ myManageHook = composeAll
     , manageDocks ]
 
 logPrinter :: Connection -> PP
-logPrinter dbus = defaultPP {
-    ppOutput  = outputThroughDBus dbus
-  , ppTitle   = pangoColor "#00DDFF" . pangoSanitize
-  , ppCurrent = pangoColor "#00CCCC" . wrap "[" "]" . pangoSanitize
-  , ppVisible = pangoColor "#00CCCC" . pangoSanitize
-  , ppHidden  = hiddenFilter
-  , ppLayout  = layoutFilter
-  , ppHiddenNoWindows  = const ""
-  , ppUrgent  = pangoColor "red"
+logPrinter dbus       = defaultPP {
+    ppOutput          = outputThroughDBus dbus
+  , ppTitle           = pangoSanitize >>> pangoColor "#00DDFF"
+  , ppCurrent         = pangoSanitize >>> wrap "[" "]" >>> pangoColor "#00EEEE"
+  , ppVisible         = pangoSanitize >>> pangoColor "#00EEEE"
+  , ppHidden          = hiddenFilter
+  , ppLayout          = layoutFilter
+  , ppHiddenNoWindows = const ""
+  , ppUrgent          = pangoColor "red"
+  , ppSep             = " • "
+  , ppOrder           = (\ (ws:l:t:_) -> [l, ws, t])
   }
 
 hiddenFilter :: WorkspaceId -> String
@@ -163,8 +166,7 @@ hiddenFilter "NSP" = ""
 hiddenFilter a = a
 
 layoutFilter :: String -> String
-layoutFilter "Dishes 1 (1 % 5)" = "Dishes"
-layoutFilter a = a
+layoutFilter a = [head a]
 
 -- This retry is really awkward, but sometimes DBus won't let us get our
 -- name unless we retry a couple times.
@@ -195,10 +197,10 @@ pangoColor fg = wrap left right
 pangoSanitize :: String -> String
 pangoSanitize = foldr sanitize ""
  where
-  sanitize '>'  acc = "&gt;" ++ acc
-  sanitize '<'  acc = "&lt;" ++ acc
+  sanitize '>'  acc = "&gt;"   ++ acc
+  sanitize '<'  acc = "&lt;"   ++ acc
   sanitize '\"' acc = "&quot;" ++ acc
-  sanitize '&'  acc = "&amp;" ++ acc
+  sanitize '&'  acc = "&amp;"  ++ acc
   sanitize x    acc = x:acc
 
 main = withConnection Session $ \ dbus -> do
