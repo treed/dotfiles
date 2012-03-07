@@ -26,7 +26,7 @@ set ruler
 set hidden
 set encoding=utf-8
 set laststatus=2
-if version >= 730
+if version >= 703
     set undofile
     set undodir=~/.vimundo/,/var/tmp
 endif
