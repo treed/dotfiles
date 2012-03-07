@@ -9,6 +9,7 @@ import XMonad
 import XMonad.Layout.Dishes
 import XMonad.Actions.CycleWS
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName (setWMName)
 import XMonad.StackSet hiding (focus, workspaces)
@@ -146,6 +147,7 @@ myManageHook = composeAll
     , className =? "Virt-viewer"    --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
+    , title     =? "Save File"      --> (doFloatDep $ const (RationalRect 0.25 0.25 0.5 0.5))
     , namedScratchpadManageHook myScratchpads
     , manageDocks ]
 
