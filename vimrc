@@ -52,11 +52,11 @@ set expandtab
 " fix mouse scrolling
 set ttymouse=xterm2
 
-" different tabb semantics
+" different tab semantics
 inoremap <Tab> <C-T>
 inoremap <S-Tab> <C-D>
-vmap <Tab> >>
-vmap <S-Tab> <<
+vnoremap <Tab> 1>
+vnoremap <S-Tab> 1<
 nnoremap <Tab> >>
 nnoremap <S-Tab> <<
 
