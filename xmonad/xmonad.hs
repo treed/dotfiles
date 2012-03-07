@@ -147,7 +147,7 @@ myManageHook = composeAll
     , className =? "Virt-viewer"    --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
-    , title     =? "Save File"      --> (doFloatDep $ const (RationalRect 0.25 0.25 0.5 0.5))
+    , title     =? "Save File"      --> (doRectFloat $ RationalRect 0.25 0.25 0.5 0.5)
     , namedScratchpadManageHook myScratchpads
     , manageDocks ]
 
