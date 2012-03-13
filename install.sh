@@ -2,7 +2,7 @@ for file in Xmodmap xsession xmobarrc bashrc bash_aliases vimrc gitconfig gtkrc-
 	ln -sf "$(pwd)/$file" ~/.$file
 done
 
-test -d ~/.vim/ || ln -sfT "$(pwd)/vi/" ~/.vim
+test -d ~/.vim/ || ln -sfT "$(pwd)/vim/" ~/.vim
 
 cd autojump
 ./install.sh --local

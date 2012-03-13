@@ -35,12 +35,6 @@
 'NERDUsePlaceHolders'	NERD_commenter.txt	/*'NERDUsePlaceHolders'*
 'loaded_nerd_comments'	NERD_commenter.txt	/*'loaded_nerd_comments'*
 'loaded_nerd_tree'	NERD_tree.txt	/*'loaded_nerd_tree'*
-:Ack	ack.txt	/*:Ack*
-:AckAdd	ack.txt	/*:AckAdd*
-:AckFile	ack.txt	/*:AckFile*
-:AckFromSearch	ack.txt	/*:AckFromSearch*
-:LAck	ack.txt	/*:LAck*
-:LAckAdd	ack.txt	/*:LAckAdd*
 :NERDTree	NERD_tree.txt	/*:NERDTree*
 :NERDTreeClose	NERD_tree.txt	/*:NERDTreeClose*
 :NERDTreeFind	NERD_tree.txt	/*:NERDTreeFind*
@@ -156,9 +150,6 @@ NERDTreeRender()	NERD_tree.txt	/*NERDTreeRender()*
 NERD_commenter.txt	NERD_commenter.txt	/*NERD_commenter.txt*
 NERD_tree.txt	NERD_tree.txt	/*NERD_tree.txt*
 Utl-chgOverview	utl_usr.txt	/*Utl-chgOverview*
-ack	ack.txt	/*ack*
-ack-author	ack.txt	/*ack-author*
-ack.txt	ack.txt	/*ack.txt*
 conque-term-Esc	conque_term.txt	/*conque-term-Esc*
 conque-term-F8	conque_term.txt	/*conque-term-F8*
 conque-term-F9	conque_term.txt	/*conque-term-F9*
