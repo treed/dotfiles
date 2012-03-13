@@ -40,3 +40,6 @@
 [submodule "vim/bundle/vim2hs"]
 	path = vim/bundle/vim2hs
 	url = https://github.com/dag/vim2hs.git
+[submodule "vim/bundle/rgrep"]
+	path = vim/bundle/rgrep
+	url = https://github.com/rosenfeld/rgrep.vim.git

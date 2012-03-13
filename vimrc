@@ -95,10 +95,12 @@ nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Run perltidy
 nnoremap <silent> <Space>c :%!perl perltidy.pl --profile=perltidyrc<CR>
 vnoremap <silent> <Space>c :!perl perltidy.pl --profile=perltidyrc<CR>
-" Fast access to Ack
-nnoremap <Space>a :Ack! 
+" Fast access to grep (used to be ack, hence the 'a')
+nnoremap <Space>a :RGrep! 
 
 set scrolloff=10
+
+set grepprg=grep\ -nrI\ $*\ .\ /dev/null
 
 " Need to associate p6 files, the plugin doesn't for some reason
 autocmd BufNewFile,BufRead *.p6 setf perl6
