@@ -4,5 +4,6 @@
 	email = ted.reed@gmail.com
 [core]
 	editor = vim
+	excludesfile = ~/.cvsignore
 [color]
 	ui = true
