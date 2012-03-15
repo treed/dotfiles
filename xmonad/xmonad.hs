@@ -122,7 +122,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
-myLayout = avoidStruts $ tiled ||| Full ||| dishes
+myLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full ||| dishes
     where
         tiled = Tall nmaster delta tiled_ratio
         dishes = Dishes nmaster dishes_ratio
