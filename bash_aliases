@@ -2,6 +2,15 @@ alias s='ssh -A'
 alias ..='cd ..'
 alias spr="curl -F 'sprunge=<-' http://sprunge.us"
 alias ack='ack-grep -a'
+function git_update_submodules {
+    submodules=$(git submodule | awk '{ print $2 }')
+    for module in $submodules; do
+        pushd $module
+            git checkout master
+            git pull
+        popd
+    done
+}
 
 # Ledger stuff
 export LEDGER_FILE=~/ledger.dat
