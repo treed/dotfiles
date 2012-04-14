@@ -108,4 +108,6 @@ autocmd BufNewFile,BufRead *.md set filetype=markdown
 let g:CommandTMaxHeight=20
 let g:CommandTMaxFiles=20000
 
+let g:syntastic_auto_loc_list=1
+
 helptags ~/.vim/doc
