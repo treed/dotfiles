@@ -81,7 +81,7 @@ nnoremap <Space>k <C-W>k
 nnoremap <Space>n :bn<CR>
 nnoremap <Space>p :bp<CR>
 " Quick buffer list
-nnoremap <Space>e :LustyBufferExplorer<CR>
+nnoremap <Space>e :CommandTBuffer<CR>
 " Remove the current buffer without closing the window
 nnoremap <Space>x :Kwbd<CR>
 " Open various panels or whatever
