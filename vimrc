@@ -87,7 +87,7 @@ nnoremap <Space>x :Kwbd<CR>
 " Open various panels or whatever
 nnoremap <silent> <Space>t :TagbarToggle<CR>
 nnoremap <silent> <Space>r :NERDTreeToggle<CR>
-nnoremap <Space>o :CommandT<CR>
+nnoremap <Space>o :CommandTFlush<CR>:CommandT<CR>
 " Clear trailing whitespace and save
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Run perltidy
