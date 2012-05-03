@@ -9,7 +9,6 @@ colorscheme desert
 if has("gui_running")
     set guifont=Inconsolata-dz\ \ for\ Powerline\ 14
     let g:Powerline_symbols="fancy"
-    set cursorline
     set background=dark
     colorscheme solarized
 endif
