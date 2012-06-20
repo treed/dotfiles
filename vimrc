@@ -95,6 +95,9 @@ vnoremap <silent> <Space>c :!perl perltidy.pl --profile=perltidyrc<CR>
 " Fast access to grep (used to be ack, hence the 'a')
 nnoremap <Space>a :RGrep! 
 
+" Tabular.vim presets
+vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l1c0r0<CR>
+
 set scrolloff=10
 
 set grepprg=grep\ -nrI\ $*\ .\ /dev/null
