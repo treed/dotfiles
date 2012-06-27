@@ -96,7 +96,7 @@ vnoremap <silent> <Space>c :!perl perltidy.pl --profile=perltidyrc<CR>
 nnoremap <Space>a :RGrep! 
 
 " Tabular.vim presets
-vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l1c0r0<CR>
+vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l2c0r0<CR>
 
 set scrolloff=10
 
