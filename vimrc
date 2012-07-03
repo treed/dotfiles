@@ -97,7 +97,7 @@ nnoremap <Space>a :RGrep!
 
 set scrolloff=10
 
-set grepprg=grep\ -nrI\ $*\ .\ /dev/null
+set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
 
 " Need to associate p6 files, the plugin doesn't for some reason
 autocmd BufNewFile,BufRead *.p6 setf perl6
