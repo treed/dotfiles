@@ -52,3 +52,6 @@
 [submodule "vim/bundle/vim-signature"]
 	path = vim/bundle/vim-signature
 	url = https://github.com/kshenoy/vim-signature.git
+[submodule "vim/bundle/vim-perl"]
+	path = vim/bundle/vim-perl
+	url = https://github.com/petdance/vim-perl
