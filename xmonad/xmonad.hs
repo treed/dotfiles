@@ -59,6 +59,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Window Motion
     , ((modm,               xK_Tab   ), windows W.focusDown)
+    , ((modm .|. shiftMask, xK_Tab   ), windows W.focusUp)
     , ((modm,               xK_n     ), windows W.focusDown)
     , ((modm,               xK_p     ), windows W.focusUp  )
     , ((modm .|. shiftMask, xK_n     ), windows W.swapDown  )
