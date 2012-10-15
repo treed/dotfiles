@@ -1,10 +1,11 @@
+{-# LANGUAGE OverloadedStrings #-}
 import Data.IORef
 import Control.OldException(catchDyn,try)
 import Control.Category ((>>>))
 import Control.Monad
-import DBus
-import DBus.Connection
-import DBus.Message
+import qualified DBus as D
+import qualified DBus.Client as D
+import qualified Codec.Binary.UTF8.String as UTF8
 import XMonad
 import XMonad.Layout.Dishes
 import XMonad.Actions.CycleWS
@@ -143,7 +144,7 @@ myManageHook = composeAll
     , namedScratchpadManageHook myScratchpads
     , manageDocks ]
 
-logPrinter :: Connection -> PP
+logPrinter :: D.Client -> PP
 logPrinter dbus       = defaultPP {
     ppOutput          = outputThroughDBus dbus
   , ppTitle           = pangoSanitize >>> pangoColor "#00DDFF"
@@ -164,25 +165,13 @@ hiddenFilter a = a
 layoutFilter :: String -> String
 layoutFilter a = [head a]
 
--- This retry is really awkward, but sometimes DBus won't let us get our
--- name unless we retry a couple times.
-getWellKnownName :: Connection -> IO ()
-getWellKnownName dbus = tryGetName `catchDyn` (\ (DBus.Error _ _) ->
-                                                getWellKnownName dbus)
- where
-  tryGetName = do
-    namereq <- newMethodCall serviceDBus pathDBus interfaceDBus "RequestName"
-    addArgs namereq [String "org.xmonad.Log", Word32 5]
-    sendWithReplyAndBlock dbus namereq 0
-    return ()
-
-outputThroughDBus :: Connection -> String -> IO ()
+outputThroughDBus :: D.Client -> String -> IO ()
 outputThroughDBus dbus str = do
-  let str' = "<span font=\"Terminus 9 Bold\">" ++ str ++ "</span>"
-  msg <- newSignal "/org/xmonad/Log" "org.xmonad.Log" "Update"
-  addArgs msg [String str']
-  send dbus msg 0 `catchDyn` (\ (DBus.Error _ _ ) -> return 0)
-  return ()
+    let sig = (D.signal "/org/xmonad/Log" "org.xmonad.Log" "Update") {D.signalBody=[D.toVariant $ outputWrap str]}
+    D.emit dbus sig
+
+outputWrap :: String -> String
+outputWrap str = "<span font=\"Terminus 9 Bold\">" ++ (UTF8.decodeString str) ++ "</span>"
 
 pangoColor :: String -> String -> String
 pangoColor fg = wrap left right
@@ -199,8 +188,9 @@ pangoSanitize = foldr sanitize ""
   sanitize '&'  acc = "&amp;"  ++ acc
   sanitize x    acc = x:acc
 
-main = withConnection Session $ \ dbus -> do
-    getWellKnownName dbus
+main = do
+    dbus <- D.connectSession
+    D.requestName dbus "org.xmonad.Log" [D.nameAllowReplacement, D.nameDoNotQueue]
     floatNextWindows <- newIORef 0
     xmonad $ gnomeConfig {
       -- simple stuff
