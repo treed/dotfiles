@@ -62,6 +62,7 @@ nnoremap < <C-O>
 nnoremap > <C-I>
 
 " Y should work like D
+call yankstack#setup()
 map Y y$
 
 " Make Ctrl-T increment the number of tests with Test::More
