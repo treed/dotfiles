@@ -55,3 +55,9 @@
 [submodule "vim/bundle/vim-perl"]
 	path = vim/bundle/vim-perl
 	url = https://github.com/petdance/vim-perl
+[submodule "vim/bundle/perlomni.vim"]
+	path = vim/bundle/perlomni.vim
+	url = https://github.com/c9s/perlomni.vim.git
+[submodule "vim/bundle/textobj-word-column.vim"]
+	path = vim/bundle/textobj-word-column.vim
+	url = https://github.com/coderifous/textobj-word-column.vim
