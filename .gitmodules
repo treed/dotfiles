@@ -49,3 +49,18 @@
 [submodule "vim/bundle/syntastic"]
 	path = vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
+[submodule "vim/bundle/vim-signature"]
+	path = vim/bundle/vim-signature
+	url = https://github.com/kshenoy/vim-signature.git
+[submodule "vim/bundle/vim-perl"]
+	path = vim/bundle/vim-perl
+	url = https://github.com/petdance/vim-perl
+[submodule "vim/bundle/perlomni.vim"]
+	path = vim/bundle/perlomni.vim
+	url = https://github.com/c9s/perlomni.vim.git
+[submodule "vim/bundle/textobj-word-column.vim"]
+	path = vim/bundle/textobj-word-column.vim
+	url = https://github.com/coderifous/textobj-word-column.vim
+[submodule "vim/bundle/vim-yankstack"]
+	path = vim/bundle/vim-yankstack
+	url = https://github.com/maxbrunsfeld/vim-yankstack

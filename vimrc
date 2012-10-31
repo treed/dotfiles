@@ -7,9 +7,8 @@ set t_Co=256
 let g:Powerline_symbols="unicode"
 colorscheme desert
 if has("gui_running")
-    set guifont=Inconsolata-dz\ \ for\ Powerline\ 14
+    set guifont=Inconsolata-dz\ \ for\ Powerline\ 12
     let g:Powerline_symbols="fancy"
-    set cursorline
     set background=dark
     colorscheme solarized
 endif
@@ -63,6 +62,7 @@ nnoremap < <C-O>
 nnoremap > <C-I>
 
 " Y should work like D
+call yankstack#setup()
 map Y y$
 
 " Make Ctrl-T increment the number of tests with Test::More
@@ -81,13 +81,13 @@ nnoremap <Space>k <C-W>k
 nnoremap <Space>n :bn<CR>
 nnoremap <Space>p :bp<CR>
 " Quick buffer list
-nnoremap <Space>e :LustyBufferExplorer<CR>
+nnoremap <Space>e :CommandTBuffer<CR>
 " Remove the current buffer without closing the window
 nnoremap <Space>x :Kwbd<CR>
 " Open various panels or whatever
 nnoremap <silent> <Space>t :TagbarToggle<CR>
 nnoremap <silent> <Space>r :NERDTreeToggle<CR>
-nnoremap <Space>o :CommandT<CR>
+nnoremap <Space>o :CommandTFlush<CR>:CommandT<CR>
 " Clear trailing whitespace and save
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Run perltidy
@@ -96,9 +96,12 @@ vnoremap <silent> <Space>c :!perl perltidy.pl --profile=perltidyrc<CR>
 " Fast access to grep (used to be ack, hence the 'a')
 nnoremap <Space>a :RGrep! 
 
+" Tabular.vim presets
+vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l2c0r0<CR>
+
 set scrolloff=10
 
-set grepprg=grep\ -nrI\ $*\ .\ /dev/null
+set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
 
 " Need to associate p6 files, the plugin doesn't for some reason
 autocmd BufNewFile,BufRead *.p6 setf perl6
@@ -107,5 +110,7 @@ autocmd BufNewFile,BufRead *.md set filetype=markdown
 
 let g:CommandTMaxHeight=20
 let g:CommandTMaxFiles=20000
+
+let g:syntastic_auto_loc_list=1
 
 helptags ~/.vim/doc

@@ -11,8 +11,8 @@ function git_update_submodules {
 }
 
 # Ledger stuff
-export LEDGER_FILE=~/ledger.dat
-alias funds="ledger --no-cache -d \"l<=3\" bal Funds"
+export LEDGER_FILE=~/ledger/ledger.dat
+alias funds="ledger --no-cache -d \"l<=3\" -l '!W/Taxes|Illiquid|Retirement/' bal Funds"
 alias cash="ledger --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
 
 if [ "$HOSTNAME" = "treed-laptop" ]; then
