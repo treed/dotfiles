@@ -1,4 +1,3 @@
-alias s='ssh -A'
 alias ..='cd ..'
 alias spr="curl -F 'sprunge=<-' http://sprunge.us"
 alias ack='ack-grep -a'
