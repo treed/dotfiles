@@ -48,6 +48,7 @@ set expandtab
 
 " fix mouse scrolling
 set ttymouse=xterm2
+set mouse=a
 
 " different tab semantics
 inoremap <Tab> <C-T>
