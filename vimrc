@@ -5,12 +5,11 @@ filetype plugin indent on
 " Woo Colors!
 set t_Co=256
 let g:Powerline_symbols="unicode"
-colorscheme desert
+set background=dark
+colorscheme jellybeans
 if has("gui_running")
     set guifont=Inconsolata-dz\ \ for\ Powerline\ 12
     let g:Powerline_symbols="fancy"
-    set background=dark
-    colorscheme solarized
 endif
 syntax on
 
