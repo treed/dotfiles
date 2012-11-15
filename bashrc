@@ -5,7 +5,7 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-export EDITOR="gvim -f"
+export EDITOR="vim"
 export GOROOT=/home/treed/code/golang
 export PATH=$GOROOT/bin:$PATH
 [ -s $HOME/.tmuxinator/scripts/tmuxinator ] && source $HOME/.tmuxinator/scripts/tmuxinator
