@@ -66,6 +66,10 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+# For working with Debian packages
+export QUILT_PATCHES=debian/patches
+export QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"
+
 # Predictable SSH authentication socket location.
 SOCK="/tmp/ssh-agent-$USER-screen"
 if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
