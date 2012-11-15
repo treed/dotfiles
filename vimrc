@@ -6,12 +6,17 @@ filetype plugin indent on
 set t_Co=256
 let g:Powerline_symbols="unicode"
 set background=dark
-colorscheme jellybeans
+colorscheme inkpot
 if has("gui_running")
     set guifont=Inconsolata-dz\ \ for\ Powerline\ 12
     let g:Powerline_symbols="fancy"
 endif
 syntax on
+
+highlight DiffAdd term=reverse cterm=bold ctermbg=green ctermfg=white 
+highlight DiffChange term=reverse cterm=bold ctermbg=cyan ctermfg=black 
+highlight DiffText term=reverse cterm=bold ctermbg=gray ctermfg=black 
+highlight DiffDelete term=reverse cterm=bold ctermbg=red ctermfg=black 
 
 " Various Options
 set nocompatible
