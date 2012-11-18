@@ -5,6 +5,7 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+export PATH=/usr/lib/go/bin:$PATH
 export EDITOR="vim"
 [ -s $HOME/.tmuxinator/scripts/tmuxinator ] && source $HOME/.tmuxinator/scripts/tmuxinator
 [ -s $HOME/.autojump/etc/profile.d/autojump.bash ] && source ~/.autojump/etc/profile.d/autojump.bash
