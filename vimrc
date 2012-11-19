@@ -97,7 +97,6 @@ nnoremap <Space>a :RGrep!
 
 " Tabular.vim presets
 vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l2c0r0<CR>
-" Go Specific
 
 " Perl Specific
 " Make Ctrl-T increment the number of tests with Test::More
@@ -106,7 +105,9 @@ autocmd BufNewFile,BufRead *.t nnoremap <silent> <C-T> :%s/plan tests => \zs\d\+
 autocmd BufNewFile,BufRead *.p[lm] nnoremap <silent> <Space>c :%!perl perltidy.pl --profile=perltidyrc<CR>
 autocmd BufNewFile,BufRead *.p[lm] vnoremap <silent> <Space>c :!perl perltidy.pl --profile=perltidyrc<CR>
 
+" Go Specific
 autocmd BufNewFile,BufRead *.go nnoremap <silent> <C-T> :call VimuxRunCommand("go test")<CR>
+autocmd BufNewFile,BufRead *.go nnoremap <silent> <Space>c :Fmt<CR>
 
 set scrolloff=10
 
