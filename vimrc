@@ -70,9 +70,6 @@ nnoremap > <C-I>
 call yankstack#setup()
 map Y y$
 
-" Make Ctrl-T increment the number of tests with Test::More
-nnoremap <silent> <C-T> :%s/plan tests => \zs\d\+/\=submatch(0) + 1/<CR><C-O>
-
 " Open a new split
 nnoremap <silent> <Space>s :sp<CR>
 " Close
@@ -95,14 +92,21 @@ nnoremap <silent> <Space>r :NERDTreeToggle<CR>
 nnoremap <Space>o :CommandTFlush<CR>:CommandT<CR>
 " Clear trailing whitespace and save
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
-" Run perltidy
-nnoremap <silent> <Space>c :%!perl perltidy.pl --profile=perltidyrc<CR>
-vnoremap <silent> <Space>c :!perl perltidy.pl --profile=perltidyrc<CR>
 " Fast access to grep (used to be ack, hence the 'a')
 nnoremap <Space>a :RGrep! 
 
 " Tabular.vim presets
 vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l2c0r0<CR>
+" Go Specific
+
+" Perl Specific
+" Make Ctrl-T increment the number of tests with Test::More
+autocmd BufNewFile,BufRead *.t nnoremap <silent> <C-T> :%s/plan tests => \zs\d\+/\=submatch(0) + 1/<CR><C-O>
+" Run perltidy
+autocmd BufNewFile,BufRead *.p[lm] nnoremap <silent> <Space>c :%!perl perltidy.pl --profile=perltidyrc<CR>
+autocmd BufNewFile,BufRead *.p[lm] vnoremap <silent> <Space>c :!perl perltidy.pl --profile=perltidyrc<CR>
+
+autocmd BufNewFile,BufRead *.go nnoremap <silent> <C-T> :call VimuxRunCommand("go test")<CR>
 
 set scrolloff=10
 
