@@ -6,6 +6,7 @@
 [ -z "$PS1" ] && return
 
 export PATH=/usr/lib/go/bin:$PATH
+export GOPATH=/home/treed/code/golang:/usr/lib/go
 export EDITOR="vim"
 [ -s $HOME/.tmuxinator/scripts/tmuxinator ] && source $HOME/.tmuxinator/scripts/tmuxinator
 [ -s $HOME/.autojump/etc/profile.d/autojump.bash ] && source ~/.autojump/etc/profile.d/autojump.bash
