@@ -55,6 +55,8 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+test -f ~/.bashrc_local && source ~/.bashrc_local
+
 if [ "$HOSTNAME" = "AF001654" ]; then
     source ~/.bash_local_superadmin
 fi
