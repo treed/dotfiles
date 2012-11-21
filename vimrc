@@ -55,8 +55,7 @@ set ttymouse=xterm2
 set mouse=a
 
 " different tab semantics
-inoremap <Tab> <C-T>
-inoremap <S-Tab> <C-D>
+set ofu=syntaxcomplete#Complete
 vnoremap <Tab> 1>
 vnoremap <S-Tab> 1<
 nnoremap <Tab> >>
