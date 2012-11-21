@@ -55,6 +55,8 @@ set ttymouse=xterm2
 set mouse=a
 
 " different tab semantics
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
 set ofu=syntaxcomplete#Complete
 vnoremap <Tab> 1>
 vnoremap <S-Tab> 1<
