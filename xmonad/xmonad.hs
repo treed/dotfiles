@@ -125,7 +125,7 @@ myLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full ||| dishes
         nmaster = 1
         delta = 1/100
         tiled_ratio = 1/2
-        dishes_ratio = 1/5
+        dishes_ratio = 24/100
 
 -- To find the property name associated with a program, use
 -- > xprop | grep WM_CLASS
