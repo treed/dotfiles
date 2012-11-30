@@ -41,7 +41,8 @@ myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 myStartupHook = setWMName "LG3D"
 
 myScratchpads =
-    [ NS "calc" "gnome-calculator" (title =? "Calculator") defaultFloating
+    [ NS "calc" "gnome-calculator" (title =? "Calculator") defaultFloating,
+      NS "music" "nuvolaplayer" (className =? "nuvolaplayer") defaultFloating
     ]
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
@@ -86,6 +87,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Scratchpads
     , ((modm .|. mod1Mask,   xK_c),      namedScratchpadAction myScratchpads "calc")
+    , ((modm .|. mod1Mask,   xK_m),      namedScratchpadAction myScratchpads "music")
     ]
     ++
 
