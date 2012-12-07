@@ -1,4 +1,4 @@
-for file in tmux.conf cvsignore Xmodmap xsession xmobarrc bashrc bash_aliases vimrc gitconfig gtkrc-2.0 zshrc; do
+for file in tmux.conf cvsignore Xmodmap xsession xmobarrc bashrc shellrc vimrc gitconfig gtkrc-2.0 zshrc; do
 	ln -sf "$(pwd)/$file" ~/.$file
 done
 

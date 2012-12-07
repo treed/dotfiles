@@ -5,10 +5,6 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-export PATH=/usr/lib/go/bin:$PATH
-export GOPATH=/home/treed/code/golang:/usr/lib/go
-export EDITOR="vim"
-[ -s $HOME/.tmuxinator/scripts/tmuxinator ] && source $HOME/.tmuxinator/scripts/tmuxinator
 [ -s $HOME/.autojump/etc/profile.d/autojump.bash ] && source ~/.autojump/etc/profile.d/autojump.bash
 
 # don't put duplicate lines in the history. See bash(1) for more options
@@ -46,21 +42,6 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
-test -f ~/.bashrc_local && source ~/.bashrc_local
-
-if [ "$HOSTNAME" = "AF001654" ]; then
-    source ~/.bash_local_superadmin
-fi
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -68,15 +49,5 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-# For working with Debian packages
-export QUILT_PATCHES=debian/patches
-export QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"
-
-# Predictable SSH authentication socket location.
-SOCK="/tmp/ssh-agent-$USER-screen"
-if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
-then
-    rm -f /tmp/ssh-agent-$USER-screen
-    ln -sf $SSH_AUTH_SOCK $SOCK
-    export SSH_AUTH_SOCK=$SOCK
-fi
+alias ..='cd ..'
+source ~/.shellrc
