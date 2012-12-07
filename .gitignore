@@ -3,5 +3,6 @@
 *.o
 *.hi
 *.errors
+.netrwhist
 xmonad-x86_64-linux
 .VimballRecord
