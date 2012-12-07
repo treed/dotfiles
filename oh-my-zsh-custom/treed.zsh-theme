@@ -66,10 +66,15 @@ prompt_time() {
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
   local user=`whoami`
+  local user_segment host_segment
 
-  if [[ "$user" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    prompt_segment black default "%(!.%{%F{yellow}%}.)$user@%m"
+  if [[ "$user" != "$DEFAULT_USER" ]]; then
+    user_segment="$user@"
   fi
+  if [[ -n "$SSH_CLIENT" ]]; then
+    host_segment="%m"
+  fi
+  prompt_segment black default "%(!.%{%F{yellow}%}.)$user_segment$host_segment"
 }
 
 # Git: branch/detached head, dirty status
