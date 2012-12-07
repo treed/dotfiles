@@ -29,3 +29,4 @@ alias funds="ledger --no-cache -d \"l<=3\" -l '!W/Taxes|Illiquid|Retirement/' ba
 alias cash="ledger --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
 
 test -f ~/.shellrc_local && source ~/.shellrc_local
+true
