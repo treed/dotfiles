@@ -74,7 +74,9 @@ prompt_context() {
   if [[ -n "$SSH_CLIENT" ]]; then
     host_segment="%m"
   fi
-  prompt_segment black default "%(!.%{%F{yellow}%}.)$user_segment$host_segment"
+  if [[ -n "$user_segment$host_segment" ]]; then
+    prompt_segment black default "%(!.%{%F{yellow}%}.)$user_segment$host_segment"
+  fi
 }
 
 # Git: branch/detached head, dirty status
