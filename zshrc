@@ -22,3 +22,4 @@ source $ZSH/oh-my-zsh.sh
 source ~/.shellrc
 
 bindkey "^R" history-incremental-search-backward
+bindkey "^[." insert-last-word
