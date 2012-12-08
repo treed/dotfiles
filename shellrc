@@ -6,6 +6,7 @@ fi
 
 export GOPATH=/home/treed/code/golang:/usr/lib/go
 export EDITOR="vim"
+export TERM="xterm-256color"
 
 # For working with Debian packages
 export QUILT_PATCHES=debian/patches
