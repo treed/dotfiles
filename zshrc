@@ -20,3 +20,5 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 [ -s $HOME/.autojump/etc/profile.d/autojump.zsh ] && source ~/.autojump/etc/profile.d/autojump.zsh
 source ~/.shellrc
+
+bindkey "^R" history-incremental-search-backward
