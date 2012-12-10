@@ -4,7 +4,7 @@ filetype plugin indent on
 
 " Woo Colors!
 set t_Co=256
-let g:Powerline_symbols="unicode"
+let g:Powerline_symbols="fancy"
 set background=dark
 colorscheme inkpot
 if has("gui_running")

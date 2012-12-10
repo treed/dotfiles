@@ -1,0 +1,33 @@
+# vim: filetype=sh
+export PATH=/usr/lib/go/bin:$PATH
+if [ "$HOSTNAME" = "wyoming" ]; then
+    export PATH=$PATH:/home/treed/android-sdk-linux_86/tools:/home/treed/local/rakudo/bin
+fi
+
+export GOPATH=/home/treed/code/golang:/usr/lib/go
+export EDITOR="vim"
+export TERM="xterm-256color"
+
+# For working with Debian packages
+export QUILT_PATCHES=debian/patches
+export QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"
+
+# Predictable SSH authentication socket location.
+SOCK="/tmp/ssh-agent-$USER-screen"
+if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
+then
+    rm -f /tmp/ssh-agent-$USER-screen
+    ln -sf $SSH_AUTH_SOCK $SOCK
+    export SSH_AUTH_SOCK=$SOCK
+fi
+
+alias spr="curl -F 'sprunge=<-' http://sprunge.us"
+alias ack='ack-grep -a'
+
+# Ledger stuff
+export LEDGER_FILE=~/ledger/ledger.dat
+alias funds="ledger --no-cache -d \"l<=3\" -l '!W/Taxes|Illiquid|Retirement/' bal Funds"
+alias cash="ledger --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
+
+test -f ~/.shellrc_local && source ~/.shellrc_local
+true
