@@ -59,6 +59,22 @@ prompt_end() {
 ### Prompt components
 # Each component will draw itself, and hide itself if no information needs to be shown
 
+VIMODE="I"
+function zle-keymap-select {
+    VIMODE="${${KEYMAP/vicmd/N}/(main|viins)/I}"
+    zle reset-prompt
+}
+
+zle -N zle-keymap-select
+
+prompt_vimode() {
+  if [[ ${VIMODE} = 'N' ]]; then
+    prompt_segment 154 28 ${VIMODE}
+  else
+    prompt_segment white blue ${VIMODE}
+  fi
+}
+
 prompt_time() {
   prompt_segment 22 white '%*'
 }
@@ -115,6 +131,7 @@ prompt_status() {
 ## Main prompt
 build_prompt() {
   RETVAL=$?
+  prompt_vimode
   prompt_time
   prompt_context
   prompt_dir
