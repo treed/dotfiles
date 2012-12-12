@@ -23,3 +23,4 @@ source ~/.shellrc
 
 bindkey "^R" history-incremental-search-backward
 bindkey "^[." insert-last-word
+bindkey "^?" backward-delete-char
