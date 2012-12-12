@@ -119,6 +119,9 @@ autocmd BufNewFile,BufRead *.p6 setf perl6
 autocmd BufNewFile,BufRead *.nel setf nel
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 
+"avoiding annoying CSApprox warning message
+let g:CSApprox_verbose_level = 0
+
 let g:CommandTMaxHeight=20
 let g:CommandTMaxFiles=20000
 
