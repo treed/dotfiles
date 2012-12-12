@@ -36,7 +36,7 @@ prompt_segment() {
   [[ -n $1 ]] && bg="%K{$1}" || bg="%k"
   [[ -n $2 ]] && fg="%F{$2}" || fg="%f"
   if [[ $CURRENT_BG != 'NONE' && $1 != $CURRENT_BG ]]; then
-    echo -n " %{$bg%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR%{$fg%} "
+    echo -n " %b%{$bg%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR%{$fg%} "
   else
     echo -n "%{$bg%}%{$fg%} "
   fi
@@ -59,19 +59,19 @@ prompt_end() {
 ### Prompt components
 # Each component will draw itself, and hide itself if no information needs to be shown
 
-VIMODE="I"
+VIMODE="INS"
 function zle-keymap-select {
-    VIMODE="${${KEYMAP/vicmd/N}/(main|viins)/I}"
+    VIMODE="${${KEYMAP/vicmd/NOR}/(main|viins)/INS}"
     zle reset-prompt
 }
 
 zle -N zle-keymap-select
 
 prompt_vimode() {
-  if [[ ${VIMODE} = 'N' ]]; then
-    prompt_segment 154 28 ${VIMODE}
+  if [[ ${VIMODE} = 'NOR' ]]; then
+    prompt_segment 154 28 "%B${VIMODE}"
   else
-    prompt_segment white blue ${VIMODE}
+    prompt_segment white 25 "%B${VIMODE}"
   fi
 }
 
