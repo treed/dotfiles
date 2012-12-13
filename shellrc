@@ -1,10 +1,9 @@
 # vim: filetype=sh
-export PATH=/usr/lib/go/bin:$PATH
 if [ "$HOSTNAME" = "wyoming" ]; then
     export PATH=$PATH:/home/treed/android-sdk-linux_86/tools:/home/treed/local/rakudo/bin
 fi
 
-export GOPATH=/home/treed/code/golang:/usr/lib/go
+export GOPATH=/home/treed/go:/home/treed/code/golang:/usr/lib/go
 export EDITOR="vim"
 export TERM="xterm-256color"
 
@@ -30,4 +29,6 @@ alias funds="ledger --no-cache -d \"l<=3\" -l '!W/Taxes|Illiquid|Retirement/' ba
 alias cash="ledger --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
 
 test -f ~/.shellrc_local && source ~/.shellrc_local
+
+export PATH=${GOPATH//://bin:}/bin:$PATH
 true
