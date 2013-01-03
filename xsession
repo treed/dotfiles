@@ -46,4 +46,5 @@ try nm-applet --sm-disable
 try bluetooth-applet
 try gnome-power-manager
 try dropbox start
+try gtk-redshift -l 37.4:-122.0 -t 6500:4000
 exec xmonad
