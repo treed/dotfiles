@@ -1,5 +1,5 @@
 # vim: filetype=sh
-if [ "$HOSTNAME" = "wyoming" ]; then
+if [ "$(hostname)" = "wyoming" ]; then
     export PATH=$PATH:/home/treed/android-sdk-linux_86/tools:/home/treed/local/rakudo/bin
 fi
 
