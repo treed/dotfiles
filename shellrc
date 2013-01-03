@@ -28,6 +28,9 @@ export LEDGER_FILE=~/ledger/ledger.dat
 alias funds="ledger --no-cache -d \"l<=3\" -l '!W/Taxes|Illiquid|Retirement/' bal Funds"
 alias cash="ledger --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
 
+# use vim as a PAGER for man
+export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
+
 test -f ~/.shellrc_local && source ~/.shellrc_local
 
 export PATH=${GOPATH//://bin:}/bin:$PATH
