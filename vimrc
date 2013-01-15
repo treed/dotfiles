@@ -95,6 +95,8 @@ nnoremap <Space>o :CommandTFlush<CR>:CommandT<CR>
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Fast access to grep (used to be ack, hence the 'a')
 nnoremap <Space>a :RGrep! 
+" Fuzzy find
+nnoremap <Space>/ :FufLine<CR>
 
 " Tabular.vim presets
 vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l2c0r0<CR>

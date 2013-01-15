@@ -1,5 +1,5 @@
 # vim: filetype=sh
-if [ "$HOSTNAME" = "wyoming" ]; then
+if [ "$(hostname)" = "wyoming" ]; then
     export PATH=$PATH:/home/treed/android-sdk-linux_86/tools:/home/treed/local/rakudo/bin
 fi
 
@@ -25,8 +25,11 @@ alias ack='ack-grep -a'
 
 # Ledger stuff
 export LEDGER_FILE=~/ledger/ledger.dat
-alias funds="ledger --no-cache -d \"l<=3\" -l '!W/Taxes|Illiquid|Retirement/' bal Funds"
-alias cash="ledger --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
+alias funds="ledger --price-db ~/ledger/price.db -V --no-cache -d \"l<=3\" -l '!W/Taxes|Illiquid|Retirement/' bal Funds"
+alias cash="ledger --price-db ~/ledger/price.db -V --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
+
+# use vim as a PAGER for man
+export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
 
 test -f ~/.shellrc_local && source ~/.shellrc_local
 
