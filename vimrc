@@ -97,6 +97,8 @@ nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 nnoremap <Space>a :RGrep! 
 " Fuzzy find
 nnoremap <Space>/ :FufLine<CR>
+" EasyMotion
+let g:EasyMotion_leader_key = '<Space>.'
 
 " Tabular.vim presets
 vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l2c0r0<CR>
