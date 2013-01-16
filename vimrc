@@ -6,11 +6,11 @@ filetype plugin indent on
 set t_Co=256
 let g:Powerline_symbols="fancy"
 set background=dark
-colorscheme inkpot-approx
+colorscheme jellybeans-approx
 if has("gui_running")
     set guifont=Inconsolata-dz\ \ for\ Powerline\ 12
     let g:Powerline_symbols="fancy"
-    colorscheme inkpot
+    colorscheme jellybeans
 endif
 syntax on
 
