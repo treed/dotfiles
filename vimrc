@@ -6,11 +6,11 @@ filetype plugin indent on
 set t_Co=256
 let g:Powerline_symbols="fancy"
 set background=dark
-colorscheme inkpot-approx
+colorscheme jellybeans-approx
 if has("gui_running")
     set guifont=Inconsolata-dz\ \ for\ Powerline\ 12
     let g:Powerline_symbols="fancy"
-    colorscheme inkpot
+    colorscheme jellybeans
 endif
 syntax on
 
@@ -97,7 +97,7 @@ nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Fast access to grep (used to be ack, hence the 'a')
 nnoremap <Space>a :RGrep! 
 " Fuzzy find
-nnoremap <Space>/ :FufLine<CR>
+nnoremap <Space>i :FufLine<CR>
 " EasyMotion
 let g:EasyMotion_leader_key = '<Space>.'
 
@@ -115,6 +115,10 @@ autocmd BufNewFile,BufRead *.p[lm] vnoremap <silent> <Space>c :!perl perltidy.pl
 autocmd BufNewFile,BufRead *.go nnoremap <silent> <C-T> :call VimuxRunCommand("go test")<CR>
 autocmd BufNewFile,BufRead *.go nnoremap <silent> <Space>c :Fmt<CR>
 
+" Markdown Specific
+autocmd BufNewFile,BufRead *.md set filetype=markdown
+autocmd BufNewFile,BufRead *.md setlocal spell spelllang=en_us
+
 set scrolloff=10
 
 set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
@@ -122,7 +126,6 @@ set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
 " Need to associate p6 files, the plugin doesn't for some reason
 autocmd BufNewFile,BufRead *.p6 setf perl6
 autocmd BufNewFile,BufRead *.nel setf nel
-autocmd BufNewFile,BufRead *.md set filetype=markdown
 
 "avoiding annoying CSApprox warning message
 let g:CSApprox_verbose_level = 0

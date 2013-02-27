@@ -23,18 +23,25 @@ try() {
     return 0
 }
 
-try_eval() {
+try() {
+    if isrunning $(basename $1); then
+        echo "$1 already running."
+        return 0
+    fi
+
     test x"`which $1 2>/dev/null`" != x""
-    ret=$?
-    if test $ret -eq 0; then
-        eval `$*`
-        if test $? -ne 0; then
-            echo "$1 failed."
+    if test $? -eq 0; then
+        sudo $* &
+        sleep 0.3
+        if ! isrunning $1; then
+            echo "$1 isn't running. failed?"
+            return 1
         fi
     else
         echo "failed to find $1" >&2
+        return 1
     fi
-    return $ret
+    return 0
 }
 
 try xcompmgr -a
@@ -47,4 +54,7 @@ try bluetooth-applet
 try gnome-power-manager
 try dropbox start
 try gtk-redshift -l 37.4:-122.0 -t 6500:4000
+try keynav
+sudo rm -f /tmp/*evrouter*
+try_sudo evrouter -r /dev/input/by-id/usb-Microsoft_Natural®_Ergonomic_Keyboard_4000-if01-event-kbd
 exec xmonad
