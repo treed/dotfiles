@@ -119,6 +119,9 @@ autocmd BufNewFile,BufRead *.go nnoremap <silent> <Space>c :Fmt<CR>
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufRead *.md setlocal spell spelllang=en_us
 
+" Haskell Specific
+autocmd BufNewFile,BufRead *.hs setlocal omnifunc=necoghc#omnifunc
+
 set scrolloff=10
 
 set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
