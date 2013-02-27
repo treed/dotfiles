@@ -115,6 +115,10 @@ autocmd BufNewFile,BufRead *.p[lm] vnoremap <silent> <Space>c :!perl perltidy.pl
 autocmd BufNewFile,BufRead *.go nnoremap <silent> <C-T> :call VimuxRunCommand("go test")<CR>
 autocmd BufNewFile,BufRead *.go nnoremap <silent> <Space>c :Fmt<CR>
 
+" Markdown Specific
+autocmd BufNewFile,BufRead *.md set filetype=markdown
+autocmd BufNewFile,BufRead *.md setlocal spell spelllang=en_us
+
 set scrolloff=10
 
 set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
@@ -122,7 +126,6 @@ set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
 " Need to associate p6 files, the plugin doesn't for some reason
 autocmd BufNewFile,BufRead *.p6 setf perl6
 autocmd BufNewFile,BufRead *.nel setf nel
-autocmd BufNewFile,BufRead *.md set filetype=markdown
 
 "avoiding annoying CSApprox warning message
 let g:CSApprox_verbose_level = 0
