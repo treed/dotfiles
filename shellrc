@@ -33,5 +33,5 @@ export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu
 
 test -f ~/.shellrc_local && source ~/.shellrc_local
 
-export PATH=${GOPATH//://bin:}/bin:/home/treed/bin:$PATH
+export PATH=${GOPATH//://bin:}/bin:/home/treed/bin:/home/treed/.cabal/bin:$PATH
 true
