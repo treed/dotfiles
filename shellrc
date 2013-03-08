@@ -25,7 +25,7 @@ alias ack='ack-grep -a'
 
 # Ledger stuff
 export LEDGER_FILE=~/ledger/ledger.dat
-alias funds="ledger --price-db ~/ledger/price.db -V --no-cache -d \"l<=3\" -l '!W/Taxes|Illiquid|Retirement/' bal Funds"
+alias funds="ledger --price-db ~/ledger/price.db -V --no-cache -d \"l<=3\" -l '!W/Taxes|Illiquid|Retirement|Equity/' bal Funds"
 alias cash="ledger --price-db ~/ledger/price.db -V --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
 
 # use vim as a PAGER for man
@@ -33,5 +33,5 @@ export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu
 
 test -f ~/.shellrc_local && source ~/.shellrc_local
 
-export PATH=${GOPATH//://bin:}/bin:/home/treed/bin:$PATH
+export PATH=${GOPATH//://bin:}/bin:/home/treed/bin:/home/treed/.cabal/bin:$PATH
 true

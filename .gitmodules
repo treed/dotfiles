@@ -109,3 +109,9 @@
 [submodule "vim/bundle/YouCompleteMe"]
 	path = vim/bundle/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "vim/bundle/neco-ghc"]
+	path = vim/bundle/neco-ghc
+	url = https://github.com/ujihisa/neco-ghc.git
+[submodule "vim/bundle/haskellmode-vim"]
+	path = vim/bundle/haskellmode-vim
+	url = https://github.com/lukerandall/haskellmode-vim.git
