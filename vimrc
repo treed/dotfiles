@@ -106,7 +106,8 @@ vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l2c0r0<CR>
 
 " Perl Specific
 " Make Ctrl-T increment the number of tests with Test::More
-autocmd BufNewFile,BufRead *.t nnoremap <silent> <C-T> :%s/plan tests => \zs\d\+/\=submatch(0) + 1/<CR><C-O>
+autocmd BufNewFile,BufRead *.p[lm] nnoremap <silent> <C-T> :call VimuxRunCommand("sh bb_test.t")<CR>
+
 " Run perltidy
 autocmd BufNewFile,BufRead *.p[lm] nnoremap <silent> <Space>c :%!perl perltidy.pl --profile=perltidyrc<CR>
 autocmd BufNewFile,BufRead *.p[lm] vnoremap <silent> <Space>c :!perl perltidy.pl --profile=perltidyrc<CR>
