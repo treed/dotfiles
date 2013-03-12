@@ -59,8 +59,8 @@ set mouse=a
 let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 set ofu=syntaxcomplete#Complete
 set completeopt=longest,menu
-vnoremap <Tab> 1>
-vnoremap <S-Tab> 1<
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
 nnoremap <Tab> >>
 nnoremap <S-Tab> <<
 
