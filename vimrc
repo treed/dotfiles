@@ -92,6 +92,7 @@ nnoremap <Space>x :Kwbd<CR>
 nnoremap <silent> <Space>t :TagbarToggle<CR>
 nnoremap <silent> <Space>r :NERDTreeToggle<CR>
 nnoremap <Space>o :CommandTFlush<CR>:CommandT<CR>
+nnoremap <Space>u :GundoToggle<CR>
 " Clear trailing whitespace and save
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Fast access to grep (used to be ack, hence the 'a')
