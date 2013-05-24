@@ -184,19 +184,14 @@ let g:haddock_browser = ""
 let g:haddock_docdir = ""
 
 let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 function! g:UltiSnips_Complete()
-    call UltiSnips_JumpForwards()
-    if g:ulti_jump_forwards_res == 0
-        call UltiSnips_ExpandSnippet()
-        if g:ulti_expand_res == 0
-            if pumvisible()
-                return "\<C-n>"
-            else
-                return "\<TAB>"
-            endif
+    call UltiSnips_ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return "\<C-n>"
+        else
+            return "\<TAB>"
         endif
     endif
     return ""
