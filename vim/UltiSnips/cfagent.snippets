@@ -1,0 +1,11 @@
+snippet copy "copy statement" b
+${1:filter}::
+  /usr/local/imvu/svn_configs/operations/${2:source} dest=${3:dest}
+  mode=555
+  owner=root
+  group=root
+  backup=false
+  server=${cfserver}
+  type=checksum
+
+endsnippet
