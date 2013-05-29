@@ -202,4 +202,9 @@ endfunction
 
 au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
 
+call unite#custom_source('file_rec', 'matchers', ['matcher_fuzzy'])
+call unite#custom_source('buffer,file,file_mru,file_rec', 'sorters', 'sorter_rank')
+let g:unite_force_overwrite_statusline = 0
+
+
 helptags ~/.vim/doc
