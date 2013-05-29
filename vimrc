@@ -41,6 +41,9 @@ set incsearch
 set showmatch
 set nohlsearch
 
+set list
+set listchars=tab:╾─,eol:↩,trail:␠
+
 " Set GUI options: use console mode for dialogs, and enable X11 copying from
 " VISUAL mode
 set guioptions=ca
