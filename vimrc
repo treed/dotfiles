@@ -40,6 +40,8 @@ set gdefault
 set incsearch
 set showmatch
 set nohlsearch
+set cursorline
+set relativenumber
 
 set list
 set listchars=tab:╾─,eol:↩,trail:␠
