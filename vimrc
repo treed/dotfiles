@@ -185,6 +185,12 @@ let g:ycm_semantic_triggers =  {
   \   'haskell' : ['.'],
   \ }
 
+function! s:GoLint()
+    cexpr system("golint " . shellescape(expand('%')))
+    copen
+endfunction
+command! GoLint :call s:GoLint()
+
 let g:haddock_browser = ""
 let g:haddock_docdir = ""
 
