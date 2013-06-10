@@ -40,6 +40,10 @@ set gdefault
 set incsearch
 set showmatch
 set nohlsearch
+set cursorline
+
+set list
+set listchars=tab:╾─,eol:↩,trail:␠
 
 " Set GUI options: use console mode for dialogs, and enable X11 copying from
 " VISUAL mode
@@ -180,7 +184,34 @@ let g:ycm_semantic_triggers =  {
   \   'haskell' : ['.'],
   \ }
 
+function! s:GoLint()
+    cexpr system("golint " . shellescape(expand('%')))
+    copen
+endfunction
+command! GoLint :call s:GoLint()
+
 let g:haddock_browser = ""
 let g:haddock_docdir = ""
+
+let g:UltiSnipsExpandTrigger="<tab>"
+
+function! g:UltiSnips_Complete()
+    call UltiSnips_ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return "\<C-n>"
+        else
+            return "\<TAB>"
+        endif
+    endif
+    return ""
+endfunction
+
+au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+
+call unite#custom_source('file_rec,file_rec/async', 'matchers', ['matcher_fuzzy'])
+call unite#custom_source('buffer,file,file_mru,file_rec,file_rec/async', 'sorters', 'sorter_rank')
+let g:unite_force_overwrite_statusline = 0
+
 
 helptags ~/.vim/doc

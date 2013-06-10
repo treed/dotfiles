@@ -4,6 +4,7 @@ sub ${1:funcname} {
 
     ${3:body}
 }
+
 endsnippet
 
 snippet uimvu "use Imvu" b
@@ -13,5 +14,24 @@ endsnippet
 
 snippet uadb "use AssetDB" b
 use Imvu::AssetDB;
+
+endsnippet
+
+snippet "my $adb" "instantiate $adb" b
+my $adb = Imvu::AssetDB->new;
+
+endsnippet
+
+snippet when "when clause" b
+when ($1) {
+    $2
+}
+
+endsnippet
+
+snippet default "default clause" b
+default {
+    $1
+}
 
 endsnippet

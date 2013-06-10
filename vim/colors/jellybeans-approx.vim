@@ -722,8 +722,8 @@ elseif has("gui_running") || &t_Co == 256
     CSAHi perlSyncPOD term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi shOK term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi vimPerlRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
-    CSAHi SpecialKey term=bold cterm=NONE ctermbg=234 ctermfg=238 gui=NONE guibg=#1c1c1c guifg=#444444
-    CSAHi NonText term=bold cterm=NONE ctermbg=232 ctermfg=59 gui=NONE guibg=#151515 guifg=#606060
+    CSAHi SpecialKey term=bold cterm=NONE ctermbg=232 ctermfg=236 gui=NONE guibg=#151515 guifg=#404040
+    CSAHi NonText term=bold cterm=NONE ctermbg=232 ctermfg=238 gui=NONE guibg=#151515 guifg=#606060
     CSAHi Directory term=bold cterm=NONE ctermbg=bg ctermfg=186 gui=NONE guibg=bg guifg=#dad085
     CSAHi ErrorMsg term=NONE cterm=NONE ctermbg=88 ctermfg=fg gui=NONE guibg=#902020 guifg=fg
     CSAHi IncSearch term=reverse cterm=reverse ctermbg=bg ctermfg=fg gui=reverse guibg=bg guifg=fg
