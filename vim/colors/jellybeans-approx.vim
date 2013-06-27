@@ -71,8 +71,8 @@ elseif has("gui_running") || (&t_Co == 256 && (&term ==# "xterm" || &term =~# "^
     CSAHi TabLine term=underline cterm=NONE ctermbg=152 ctermfg=16 gui=italic guibg=#b0b8c0 guifg=#000000
     CSAHi TabLineSel term=bold cterm=bold ctermbg=255 ctermfg=16 gui=bold,italic guibg=#f0f0f0 guifg=#000000
     CSAHi TabLineFill term=reverse cterm=NONE ctermbg=bg ctermfg=145 gui=NONE guibg=bg guifg=#9098a0
-    CSAHi CursorColumn term=reverse cterm=NONE ctermbg=234 ctermfg=fg gui=NONE guibg=#1c1c1c guifg=fg
-    CSAHi CursorLine term=underline cterm=NONE ctermbg=234 ctermfg=fg gui=NONE guibg=#1c1c1c guifg=fg
+    CSAHi CursorColumn term=reverse cterm=NONE ctermbg=234 ctermfg=NONE gui=NONE guibg=#1c1c1c guifg=fg
+    CSAHi CursorLine term=underline cterm=NONE ctermbg=234 ctermfg=NONE gui=NONE guibg=#1c1c1c guifg=fg
     CSAHi shExpr term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi Plbdd7d7ff375f00afN term=NONE cterm=NONE ctermbg=91 ctermfg=189 gui=NONE guibg=#5f00af guifg=#d7d7ff
     CSAHi Pl375f00af375f00afN term=NONE cterm=NONE ctermbg=91 ctermfg=91 gui=NONE guibg=#5f00af guifg=#5f00af
@@ -408,8 +408,8 @@ elseif has("gui_running") || (&t_Co == 256 && (&term ==# "xterm" || &term =~# "^
     CSAHi TabLine term=underline cterm=NONE ctermbg=189 ctermfg=16 gui=italic guibg=#b0b8c0 guifg=#000000
     CSAHi TabLineSel term=bold cterm=bold ctermbg=255 ctermfg=16 gui=bold,italic guibg=#f0f0f0 guifg=#000000
     CSAHi TabLineFill term=reverse cterm=NONE ctermbg=bg ctermfg=152 gui=NONE guibg=bg guifg=#9098a0
-    CSAHi CursorColumn term=reverse cterm=NONE ctermbg=234 ctermfg=fg gui=NONE guibg=#1c1c1c guifg=fg
-    CSAHi CursorLine term=underline cterm=NONE ctermbg=234 ctermfg=fg gui=NONE guibg=#1c1c1c guifg=fg
+    CSAHi CursorColumn term=reverse cterm=NONE ctermbg=234 ctermfg=NONE gui=NONE guibg=#1c1c1c guifg=fg
+    CSAHi CursorLine term=underline cterm=NONE ctermbg=234 ctermfg=NONE gui=NONE guibg=#1c1c1c guifg=fg
     CSAHi shExpr term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi Plbdd7d7ff375f00afN term=NONE cterm=NONE ctermbg=92 ctermfg=231 gui=NONE guibg=#5f00af guifg=#d7d7ff
     CSAHi Pl375f00af375f00afN term=NONE cterm=NONE ctermbg=92 ctermfg=92 gui=NONE guibg=#5f00af guifg=#5f00af
@@ -745,8 +745,8 @@ elseif has("gui_running") || &t_Co == 256
     CSAHi TabLine term=underline cterm=NONE ctermbg=145 ctermfg=16 gui=italic guibg=#b0b8c0 guifg=#000000
     CSAHi TabLineSel term=bold cterm=bold ctermbg=255 ctermfg=16 gui=bold,italic guibg=#f0f0f0 guifg=#000000
     CSAHi TabLineFill term=reverse cterm=NONE ctermbg=bg ctermfg=103 gui=NONE guibg=bg guifg=#9098a0
-    CSAHi CursorColumn term=reverse cterm=NONE ctermbg=234 ctermfg=fg gui=NONE guibg=#1c1c1c guifg=fg
-    CSAHi CursorLine term=underline cterm=NONE ctermbg=234 ctermfg=fg gui=NONE guibg=#1c1c1c guifg=fg
+    CSAHi CursorColumn term=reverse cterm=NONE ctermbg=234 ctermfg=NONE gui=NONE guibg=#1c1c1c guifg=fg
+    CSAHi CursorLine term=underline cterm=NONE ctermbg=234 ctermfg=NONE gui=NONE guibg=#1c1c1c guifg=fg
     CSAHi shExpr term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi Plbdd7d7ff375f00afN term=NONE cterm=NONE ctermbg=55 ctermfg=189 gui=NONE guibg=#5f00af guifg=#d7d7ff
     CSAHi Pl375f00af375f00afN term=NONE cterm=NONE ctermbg=55 ctermfg=55 gui=NONE guibg=#5f00af guifg=#5f00af
@@ -1082,8 +1082,8 @@ elseif has("gui_running") || &t_Co == 88
     CSAHi TabLine term=underline cterm=NONE ctermbg=85 ctermfg=16 gui=italic guibg=#b0b8c0 guifg=#000000
     CSAHi TabLineSel term=bold cterm=bold ctermbg=87 ctermfg=16 gui=bold,italic guibg=#f0f0f0 guifg=#000000
     CSAHi TabLineFill term=reverse cterm=NONE ctermbg=bg ctermfg=37 gui=NONE guibg=bg guifg=#9098a0
-    CSAHi CursorColumn term=reverse cterm=NONE ctermbg=80 ctermfg=fg gui=NONE guibg=#1c1c1c guifg=fg
-    CSAHi CursorLine term=underline cterm=NONE ctermbg=80 ctermfg=fg gui=NONE guibg=#1c1c1c guifg=fg
+    CSAHi CursorColumn term=reverse cterm=NONE ctermbg=80 ctermfg=NONE gui=NONE guibg=#1c1c1c guifg=fg
+    CSAHi CursorLine term=underline cterm=NONE ctermbg=80 ctermfg=NONE gui=NONE guibg=#1c1c1c guifg=fg
     CSAHi shExpr term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi Plbdd7d7ff375f00afN term=NONE cterm=NONE ctermbg=34 ctermfg=59 gui=NONE guibg=#5f00af guifg=#d7d7ff
     CSAHi Pl375f00af375f00afN term=NONE cterm=NONE ctermbg=34 ctermfg=34 gui=NONE guibg=#5f00af guifg=#5f00af
