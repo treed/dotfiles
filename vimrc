@@ -172,6 +172,10 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
     \ }
 
+let g:ycm_filetype_blacklist = {
+  \   'unite': 1,
+  \ }
+
 let g:ycm_semantic_triggers =  {
   \   'c' : ['->', '.'],
   \   'objc' : ['->', '.'],
@@ -212,6 +216,5 @@ au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:U
 call unite#custom_source('file_rec,file_rec/async', 'matchers', ['matcher_fuzzy'])
 call unite#custom_source('buffer,file,file_mru,file_rec,file_rec/async', 'sorters', 'sorter_rank')
 let g:unite_force_overwrite_statusline = 0
-
 
 helptags ~/.vim/doc
