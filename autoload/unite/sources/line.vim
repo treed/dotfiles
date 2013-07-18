@@ -2,7 +2,7 @@
 " FILE: line.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
 "          t9md <taqumd at gmail.com>
-" Last Modified: 07 Apr 2013.
+" Last Modified: 12 Jun 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -189,7 +189,7 @@ function! s:on_gather_candidates(direction, context, start, offset) "{{{
 
     " Check match.
     for input in a:context.input_list
-      let expr = unite#filters#matcher_regexp#get_expr(input)
+      let expr = unite#filters#matcher_regexp#get_expr(input, a:context)
       if expr !=# 'if_lua'
         call filter(lines, expr)
       endif
@@ -240,7 +240,7 @@ function! s:hl_refresh(context) "{{{
 
   for word in split(a:context.input, '\\\@<! ')
     execute "syntax match uniteSource__Line_target "
-          \ . string(unite#escape_match(word))
+          \ . string(unite#util#escape_match(word))
           \ . " contained containedin=uniteSource__Line"
   endfor
 endfunction"}}}

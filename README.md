@@ -1,4 +1,5 @@
-## Description
+[![Stories in Ready](http://badge.waffle.io/Shougo/unite.vim.png)](http://waffle.io/Shougo/unite.vim)  
+![Unite.vim](https://s3.amazonaws.com/github-csexton/unite-brand.png)
 
 The unite or unite.vim plug-in can search and display information from
 arbitrary sources like files, buffers, recently used files or registers.  You
@@ -7,6 +8,8 @@ can run several pre-defined actions on a target displayed in the unite window.
 The difference between unite and similar plug-ins like fuzzyfinder,
 ctrl-p or ku is, unite provides an integration interface for several
 sources and you can create new interface using unite.
+
+<img src="https://s3.amazonaws.com/github-csexton/unite-01.gif" />
 
 ## Usage
 
@@ -23,7 +26,7 @@ down files.
 
 
 If you start unite it splits the window horizontally and pops up
-from the top of Vim by default. 
+from the top of Vim by default.
 
 	:Unite file
 
@@ -38,13 +41,13 @@ actions.
 You can also narrow down the list of candidates by a keyword. If you change
 into the insert mode inside of a unite window, the cursor drops you behind the
 ">" in the second line from above. There you can start typing to filter the
-candidates.  You can also use the wild card "*" as an arbitrary character
-sequence. For example, 
+candidates.  You can also use the wild card `*` as an arbitrary character
+sequence. For example,
 
 	*hisa
 
 matches hisa, ujihisa, or ujihisahisa. Furthermore, two consecutive wild cards
-match a directory recursively. 
+match a directory recursively.
 
 	**/foo
 
@@ -75,7 +78,7 @@ See also `unite_default_key_mappings` for other actions.
 There is also a screencast available which shows unite in action. Thanks to
 ujihisa! http://www.ustream.tv/recorded/11240673
 
-## Install details
+## Install
 
 Install the distributed files into your Vim script directory which is usually
 `~/.vim/`, or `$HOME/vimfiles` on Windows. You should consider to use one of the
@@ -87,7 +90,75 @@ sources to the command you wish to select from as parameters. However, it's a
 pain in the ass to run the command explicitly every time, so I recommend you
 to set a key mapping for the command. See `:h unite`.
 
-## Links
+## Resources
 
-unite plugins(in Japanese): https://github.com/Shougo/unite.vim/wiki/unite-plugins
+* [Unite plugins](https://github.com/Shougo/unite.vim/wiki/unite-plugins)
+* [Unite.vim, the Plugin You Didn't Know You Need](http://bling.github.io/blog/2013/06/02/unite-dot-vim-the-plugin-you-didnt-know-you-need/)
+* [FAQ](https://github.com/Shougo/unite.vim/blob/master/doc/unite.txt#L3134)
 
+
+## Screen shots
+
+unite file source
+-----------------
+![Unite file source.](https://a248.e.akamai.net/camo.github.com/079f081e01557032ce18e5118c8576036763854b/687474703a2f2f6779617a6f2e636f6d2f37333739663130343130383436333263363666616566396361663365316630392e706e67)
+
+unite action source
+-------------------
+![Unite action source.](http://gyazo.com/c5c000170f28926aaf83d0c47bc5fcbb.png)
+
+unite output source
+-------------------
+![Unite output source.](http://cdn-ak.f.st-hatena.com/images/fotolife/o/osyo-manga/20130307/20130307101224.png)
+
+unite mapping source
+--------------------
+![Unite mapping source.](http://cdn-ak.f.st-hatena.com/images/fotolife/o/osyo-manga/20130307/20130307101225.png)
+
+unite menu source
+-----------------
+![Unite menu source.](http://cdn-ak.f.st-hatena.com/images/fotolife/o/osyo-manga/20130307/20130307101227.png)
+
+unite menu source with customization
+------------------------------------
+![Unite menu source with customization.](https://f.cloud.github.com/assets/390964/734885/82b91006-e2e1-11e2-9957-fb279bc71311.png)
+
+	let g:unite_source_menu_menus.git = {
+	    \ 'description' : '            gestionar repositorios git
+	        \                            ⌘ [espacio]g',
+	    \}
+	let g:unite_source_menu_menus.git.command_candidates = [
+	    \['▷ tig                                                        ⌘ ,gt',
+	        \'normal ,gt'],
+	    \['▷ git status       (Fugitive)                                ⌘ ,gs',
+	        \'Gstatus'],
+	    \['▷ git diff         (Fugitive)                                ⌘ ,gd',
+	        \'Gdiff'],
+	    \['▷ git commit       (Fugitive)                                ⌘ ,gc',
+	        \'Gcommit'],
+	    \['▷ git log          (Fugitive)                                ⌘ ,gl',
+	        \'exe "silent Glog | Unite quickfix"'],
+	    \['▷ git blame        (Fugitive)                                ⌘ ,gb',
+	        \'Gblame'],
+	    \['▷ git stage        (Fugitive)                                ⌘ ,gw',
+	        \'Gwrite'],
+	    \['▷ git checkout     (Fugitive)                                ⌘ ,go',
+	        \'Gread'],
+	    \['▷ git rm           (Fugitive)                                ⌘ ,gr',
+	        \'Gremove'],
+	    \['▷ git mv           (Fugitive)                                ⌘ ,gm',
+	        \'exe "Gmove " input("destino: ")'],
+	    \['▷ git push         (Fugitive, salida por buffer)             ⌘ ,gp',
+	        \'Git! push'],
+	    \['▷ git pull         (Fugitive, salida por buffer)             ⌘ ,gP',
+	        \'Git! pull'],
+	    \['▷ git prompt       (Fugitive, salida por buffer)             ⌘ ,gi',
+	        \'exe "Git! " input("comando git: ")'],
+	    \['▷ git cd           (Fugitive)',
+	        \'Gcd'],
+	    \]
+	nnoremap <silent>[menu]g :Unite -silent -start-insert menu:git<CR>
+
+## Special Thanks
+
+* Dragon Image was originally from [Stanislav](http://All-Silhouettes.com)

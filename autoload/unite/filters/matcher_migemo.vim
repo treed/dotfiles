@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: matcher_migemo.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 04 Sep 2012.
+" Last Modified: 13 Jun 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -93,13 +93,17 @@ function! s:matcher.filter(candidates, context) "{{{
       " Exclusion match.
       let expr = 'v:val.word !~ ' .
             \ string(s:get_migemo_pattern(input[1:]))
+    elseif input =~ '^:'
+      " Executes command.
+      let a:context.execute_command = input[1:]
+      continue
     else
       let expr = 'v:val.word =~ ' .
             \ string(s:get_migemo_pattern(input))
     endif
 
     try
-      let candidates = unite#util#filter_matcher(
+      let candidates = unite#filters#filter_matcher(
             \ candidates, expr, a:context)
     catch
       let candidates = []

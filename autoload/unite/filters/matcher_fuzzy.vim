@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: matcher_fuzzy.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 04 Sep 2012.
+" Last Modified: 30 Jun 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -38,25 +38,39 @@ let s:matcher = {
 
 function! s:matcher.filter(candidates, context) "{{{
   if a:context.input == ''
-    return unite#util#filter_matcher(
+    return unite#filters#filter_matcher(
           \ a:candidates, '', a:context)
   endif
 
+  if len(a:context.input) > 20
+    " Fall back to matcher_glob.
+    return unite#filters#matcher_glob#define().filter(
+          \ a:candidates, a:context)
+  endif
+
   let candidates = a:candidates
-  for input in a:context.input_list
-    let input = substitute(input, '\\ ', ' ', 'g')
+  for input_orig in a:context.input_list
+    let input = substitute(input_orig, '\\ ', ' ', 'g')
     if input == '!'
+      continue
+    elseif input =~ '^:'
+      " Executes command.
+      let a:context.execute_command = input[1:]
       continue
     endif
 
-    let input = substitute(substitute(unite#escape_match(input),
-          \ '[[:alnum:]._-]', '\0.*', 'g'), '\*\*', '*', 'g')
+    let input = substitute(substitute(unite#util#escape_match(input),
+          \ '[[:alnum:]._/-]', '\0.*', 'g'), '\*\*', '*', 'g')
 
     let expr = (input =~ '^!') ?
           \ 'v:val.word !~ ' . string(input[1:]) :
           \ 'v:val.word =~ ' . string(input)
+    if input !~ '^!' && unite#util#has_lua()
+      let expr = 'if_lua_fuzzy'
+      let a:context.input = input_orig
+    endif
 
-    let candidates = unite#util#filter_matcher(
+    let candidates = unite#filters#filter_matcher(
           \ a:candidates, expr, a:context)
   endfor
 
