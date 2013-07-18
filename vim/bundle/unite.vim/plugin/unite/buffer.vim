@@ -25,7 +25,9 @@
 "=============================================================================
 
 if exists('g:loaded_unite_source_buffer')
-      \ || $SUDO_USER != ''
+      \ || ($SUDO_USER != '' && $USER !=# $SUDO_USER
+      \     && $HOME !=# expand('~'.$USER)
+      \     && $HOME ==# expand('~'.$SUDO_USER))
   finish
 endif
 
@@ -34,10 +36,41 @@ set cpo&vim
 
 augroup plugin-unite-source-buffer
   autocmd!
-  autocmd BufEnter,BufWinEnter,BufFilePost * call unite#sources#buffer#_append()
+  autocmd BufEnter,BufWinEnter,BufFilePost *
+        \ call s:append(expand('<amatch>'))
 augroup END
 
 let g:loaded_unite_source_buffer = 1
+
+function! s:append(path) "{{{
+  if bufnr('%') != expand('<abuf>')
+    return
+  endif
+
+  if !exists('t:unite_buffer_dictionary')
+    let t:unite_buffer_dictionary = {}
+  endif
+
+  " Append the current buffer.
+  let bufnr = bufnr('%')
+
+  if exists('*gettabvar')
+    " Delete same buffer in other tab pages.
+    for tabnr in range(1, tabpagenr('$'))
+      let buffer_dict = gettabvar(tabnr, 'unite_buffer_dictionary')
+      if type(buffer_dict) == type({}) && has_key(buffer_dict, bufnr)
+        call remove(buffer_dict, bufnr)
+      endif
+      unlet buffer_dict
+    endfor
+  endif
+
+  let t:unite_buffer_dictionary[bufnr] = 1
+
+  if !has('vim_starting') || bufname('%') != ''
+    call unite#sources#buffer#_append()
+  endif
+endfunction"}}}
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
