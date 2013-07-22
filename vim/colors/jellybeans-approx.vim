@@ -27,7 +27,6 @@ endfunction
 
 if 0
 elseif has("gui_running") || (&t_Co == 256 && (&term ==# "xterm" || &term =~# "^screen") && exists("g:CSApprox_konsole") && g:CSApprox_konsole) || (&term =~? "^konsole" && s:old_kde())
-    CSAHi Normal term=NONE cterm=NONE ctermbg=232 ctermfg=230 gui=NONE guibg=#151515 guifg=#e8e8d3
     CSAHi shDerefPattern term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi shDerefEscape term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi Pl62875fd7e7ffffffN term=NONE cterm=NONE ctermbg=231 ctermfg=140 gui=NONE guibg=#ffffff guifg=#875fd7
@@ -237,7 +236,6 @@ elseif has("gui_running") || (&t_Co == 256 && (&term ==# "xterm" || &term =~# "^
     CSAHi Ple7ffffffec303030N term=NONE cterm=NONE ctermbg=236 ctermfg=231 gui=NONE guibg=#303030 guifg=#ffffff
     CSAHi PreciseJumpTarget term=NONE cterm=NONE ctermbg=65 ctermfg=192 gui=NONE guibg=#405026 guifg=#b9ed67
     CSAHi perlPackageConst term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
-    CSAHi NONE term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi perlSpecialStringU2 term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi vimRubyRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi Pl16005f0094afd700b term=NONE cterm=bold ctermbg=148 ctermfg=28 gui=bold guibg=#afd700 guifg=#005f00
@@ -574,7 +572,6 @@ elseif has("gui_running") || (&t_Co == 256 && (&term ==# "xterm" || &term =~# "^
     CSAHi Ple7ffffffec303030N term=NONE cterm=NONE ctermbg=236 ctermfg=255 gui=NONE guibg=#303030 guifg=#ffffff
     CSAHi PreciseJumpTarget term=NONE cterm=NONE ctermbg=101 ctermfg=192 gui=NONE guibg=#405026 guifg=#b9ed67
     CSAHi perlPackageConst term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
-    CSAHi NONE term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi perlSpecialStringU2 term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi vimRubyRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi Pl16005f0094afd700b term=NONE cterm=bold ctermbg=190 ctermfg=28 gui=bold guibg=#afd700 guifg=#005f00
@@ -911,7 +908,6 @@ elseif has("gui_running") || &t_Co == 256
     CSAHi Ple7ffffffec303030N term=NONE cterm=NONE ctermbg=236 ctermfg=231 gui=NONE guibg=#303030 guifg=#ffffff
     CSAHi PreciseJumpTarget term=NONE cterm=NONE ctermbg=58 ctermfg=155 gui=NONE guibg=#405026 guifg=#b9ed67
     CSAHi perlPackageConst term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
-    CSAHi NONE term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi perlSpecialStringU2 term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi vimRubyRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi Pl16005f0094afd700b term=NONE cterm=bold ctermbg=148 ctermfg=22 gui=bold guibg=#afd700 guifg=#005f00
@@ -1248,7 +1244,6 @@ elseif has("gui_running") || &t_Co == 88
     CSAHi Ple7ffffffec303030N term=NONE cterm=NONE ctermbg=80 ctermfg=79 gui=NONE guibg=#303030 guifg=#ffffff
     CSAHi PreciseJumpTarget term=NONE cterm=NONE ctermbg=20 ctermfg=61 gui=NONE guibg=#405026 guifg=#b9ed67
     CSAHi perlPackageConst term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
-    CSAHi NONE term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi perlSpecialStringU2 term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi vimRubyRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
     CSAHi Pl16005f0094afd700b term=NONE cterm=bold ctermbg=56 ctermfg=20 gui=bold guibg=#afd700 guifg=#005f00
