@@ -7,3 +7,5 @@ https://github.com/myusuf3/numbers.vim.git vim/bundle/numbers.vim
 https://github.com/ClockworkNet/vim-junos-syntax.git vim/bundle/vim-junos-syntax
 https://github.com/mhinz/vim-signify.git vim/bundle/vim-signify
 https://github.com/svermeulen/vim-easyclip.git vim/bundle/vim-easyclip
+https://github.com/dbakker/vim-lint.git vim/bundle/vim-lint
+https://github.com/takac/vim-hardtime.git vim/bundle/vim-hardtime
