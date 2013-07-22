@@ -217,4 +217,6 @@ call unite#custom_source('file_rec,file_rec/async', 'matchers', ['matcher_fuzzy'
 call unite#custom_source('buffer,file,file_mru,file_rec,file_rec/async', 'sorters', 'sorter_rank')
 let g:unite_force_overwrite_statusline = 0
 
+let g:hardtime_default_on = 1
+
 helptags ~/.vim/doc
