@@ -219,4 +219,12 @@ let g:unite_force_overwrite_statusline = 0
 
 let g:hardtime_default_on = 1
 
+let g:airline_left_sep = '⮀'
+let g:airline_left_alt_sep = '⮁'
+let g:airline_right_sep = '⮂'
+let g:airline_right_alt_sep = '⮃'
+let g:airline#extensions#branch#symbol = '⭠'
+let g:airline#extensions#readonly#symbol = '⭤'
+let g:airline_linecolumn_prefix = '⭡'
+
 helptags ~/.vim/doc
