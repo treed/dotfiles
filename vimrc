@@ -14,10 +14,10 @@ if has("gui_running")
 endif
 syntax on
 
-highlight DiffAdd term=reverse cterm=bold ctermbg=green ctermfg=white 
-highlight DiffChange term=reverse cterm=bold ctermbg=cyan ctermfg=black 
-highlight DiffText term=reverse cterm=bold ctermbg=gray ctermfg=black 
-highlight DiffDelete term=reverse cterm=bold ctermbg=red ctermfg=black 
+highlight DiffAdd term=reverse cterm=bold ctermbg=green ctermfg=white
+highlight DiffChange term=reverse cterm=bold ctermbg=cyan ctermfg=black
+highlight DiffText term=reverse cterm=bold ctermbg=gray ctermfg=black
+highlight DiffDelete term=reverse cterm=bold ctermbg=red ctermfg=black
 
 " Various Options
 set nocompatible
@@ -100,7 +100,7 @@ nnoremap <Space>u :GundoToggle<CR>
 " Clear trailing whitespace and save
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Fast access to grep (used to be ack, hence the 'a')
-nnoremap <Space>a :RGrep! 
+nnoremap <Space>a :RGrep!
 " Fuzzy find
 nnoremap <Space>i :FufLine<CR>
 " EasyMotion
