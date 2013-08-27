@@ -135,15 +135,16 @@ myLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full ||| dishes
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "MPlayer"        --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , className =? "Dia"            --> doFloat
-    , className =? "vncviewer"      --> doFloat
-    , className =? "Vmplayer"       --> doFloat
-    , className =? "Virt-viewer"    --> doFloat
-    , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore
-    , title     =? "Save File"      --> (doRectFloat $ RationalRect 0.25 0.25 0.5 0.5)
+    [ className                       =? "MPlayer"        --> doFloat
+    , className                       =? "Gimp"           --> doFloat
+    , className                       =? "Dia"            --> doFloat
+    , className                       =? "vncviewer"      --> doFloat
+    , className                       =? "Vmplayer"       --> doFloat
+    , className                       =? "Virt-viewer"    --> doFloat
+    , resource                        =? "desktop_window" --> doIgnore
+    , resource                        =? "kdesktop"       --> doIgnore
+    , title                           =? "Save File"      --> (doRectFloat $ RationalRect 0.25 0.25 0.5 0.5)
+    , stringProperty "WM_WINDOW_ROLE" =? "pop-up" --> doFloat
     , namedScratchpadManageHook myScratchpads
     , manageDocks ]
 

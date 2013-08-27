@@ -14,10 +14,10 @@ if has("gui_running")
 endif
 syntax on
 
-highlight DiffAdd term=reverse cterm=bold ctermbg=green ctermfg=white 
-highlight DiffChange term=reverse cterm=bold ctermbg=cyan ctermfg=black 
-highlight DiffText term=reverse cterm=bold ctermbg=gray ctermfg=black 
-highlight DiffDelete term=reverse cterm=bold ctermbg=red ctermfg=black 
+highlight DiffAdd term=reverse cterm=bold ctermbg=green ctermfg=white
+highlight DiffChange term=reverse cterm=bold ctermbg=cyan ctermfg=black
+highlight DiffText term=reverse cterm=bold ctermbg=gray ctermfg=black
+highlight DiffDelete term=reverse cterm=bold ctermbg=red ctermfg=black
 
 " Various Options
 set nocompatible
@@ -40,6 +40,10 @@ set gdefault
 set incsearch
 set showmatch
 set nohlsearch
+set cursorline
+
+set list
+set listchars=tab:╾─,eol:↩,trail:␠
 
 " Set GUI options: use console mode for dialogs, and enable X11 copying from
 " VISUAL mode
@@ -59,8 +63,8 @@ set mouse=a
 let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 set ofu=syntaxcomplete#Complete
 set completeopt=longest,menu
-vnoremap <Tab> 1>
-vnoremap <S-Tab> 1<
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
 nnoremap <Tab> >>
 nnoremap <S-Tab> <<
 
@@ -92,10 +96,11 @@ nnoremap <Space>x :Kwbd<CR>
 nnoremap <silent> <Space>t :TagbarToggle<CR>
 nnoremap <silent> <Space>r :NERDTreeToggle<CR>
 nnoremap <Space>o :CommandTFlush<CR>:CommandT<CR>
+nnoremap <Space>u :GundoToggle<CR>
 " Clear trailing whitespace and save
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Fast access to grep (used to be ack, hence the 'a')
-nnoremap <Space>a :RGrep! 
+nnoremap <Space>a :RGrep!
 " Fuzzy find
 nnoremap <Space>i :FufLine<CR>
 " EasyMotion
@@ -106,7 +111,8 @@ vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l2c0r0<CR>
 
 " Perl Specific
 " Make Ctrl-T increment the number of tests with Test::More
-autocmd BufNewFile,BufRead *.t nnoremap <silent> <C-T> :%s/plan tests => \zs\d\+/\=submatch(0) + 1/<CR><C-O>
+autocmd BufNewFile,BufRead *.p[lm] nnoremap <silent> <C-T> :call VimuxRunCommand("sh bb_test.t")<CR>
+
 " Run perltidy
 autocmd BufNewFile,BufRead *.p[lm] nnoremap <silent> <Space>c :%!perl perltidy.pl --profile=perltidyrc<CR>
 autocmd BufNewFile,BufRead *.p[lm] vnoremap <silent> <Space>c :!perl perltidy.pl --profile=perltidyrc<CR>
@@ -166,6 +172,10 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
     \ }
 
+let g:ycm_filetype_blacklist = {
+  \   'unite': 1,
+  \ }
+
 let g:ycm_semantic_triggers =  {
   \   'c' : ['->', '.'],
   \   'objc' : ['->', '.'],
@@ -178,7 +188,45 @@ let g:ycm_semantic_triggers =  {
   \   'haskell' : ['.'],
   \ }
 
+function! s:GoLint()
+    cexpr system("golint " . shellescape(expand('%')))
+    copen
+endfunction
+command! GoLint :call s:GoLint()
+
 let g:haddock_browser = ""
 let g:haddock_docdir = ""
+
+let g:UltiSnipsExpandTrigger="<tab>"
+
+function! g:UltiSnips_Complete()
+    call UltiSnips_ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return "\<C-n>"
+        else
+            return "\<TAB>"
+        endif
+    endif
+    return ""
+endfunction
+
+au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+
+call unite#custom_source('file_rec,file_rec/async', 'matchers', ['matcher_fuzzy'])
+call unite#custom_source('buffer,file,file_mru,file_rec,file_rec/async', 'sorters', 'sorter_length')
+let g:unite_force_overwrite_statusline = 0
+
+let g:hardtime_default_on = 1
+
+let g:airline_left_sep = '⮀'
+let g:airline_left_alt_sep = '⮁'
+let g:airline_right_sep = '⮂'
+let g:airline_right_alt_sep = '⮃'
+let g:airline#extensions#branch#symbol = '⭠'
+let g:airline#extensions#readonly#symbol = '⭤'
+let g:airline_linecolumn_prefix = '⭡'
+let g:airline#extensions#hunks#non_zero_only = 1
+let g:airline_theme="bubblegum"
 
 helptags ~/.vim/doc

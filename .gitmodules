@@ -16,18 +16,12 @@
 [submodule "vim/bundle/vim-fugitive"]
 	path = vim/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
-[submodule "vim/bundle/vim-supertab"]
-	path = vim/bundle/vim-supertab
-	url = https://github.com/tsaleh/vim-supertab.git
 [submodule "vim/bundle/vim-extradite"]
 	path = vim/bundle/vim-extradite
 	url = https://github.com/int3/vim-extradite.git
 [submodule "vim/bundle/vim-pasta"]
 	path = vim/bundle/vim-pasta
 	url = https://github.com/sickill/vim-pasta.git
-[submodule "vim/bundle/vim-powerline"]
-	path = vim/bundle/vim-powerline
-	url = https://github.com/Lokaltog/vim-powerline.git
 [submodule "vim/bundle/gitv"]
 	path = vim/bundle/gitv
 	url = https://github.com/gregsexton/gitv.git
@@ -49,9 +43,6 @@
 [submodule "vim/bundle/syntastic"]
 	path = vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
-[submodule "vim/bundle/vim-signature"]
-	path = vim/bundle/vim-signature
-	url = https://github.com/kshenoy/vim-signature.git
 [submodule "vim/bundle/vim-perl"]
 	path = vim/bundle/vim-perl
 	url = https://github.com/petdance/vim-perl
@@ -82,12 +73,6 @@
 [submodule "vim/bundle/tlib_vim"]
 	path = vim/bundle/tlib_vim
 	url = https://github.com/tomtom/tlib_vim
-[submodule "vim/bundle/vim-snipmate"]
-	path = vim/bundle/vim-snipmate
-	url = https://github.com/garbas/vim-snipmate.git
-[submodule "vim/bundle/snipmate-snippets"]
-	path = vim/bundle/snipmate-snippets
-	url = https://github.com/honza/snipmate-snippets.git
 [submodule "oh-my-zsh"]
 	path = oh-my-zsh
 	url = git://github.com/robbyrussell/oh-my-zsh.git
@@ -115,3 +100,9 @@
 [submodule "vim/bundle/haskellmode-vim"]
 	path = vim/bundle/haskellmode-vim
 	url = https://github.com/lukerandall/haskellmode-vim.git
+[submodule "vim/bundle/vim-obsession"]
+	path = vim/bundle/vim-obsession
+	url = https://github.com/tpope/vim-obsession.git
+[submodule "vim/bundle/vim-surround"]
+	path = vim/bundle/vim-surround
+	url = https://github.com/tpope/vim-surround.git

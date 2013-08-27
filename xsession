@@ -57,4 +57,5 @@ try gtk-redshift -l 37.4:-122.0 -t 6500:4000
 try keynav
 sudo rm -f /tmp/*evrouter*
 try_sudo evrouter -r /dev/input/by-id/usb-Microsoft_Natural®_Ergonomic_Keyboard_4000-if01-event-kbd
+xcape
 exec xmonad

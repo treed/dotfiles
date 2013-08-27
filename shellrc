@@ -5,7 +5,7 @@ fi
 
 export GOPATH=/home/treed/go:/home/treed/code/golang:/usr/lib/go
 export EDITOR="vim"
-export TERM="xterm-256color"
+export TERM="screen-256color"
 
 # For working with Debian packages
 export QUILT_PATCHES=debian/patches
