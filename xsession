@@ -23,7 +23,7 @@ try() {
     return 0
 }
 
-try() {
+try_sudo() {
     if isrunning $(basename $1); then
         echo "$1 already running."
         return 0
