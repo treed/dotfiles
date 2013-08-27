@@ -227,5 +227,6 @@ let g:airline#extensions#branch#symbol = '⭠'
 let g:airline#extensions#readonly#symbol = '⭤'
 let g:airline_linecolumn_prefix = '⭡'
 let g:airline#extensions#hunks#non_zero_only = 1
+let g:airline_theme=bubblegum
 
 helptags ~/.vim/doc
