@@ -118,8 +118,10 @@ autocmd BufNewFile,BufRead *.p[lm] nnoremap <silent> <Space>c :%!perl perltidy.p
 autocmd BufNewFile,BufRead *.p[lm] vnoremap <silent> <Space>c :!perl perltidy.pl --profile=perltidyrc<CR>
 
 " Go Specific
-autocmd BufNewFile,BufRead *.go nnoremap <silent> <C-T> :call VimuxRunCommand("go test")<CR>
-autocmd BufNewFile,BufRead *.go nnoremap <silent> <Space>c :Fmt<CR>
+autocmd FileType go nnoremap <buffer><silent> <C-T> :call VimuxRunCommand("go test")<CR>
+autocmd FileType go nnoremap <buffer><silent> <Space>c :Fmt<CR>
+autocmd FileType go setlocal noexpandtab
+autocmd FileType go autocmd BufWritePre <buffer> execute "normal! mz:mkview\<esc>:Fmt\<esc>:loadview\<esc>`z"
 
 " Markdown Specific
 autocmd BufNewFile,BufRead *.md set filetype=markdown
