@@ -41,6 +41,8 @@ set incsearch
 set showmatch
 set nohlsearch
 set cursorline
+set autoread
+autocmd CursorHold * checktime
 
 set list
 set listchars=tab:╾─,eol:↩,trail:␠
