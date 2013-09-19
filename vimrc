@@ -234,4 +234,6 @@ let g:airline_linecolumn_prefix = '⭡'
 let g:airline#extensions#hunks#non_zero_only = 1
 let g:airline_theme="bubblegum"
 
+let g:signify_cursorhold_normal = 1
+
 helptags ~/.vim/doc
