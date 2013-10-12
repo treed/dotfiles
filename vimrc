@@ -74,6 +74,10 @@ nnoremap <S-Tab> <<
 nnoremap < <C-O>
 nnoremap > <C-I>
 
+" Resize splits
+nnoremap <C-J> <C-W>+<CR>
+nnoremap <C-K> <C-W>-<CR>
+
 " Y should work like D
 call yankstack#setup()
 map Y y$
