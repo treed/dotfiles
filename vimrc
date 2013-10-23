@@ -205,6 +205,9 @@ command! GoLint :call s:GoLint()
 let g:haddock_browser = ""
 let g:haddock_docdir = ""
 
+let g:ycm_key_list_select_completion = ['<C-j>']
+let g:ycm_key_list_previous_completion = ['<C-k>']
+let g:ycm_key_list_invoke_completion = ['<tab>']
 let g:UltiSnipsExpandTrigger="<tab>"
 
 function! g:UltiSnips_Complete()
