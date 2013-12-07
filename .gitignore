@@ -1,1 +1,10 @@
-doc/tags
+*.swp
+*.un~
+*.o
+*.hi
+*.errors
+.netrwhist
+xmonad-x86_64-linux
+.VimballRecord
+*.spl
+vim/view/

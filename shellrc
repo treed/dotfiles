@@ -1,0 +1,37 @@
+# vim: filetype=sh
+if [ "$(hostname)" = "wyoming" ]; then
+    export PATH=$PATH:/home/treed/android-sdk-linux_86/tools:/home/treed/local/rakudo/bin
+fi
+
+export GOPATH=/home/treed/go:/home/treed/code/golang:/usr/lib/go
+export EDITOR="vim"
+export TERM="screen-256color"
+
+# For working with Debian packages
+export QUILT_PATCHES=debian/patches
+export QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"
+
+# Predictable SSH authentication socket location.
+SOCK="/tmp/ssh-agent-$USER-screen"
+if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
+then
+    rm -f /tmp/ssh-agent-$USER-screen
+    ln -sf $SSH_AUTH_SOCK $SOCK
+    export SSH_AUTH_SOCK=$SOCK
+fi
+
+alias spr="curl -F 'sprunge=<-' http://sprunge.us"
+alias ack='ack-grep -a'
+
+# Ledger stuff
+export LEDGER_FILE=~/ledger/ledger.dat
+alias funds="ledger --price-db ~/ledger/price.db -V --no-cache -d \"l<=3\" -l '!W/Taxes|Illiquid|Retirement|Equity/' bal Funds"
+alias cash="ledger --price-db ~/ledger/price.db -V --no-cache -d \"l<=4\" bal Assets:Bank Assets:Cash Liabilities:CC"
+
+# use vim as a PAGER for man
+export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
+
+test -f ~/.shellrc_local && source ~/.shellrc_local
+
+export PATH=${GOPATH//://bin:}/bin:/home/treed/bin:/home/treed/.cabal/bin:/usr/local/bin:$PATH
+true

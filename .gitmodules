@@ -1,0 +1,108 @@
+[submodule "vim/bundle/command-t"]
+	path = vim/bundle/command-t
+	url = git://git.wincent.com/command-t.git
+[submodule "vim/bundle/textile"]
+	path = vim/bundle/textile
+	url = https://github.com/timcharper/textile.vim.git
+[submodule "vim/bundle/vim-repeat"]
+	path = vim/bundle/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
+[submodule "vim/bundle/vim-orgmode"]
+	path = vim/bundle/vim-orgmode
+	url = https://github.com/jceb/vim-orgmode.git
+[submodule "vim/bundle/vimerl"]
+	path = vim/bundle/vimerl
+	url = https://github.com/jimenezrick/vimerl.git
+[submodule "vim/bundle/vim-fugitive"]
+	path = vim/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "vim/bundle/vim-extradite"]
+	path = vim/bundle/vim-extradite
+	url = https://github.com/int3/vim-extradite.git
+[submodule "vim/bundle/vim-pasta"]
+	path = vim/bundle/vim-pasta
+	url = https://github.com/sickill/vim-pasta.git
+[submodule "vim/bundle/gitv"]
+	path = vim/bundle/gitv
+	url = https://github.com/gregsexton/gitv.git
+[submodule "autojump"]
+	path = autojump
+	url = https://github.com/joelthelion/autojump.git
+[submodule "vim/bundle/tabular"]
+	path = vim/bundle/tabular
+	url = https://github.com/godlygeek/tabular.git
+[submodule "vim/bundle/vim2hs"]
+	path = vim/bundle/vim2hs
+	url = https://github.com/dag/vim2hs.git
+[submodule "vim/bundle/rgrep"]
+	path = vim/bundle/rgrep
+	url = https://github.com/rosenfeld/rgrep.vim.git
+[submodule "vim/bundle/vim-pathogen"]
+	path = vim/bundle/vim-pathogen
+	url = https://github.com/tpope/vim-pathogen.git
+[submodule "vim/bundle/syntastic"]
+	path = vim/bundle/syntastic
+	url = https://github.com/scrooloose/syntastic.git
+[submodule "vim/bundle/vim-perl"]
+	path = vim/bundle/vim-perl
+	url = https://github.com/petdance/vim-perl
+[submodule "vim/bundle/perlomni.vim"]
+	path = vim/bundle/perlomni.vim
+	url = https://github.com/c9s/perlomni.vim.git
+[submodule "vim/bundle/textobj-word-column.vim"]
+	path = vim/bundle/textobj-word-column.vim
+	url = https://github.com/coderifous/textobj-word-column.vim
+[submodule "vim/bundle/vim-yankstack"]
+	path = vim/bundle/vim-yankstack
+	url = https://github.com/maxbrunsfeld/vim-yankstack
+[submodule "vim/bundle/jellybeans"]
+	path = vim/bundle/jellybeans
+	url = https://github.com/nanotech/jellybeans.vim.git
+[submodule "vim/bundle/vim-vividchalk"]
+	path = vim/bundle/vim-vividchalk
+	url = https://github.com/tpope/vim-vividchalk
+[submodule "vim/bundle/vimux"]
+	path = vim/bundle/vimux
+	url = https://github.com/benmills/vimux.git
+[submodule "vim/bundle/tagbar"]
+	path = vim/bundle/tagbar
+	url = https://github.com/majutsushi/tagbar
+[submodule "vim/bundle/vim-addon-mw-utils"]
+	path = vim/bundle/vim-addon-mw-utils
+	url = https://github.com/MarcWeber/vim-addon-mw-utils
+[submodule "vim/bundle/tlib_vim"]
+	path = vim/bundle/tlib_vim
+	url = https://github.com/tomtom/tlib_vim
+[submodule "oh-my-zsh"]
+	path = oh-my-zsh
+	url = git://github.com/robbyrussell/oh-my-zsh.git
+[submodule "vim/bundle/speeddating"]
+	path = vim/bundle/speeddating
+	url = https://github.com/tpope/vim-speeddating.git
+[submodule "vim/bundle/gist-vim"]
+	path = vim/bundle/gist-vim
+	url = https://github.com/mattn/gist-vim.git
+[submodule "vim/bundle/FuzzyFinder"]
+	path = vim/bundle/FuzzyFinder
+	url = https://github.com/vim-scripts/FuzzyFinder.git
+[submodule "vim/bundle/L9"]
+	path = vim/bundle/L9
+	url = https://github.com/vim-scripts/L9.git
+[submodule "vim/bundle/vim-easymotion"]
+	path = vim/bundle/vim-easymotion
+	url = https://github.com/Lokaltog/vim-easymotion
+[submodule "vim/bundle/YouCompleteMe"]
+	path = vim/bundle/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "vim/bundle/neco-ghc"]
+	path = vim/bundle/neco-ghc
+	url = https://github.com/ujihisa/neco-ghc.git
+[submodule "vim/bundle/haskellmode-vim"]
+	path = vim/bundle/haskellmode-vim
+	url = https://github.com/lukerandall/haskellmode-vim.git
+[submodule "vim/bundle/vim-obsession"]
+	path = vim/bundle/vim-obsession
+	url = https://github.com/tpope/vim-obsession.git
+[submodule "vim/bundle/vim-surround"]
+	path = vim/bundle/vim-surround
+	url = https://github.com/tpope/vim-surround.git
