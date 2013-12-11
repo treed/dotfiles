@@ -244,4 +244,6 @@ let g:airline_theme="bubblegum"
 
 let g:signify_cursorhold_normal = 1
 
+let g:EasyClipUseSubstituteDefaults = 1
+
 helptags ~/.vim/doc
