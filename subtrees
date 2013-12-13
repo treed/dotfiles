@@ -11,3 +11,4 @@ https://github.com/dbakker/vim-lint.git vim/bundle/vim-lint
 https://github.com/takac/vim-hardtime.git vim/bundle/vim-hardtime
 https://github.com/bling/vim-airline.git vim/bundle/vim-airline
 https://github.com/tommcdo/vim-exchange.git vim/bundle/vim-exchange
+https://github.com/rking/ag.vim.git vim/bundle/ag.vim
