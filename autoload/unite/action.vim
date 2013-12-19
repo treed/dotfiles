@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: action.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 04 Jul 2013.
+" Last Modified: 19 Nov 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -66,6 +66,10 @@ function! s:get_action_table(source_name, kind_name, self_func, is_parents_actio
         \ unite#util#get_name(a:source_table, a:source_name, {})
   if empty(source)
     call unite#print_error('[unite.vim] source "' . a:source_name . '" is not found.')
+    return {}
+  endif
+  if empty(kind)
+    call unite#print_error('[unite.vim] kind "' . a:kind_name . '" is not found.')
     return {}
   endif
 
@@ -176,6 +180,9 @@ function! s:get_action_table(source_name, kind_name, self_func, is_parents_actio
     endif
     if !has_key(action, 'is_start')
       let action.is_start = 0
+    endif
+    if !has_key(action, 'is_tab')
+      let action.is_tab = 0
     endif
     if !has_key(action, 'is_selectable')
       let action.is_selectable = 0
@@ -306,6 +313,11 @@ function! unite#action#take(action_name, candidate, is_parent_action) "{{{
 endfunction"}}}
 
 function! unite#action#do(action_name, ...) "{{{
+  if &filetype == 'vimfiler' && has_key(b:vimfiler, 'unite')
+    " Restore unite condition in vimfiler.
+    call unite#set_current_unite(b:vimfiler.unite)
+  endif
+
   call unite#redraw()
 
   let candidates = get(a:000, 0,
@@ -352,6 +364,7 @@ function! unite#action#do(action_name, ...) "{{{
     " Check quit flag.
     if table.action.is_quit && unite.profile_name !=# 'action'
           \ && !table.action.is_start
+          \ && !(table.action.is_tab && context.no_quit)
       call unite#all_quit_session(0)
       let is_quit = 1
     endif
@@ -369,12 +382,12 @@ function! unite#action#do(action_name, ...) "{{{
     catch /^Vim\%((\a\+)\)\=:E325/
       " Ignore catch.
       call unite#print_error(v:exception)
-      call unite#print_error('Attenssion: Swap file is found in executing action!')
+      call unite#print_error('Warning: Swap file was found while executing action!')
       call unite#print_error('Action name is ' . table.action.name)
     catch
       call unite#print_error(v:throwpoint)
       call unite#print_error(v:exception)
-      call unite#print_error('Error occured in executing action!')
+      call unite#print_error('Error occured while executing action!')
       call unite#print_error('Action name is ' . table.action.name)
     endtry
 
@@ -393,7 +406,7 @@ function! unite#action#do(action_name, ...) "{{{
     endif
   endfor
 
-  if !is_quit && unite.context.keep_focus
+  if (!is_quit || unite.context.no_quit) && unite.context.keep_focus
     let winnr = bufwinnr(unite.bufnr)
 
     if winnr > 0

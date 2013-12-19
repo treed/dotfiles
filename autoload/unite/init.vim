@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: init.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 10 Jul 2013.
+" Last Modified: 19 Dec 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -26,6 +26,11 @@
 
 let s:save_cpo = &cpo
 set cpo&vim
+
+" Global options definition. "{{{
+let g:unite_ignore_source_files =
+      \ get(g:, 'unite_ignore_source_files', [])
+"}}}
 
 function! unite#init#_context(context, ...) "{{{
   let source_names = get(a:000, 0, [])
@@ -115,6 +120,7 @@ function! unite#init#_unite_buffer() "{{{
     setlocal nolist
     setlocal nobuflisted
     setlocal noswapfile
+    setlocal nospell
     setlocal noreadonly
     setlocal nofoldenable
     setlocal nomodeline
@@ -122,7 +128,7 @@ function! unite#init#_unite_buffer() "{{{
     setlocal foldcolumn=0
     setlocal iskeyword+=-,+,\\,!,~
     setlocal matchpairs-=<:>
-    setlocal completefunc=
+    setlocal completefunc=unite#dummy_completefunc
     setlocal omnifunc=
     match
     if has('conceal')
@@ -135,9 +141,13 @@ function! unite#init#_unite_buffer() "{{{
     if exists('+colorcolumn')
       setlocal colorcolumn=0
     endif
+    if exists('+relativenumber')
+      setlocal norelativenumber
+    endif
 
     " Autocommands.
     augroup plugin-unite
+      autocmd! * <buffer>
       autocmd InsertEnter <buffer>
             \ call unite#handlers#_on_insert_enter()
       autocmd InsertLeave <buffer>
@@ -210,8 +220,7 @@ function! unite#init#_current_unite(sources, context) "{{{
   endif
 
   " The current buffer is initialized.
-  let buffer_name = unite#util#is_windows() ?
-        \ '[unite] - ' : '*unite* - '
+  let buffer_name = '[unite] - '
   let buffer_name .= context.buffer_name
 
   let winnr = winnr()
@@ -223,6 +232,7 @@ function! unite#init#_current_unite(sources, context) "{{{
   " Set parameters.
   let unite = {}
   let unite.winnr = winnr
+  let unite.winmax = winnr('$')
   let unite.win_rest_cmd = (!context.unite__direct_switch) ?
         \ win_rest_cmd : ''
   let unite.context = context
@@ -269,8 +279,9 @@ function! unite#init#_current_unite(sources, context) "{{{
   let unite.args = unite#helper#get_source_args(a:sources)
   let unite.msgs = []
   let unite.err_msgs = []
-  let unite.redraw_hold_candidates = (unite#util#has_lua() ? 10000 : 4000)
+  let unite.redraw_hold_candidates = (unite#util#has_lua() ? 20000 : 10000)
   let unite.disabled_max_candidates = 0
+  let unite.cursor_line_time = reltime()
 
   if context.here
     let context.winheight = winheight(0) - winline() +
@@ -291,6 +302,8 @@ function! unite#init#_current_unite(sources, context) "{{{
   if !context.unite__is_complete
     call unite#helper#call_hook(sources, 'on_init')
   endif
+
+  return unite
 endfunction"}}}
 
 function! unite#init#_candidates(candidates) "{{{
@@ -468,6 +481,11 @@ function! unite#init#_default_scripts(kind, names) "{{{
             \ 'autoload/unite/'.a:kind.'/'.prefix.'*.vim', 1), '\n')
     endfor
 
+    if a:kind == 'sources'
+      call filter(files, "index(g:unite_ignore_source_files,
+            \ fnamemodify(v:val, ':t')) < 0")
+    endif
+
     for define in map(files,
           \ "unite#{a:kind}#{fnamemodify(v:val, ':t:r')}#define()")
       for dict in filter(unite#util#convert2list(define),
@@ -519,10 +537,17 @@ function! unite#init#_loaded_sources(sources, context) "{{{
           continue
         endif
 
-        call unite#util#print_error(
-              \ 'unite.vim: Invalid source name "' .
-              \ source_name . '" is detected.')
-        throw 'unite.vim: Invalid source'
+        if source_name =~ '^-'
+          call unite#util#print_error(
+                \ 'unite.vim: Invalid option "' .
+                \ source_name . '" is detected.')
+          throw 'unite.vim: Invalid option'
+        else
+          call unite#util#print_error(
+                \ 'unite.vim: Invalid source name "' .
+                \ source_name . '" is detected.')
+          throw 'unite.vim: Invalid source'
+        endif
       endif
 
       let source = deepcopy(all_sources[source_name])
@@ -611,6 +636,13 @@ function! unite#init#_sources(...) "{{{
         endif
 
         let source = extend(source, default_source, 'keep')
+        if source.syntax == ''
+          " Set default syntax.
+          let source.syntax = 'uniteSource__' .
+                \ substitute(substitute(source.name,
+                \   '\%(^\|[^[:alnum:]]\+\)\zs[[:alnum:]]',
+                \   '\u\0', 'g'), '[^[:alnum:]]', '', 'g')
+        endif
 
         if !empty(source.action_table)
           let action = values(source.action_table)[0]

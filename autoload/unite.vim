@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: unite.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 17 Jun 2013.
+" Last Modified: 21 Oct 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -113,7 +113,7 @@ endfunction"}}}
 
 function! unite#do_action(action) "{{{
   return printf("%s:\<C-u>call unite#action#do(%s)\<CR>",
-        \             (mode() ==# 'i' ? "\<C-o>" : ''), string(a:action))
+        \             (mode() ==# 'i' ? "\<ESC>" : ''), string(a:action))
 endfunction"}}}
 function! unite#smart_map(narrow_map, select_map) "{{{
   return (line('.') <= unite#get_current_unite().prompt_linenr
@@ -288,6 +288,9 @@ function! unite#complete_buffer_name(arglead, cmdline, cursorpos) "{{{
 endfunction"}}}
 function! unite#args_complete(sources, arglead, cmdline, cursorpos) "{{{
   return unite#complete#args(a:sources, a:arglead, a:cmdline, a:cursorpos)
+endfunction"}}}
+function! unite#dummy_completefunc(findstart, base) "{{{
+  return a:findstart ? -1 : []
 endfunction"}}}
 
 function! unite#all_quit_session(...)  "{{{

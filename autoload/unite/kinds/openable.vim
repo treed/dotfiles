@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: openable.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 17 Jun 2013.
+" Last Modified: 19 Jul 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -45,6 +45,7 @@ let s:kind = {
 let s:kind.action_table.tabopen = {
       \ 'description' : 'tabopen items',
       \ 'is_selectable' : 1,
+      \ 'is_tab' : 1,
       \ }
 function! s:kind.action_table.tabopen.func(candidates) "{{{
   for candidate in a:candidates
@@ -71,6 +72,26 @@ function! s:kind.action_table.tabdrop.func(candidates) "{{{
     endif
   endfor
 endfunction"}}}
+
+let s:kind.action_table.switch = {
+      \ 'description' : 'switch files by ":sbuffer" command',
+      \ 'is_selectable' : 1,
+      \ }
+function! s:kind.action_table.switch.func(candidates) "{{{
+  let bufpath = unite#util#substitute_path_separator(expand('%:p'))
+
+  for candidate in a:candidates
+    if bufpath !=# candidate.action__path
+      call unite#util#smart_execute_command('sbuffer',
+            \ candidate.action__path)
+
+      call unite#remove_previewed_buffer_list(
+            \ bufnr(unite#util#escape_file_searching(
+            \       candidate.action__path)))
+    endif
+  endfor
+endfunction"}}}
+
 
 let s:kind.action_table.split = {
       \ 'description' : 'horizontal split open items',
