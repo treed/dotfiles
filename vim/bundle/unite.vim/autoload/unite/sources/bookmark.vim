@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: bookmark.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 29 Mar 2013.
+" Last Modified: 30 Oct 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -33,7 +33,8 @@ let s:VERSION = '0.1.0'
 
 let s:bookmarks = {}
 
-call unite#util#set_default('g:unite_source_bookmark_directory',  g:unite_data_directory . '/bookmark')
+call unite#util#set_default('g:unite_source_bookmark_directory',
+      \ g:unite_data_directory . '/bookmark')
 "}}}
 
 function! unite#sources#bookmark#define() "{{{
@@ -68,7 +69,7 @@ function! unite#sources#bookmark#_append(filename) "{{{
   endif
 
   let path = unite#substitute_path_separator(
-        \ simplify(fnamemodify(unite#util#expand(path), ':p')))
+        \ simplify(fnamemodify(unite#util#expand(path), ':p:~')))
 
   redraw
   echo 'Path: ' . path
@@ -88,7 +89,9 @@ endfunction"}}}
 let s:source = {
       \ 'name' : 'bookmark',
       \ 'description' : 'candidates from bookmark list',
+      \ 'syntax' : 'uniteSource__Bookmark',
       \ 'action_table' : {},
+      \ 'hooks' : {},
       \}
 
 function! s:source.gather_candidates(args, context) "{{{
@@ -100,17 +103,17 @@ function! s:source.gather_candidates(args, context) "{{{
 
     if stridx(bookmark_name, '*') != -1
       let bookmarks = map(filter(
-          \ unite#util#glob(g:unite_source_bookmark_directory . '/' . bookmark_name),
+          \ unite#util#glob(
+          \     g:unite_source_bookmark_directory . '/' . bookmark_name),
           \ 'filereadable(v:val)'),
           \ 'fnamemodify(v:val, ":t:r")'
           \)
-    else 
+    else
       let bookmarks = [bookmark_name]
     endif
 
     let candidates = []
     for bookmark_name in bookmarks
-
       let bookmark = s:load(bookmark_name)
       let candidates += map(copy(bookmark.files), "{
           \ 'word' : (v:val[0] != '' ? '[' . v:val[0] . '] ' : '') .
@@ -126,6 +129,11 @@ function! s:source.gather_candidates(args, context) "{{{
           \   }")
     endfor
     return candidates
+endfunction"}}}
+function! s:source.hooks.on_syntax(args, context) "{{{
+  syntax match uniteSource__Bookmark_Name /\[.\{-}\] /
+        \ contained containedin=uniteSource__Bookmark
+  highlight default link uniteSource__Bookmark_Name Statement
 endfunction"}}}
 function! s:source.complete(args, context, arglead, cmdline, cursorpos) "{{{
   return ['_', '*', 'default'] + map(split(glob(

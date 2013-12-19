@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: filters.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 30 Jun 2013.
+" Last Modified: 18 Dec 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -50,7 +50,7 @@ function! unite#filters#filter_matcher(list, expr, context) "{{{
   let _ = []
   let len = 0
 
-  let max = a:context.unite__max_candidates
+  let max = a:context.unite__max_candidates * 5
   let offset = max*4
   for cnt in range(0, len(a:list) / offset)
     let list = a:list[cnt*offset : cnt*offset + offset]
@@ -141,7 +141,7 @@ endfunction"}}}
 function! unite#filters#fuzzy_escape(string) "{{{
   " Escape string for lua regexp.
   return substitute(unite#filters#escape(a:string),
-        \ '[[:alnum:]._/-]', '\0.*', 'g')
+        \ '[[:alnum:]._-]\ze.', '\0[^\0/]-', 'g')
 endfunction"}}}
 
 function! unite#filters#escape(string) "{{{

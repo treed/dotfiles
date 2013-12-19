@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: buffer.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 30 Jun 2013.
+" Last Modified: 22 Sep 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -28,8 +28,6 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 " Variables  "{{{
-let s:buffer_list = {}
-
 call unite#util#set_default(
       \ 'g:unite_source_buffer_time_format',
       \ '(%Y/%m/%d %H:%M:%S) ')
@@ -37,14 +35,6 @@ call unite#util#set_default(
 
 function! unite#sources#buffer#define() "{{{
   return [s:source_buffer_all, s:source_buffer_tab]
-endfunction"}}}
-function! unite#sources#buffer#_append() "{{{
-  " Append the current buffer.
-  let bufnr = bufnr('%')
-  let s:buffer_list[bufnr] = {
-        \ 'action__buffer_nr' : bufnr,
-        \ 'source__time' : localtime(),
-        \ }
 endfunction"}}}
 
 let s:source_buffer_all = {
@@ -102,7 +92,7 @@ function! s:source_buffer_all.gather_candidates(args, context) "{{{
   let candidates = map(a:context.source__buffer_list, "{
         \ 'word' : s:make_word(v:val.action__buffer_nr),
         \ 'abbr' : s:make_abbr(v:val.action__buffer_nr, v:val.source__flags)
-        \        . strftime(g:unite_source_buffer_time_format, v:val.source__time),
+        \        . s:format_time(v:val.source__time),
         \ 'action__buffer_nr' : v:val.action__buffer_nr,
         \}")
 
@@ -135,7 +125,7 @@ function! s:source_buffer_tab.gather_candidates(args, context) "{{{
   let candidates = map(list, "{
         \ 'word' : s:make_word(v:val.action__buffer_nr),
         \ 'abbr' : s:make_abbr(v:val.action__buffer_nr, v:val.source__flags)
-        \        . strftime(g:unite_source_buffer_time_format, v:val.source__time),
+        \        . s:format_time(v:val.source__time),
         \ 'action__buffer_nr' : v:val.action__buffer_nr,
         \}")
 
@@ -181,11 +171,16 @@ function! s:make_abbr(bufnr, flags) "{{{
     let path = bufname(a:bufnr) == '' ? 'No Name' :
           \ simplify(fnamemodify(bufname(a:bufnr), ':~:.'))
     if a:flags != ''
-      let path .= ' [' . a:flags . ']'
+      " Format flags so that buffer numbers are aligned on the left.
+      " example: '42 a% +' => ' 42 a%+ '
+      "          '3 h +'   => '  3 h+  '
+      let nowhitespace = substitute(a:flags, '\s*', '', 'g')
+      let path = substitute(nowhitespace, '\v(\d+)(.*)',
+            \ '\=printf("%*s %-*s", 3, submatch(1), 4, submatch(2))', 'g') . path
     endif
 
     if filetype != ''
-      let path .= '[' . filetype . ']'
+      let path .= ' [' . filetype . ']'
     endif
   endif
 
@@ -222,10 +217,11 @@ function! s:get_buffer_list(is_bang, is_question) "{{{
   " Make buffer list.
   let list = []
   let bufnr = 1
+  let buffer_list = unite#sources#buffer#variables#get_buffer_list()
   while bufnr <= bufnr('$')
     if s:is_listed(a:is_bang, a:is_question, bufnr)
           \ && bufnr != bufnr('%')
-      let dict = get(s:buffer_list, bufnr, {
+      let dict = get(buffer_list, bufnr, {
             \ 'action__buffer_nr' : bufnr,
             \ 'source__time' : 0,
             \ })
@@ -240,7 +236,8 @@ function! s:get_buffer_list(is_bang, is_question) "{{{
 
   if s:is_listed(a:is_bang, a:is_question, bufnr('%'))
     " Add current buffer.
-    let dict = get(s:buffer_list, bufnr('%'), {
+    let dict = get(unite#sources#buffer#variables#get_buffer_list(),
+          \ bufnr('%'), {
           \ 'action__buffer_nr' : bufnr('%'),
           \ 'source__time' : 0,
           \ })
@@ -259,6 +256,13 @@ function! s:is_listed(is_bang, is_question, bufnr) "{{{
         \ && (getbufvar(a:bufnr, '&filetype') !=# 'unite'
         \      || getbufvar(a:bufnr, 'unite').buffer_name !=#
         \         unite#get_current_unite().buffer_name)
+endfunction"}}}
+
+function! s:format_time(time) "{{{
+  if empty(a:time)
+    return ''
+  endif
+  return strftime(g:unite_source_buffer_time_format, a:time)
 endfunction"}}}
 
 let &cpo = s:save_cpo

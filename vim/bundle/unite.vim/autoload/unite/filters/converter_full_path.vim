@@ -1,7 +1,7 @@
 "=============================================================================
-" FILE: mru.vim
+" FILE: converter_full_path.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 05 Oct 2010
+" Last Modified: 25 Jul 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -24,37 +24,32 @@
 " }}}
 "=============================================================================
 
-if exists('g:loaded_unite_source_mru')
-      \ || ($SUDO_USER != '' && $USER !=# $SUDO_USER
-      \     && $HOME !=# expand('~'.$USER)
-      \     && $HOME ==# expand('~'.$SUDO_USER))
-  finish
-endif
-
 let s:save_cpo = &cpo
 set cpo&vim
 
-augroup plugin-unite-source-mru
-  autocmd!
-  autocmd BufEnter,VimEnter,BufNew,BufWinEnter *
-        \ call s:append(expand('<amatch>'))
-  autocmd VimLeavePre *
-        \ call unite#sources#mru#_save({'event' : 'VimLeavePre'})
-augroup END
+function! unite#filters#converter_full_path#define() "{{{
+  return s:converter
+endfunction"}}}
 
-let g:loaded_unite_source_mru = 1
+let s:converter = {
+      \ 'name' : 'converter_full_path',
+      \ 'description' : 'converts word to full path of filename',
+      \}
 
-function! s:append(path) "{{{
-  if bufnr('%') != expand('<abuf>')
-        \ || a:path == ''
-    return
-  endif
+function! s:converter.filter(candidates, context) "{{{
+  for candidate in a:candidates
+    if !has_key(candidate, 'abbr')
+      " Save original word.
+      let candidate.abbr = candidate.word
+    endif
+    let candidate.word = unite#util#substitute_path_separator(
+          \ fnamemodify(candidate.word, ':p'))
+  endfor
 
-  call unite#sources#mru#variables#append()
+  return a:candidates
 endfunction"}}}
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
 
-" __END__
 " vim: foldmethod=marker

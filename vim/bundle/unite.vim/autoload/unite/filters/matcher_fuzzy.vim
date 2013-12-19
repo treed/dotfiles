@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: matcher_fuzzy.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 30 Jun 2013.
+" Last Modified: 20 Dec 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -31,6 +31,8 @@ function! unite#filters#matcher_fuzzy#define() "{{{
   return s:matcher
 endfunction"}}}
 
+call unite#util#set_default('g:unite_matcher_fuzzy_max_input_length', 20)
+
 let s:matcher = {
       \ 'name' : 'matcher_fuzzy',
       \ 'description' : 'fuzzy matcher',
@@ -42,7 +44,7 @@ function! s:matcher.filter(candidates, context) "{{{
           \ a:candidates, '', a:context)
   endif
 
-  if len(a:context.input) > 20
+  if len(a:context.input) > g:unite_matcher_fuzzy_max_input_length
     " Fall back to matcher_glob.
     return unite#filters#matcher_glob#define().filter(
           \ a:candidates, a:context)
@@ -60,7 +62,7 @@ function! s:matcher.filter(candidates, context) "{{{
     endif
 
     let input = substitute(substitute(unite#util#escape_match(input),
-          \ '[[:alnum:]._/-]', '\0.*', 'g'), '\*\*', '*', 'g')
+          \ '[[:alnum:]._-]\ze.', '\0[^\0/]\\{-}', 'g'), '\*\*', '*', 'g')
 
     let expr = (input =~ '^!') ?
           \ 'v:val.word !~ ' . string(input[1:]) :

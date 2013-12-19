@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: start.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 01 Jul 2013.
+" Last Modified: 30 Oct 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -51,7 +51,7 @@ function! unite#start#standard(sources, ...) "{{{
     if resume_bufnr > 0 &&
           \ getbufvar(resume_bufnr, 'unite').source_names ==#
           \    unite#helper#get_source_names(a:sources)
-      return unite#resume(context.buffer_name, context)
+      return unite#start#resume(context.buffer_name, context)
     endif
   endif
 
@@ -65,7 +65,7 @@ function! unite#start#standard(sources, ...) "{{{
 
   try
     call unite#init#_current_unite(a:sources, context)
-  catch /^unite.vim: Invalid source/
+  catch /^unite.vim: Invalid /
     call unite#print_error('[unite.vim] ' . v:exception)
     return
   endtry
@@ -120,7 +120,7 @@ function! unite#start#script(sources, ...) "{{{
 
   let context.script = 1
 
-  return get(unite#get_context(), 'temporary', 0) ?
+  return &filetype == 'unite' ?
         \ unite#start#temporary(a:sources, context) :
         \ unite#start#standard(a:sources, context)
 endfunction"}}}
@@ -198,10 +198,13 @@ function! unite#start#vimfiler_check_filetype(sources, ...) "{{{
         \ unite#helper#get_source_names(a:sources))
   let context.unite__is_vimfiler = 1
   let context.unite__is_interactive = 0
+  if !has_key(context, 'vimfiler__is_dummy')
+    let context.vimfiler__is_dummy = 0
+  endif
 
   try
     call unite#init#_current_unite(a:sources, context)
-  catch /^unite.vim: Invalid source/
+  catch /^unite.vim: Invalid /
     return []
   endtry
 
@@ -259,14 +262,35 @@ function! unite#start#get_vimfiler_candidates(sources, ...) "{{{
   let unite_save = unite#get_current_unite()
 
   try
+    let unite = unite#get_current_unite()
     let context = get(a:000, 0, {})
     let context = unite#init#_context(context,
           \ unite#helper#get_source_names(a:sources))
     let context.no_buffer = 1
     let context.unite__is_vimfiler = 1
     let context.unite__is_interactive = 0
+    if !has_key(context, 'vimfiler__is_dummy')
+      let context.vimfiler__is_dummy = 0
+    endif
 
     let candidates = s:get_candidates(a:sources, context)
+
+    " Converts utf-8-mac to the current encoding.
+    if unite#util#is_mac() && has('iconv')
+      for item in filter(copy(candidates),
+            \ "v:val.action__path =~# '[^\\x00-\\x7f]'")
+        let item.action__path = unite#util#iconv(
+              \ item.action__path, 'utf-8-mac', &encoding)
+        let item.action__directory = unite#util#iconv(
+              \ item.action__directory, 'utf-8-mac', &encoding)
+        let item.word = unite#util#iconv(item.word, 'utf-8-mac', &encoding)
+        let item.abbr = unite#util#iconv(item.abbr, 'utf-8-mac', &encoding)
+        let item.vimfiler__filename = unite#util#iconv(
+              \ item.vimfiler__filename, 'utf-8-mac', &encoding)
+        let item.vimfiler__abbr = unite#util#iconv(
+              \ item.vimfiler__abbr, 'utf-8-mac', &encoding)
+      endfor
+    endif
   finally
     call unite#set_current_unite(unite_save)
   endtry
@@ -322,7 +346,7 @@ function! unite#start#resume(buffer_name, ...) "{{{
   call unite#view#_switch_unite_buffer(context.buffer_name, context)
 
   " Set parameters.
-  let unite = unite#get_current_unite()
+  let unite = b:unite
   let unite.winnr = winnr
   if !context.unite__direct_switch
     let unite.win_rest_cmd = win_rest_cmd
@@ -348,7 +372,7 @@ function! unite#start#resume_from_temporary(context)  "{{{
 
   " Resume unite buffer.
   let buffer_info = a:context.old_buffer_info[0]
-  call unite#resume(buffer_info.buffer_name,
+  call unite#start#resume(buffer_info.buffer_name,
         \ {'unite__direct_switch' : 1})
   call setpos('.', buffer_info.pos)
   let a:context.old_buffer_info = a:context.old_buffer_info[1:]
@@ -378,20 +402,23 @@ endfunction "}}}
 
 function! s:get_candidates(sources, context) "{{{
   try
-    call unite#init#_current_unite(a:sources, a:context)
-  catch /^unite.vim: Invalid source/
+    let current_unite = unite#init#_current_unite(a:sources, a:context)
+  catch /^unite.vim: Invalid /
     return []
   endtry
-
-  let current_unite = unite#get_current_unite()
 
   " Caching.
   let current_unite.last_input = a:context.input
   let current_unite.input = a:context.input
+  call unite#set_current_unite(current_unite)
+  call unite#set_context(a:context)
+
+  call unite#variables#enable_current_unite()
+
   call unite#candidates#_recache(a:context.input, a:context.is_redraw)
 
   let candidates = []
-  for source in unite#loaded_sources_list()
+  for source in current_unite.sources
     if !empty(source.unite__candidates)
       let candidates += source.unite__candidates
     endif
@@ -404,8 +431,7 @@ function! s:get_resume_buffer(buffer_name) "{{{
   let buffer_name = a:buffer_name
   if buffer_name !~ '@\d\+$'
     " Add postfix.
-    let prefix = unite#util#is_windows() ?
-          \ '[unite] - ' : '*unite* - '
+    let prefix = '[unite] - '
     let prefix .= buffer_name
     let buffer_name .= unite#helper#get_postfix(prefix, 0)
   endif
