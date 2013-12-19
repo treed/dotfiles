@@ -107,7 +107,7 @@ nnoremap <Space>u :GundoToggle<CR>
 " Clear trailing whitespace and save
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Fast access to grep (used to be ack, hence the 'a')
-nnoremap <Space>a :RGrep!
+nnoremap <Space>a :Ag 
 " Fuzzy find
 nnoremap <Space>i :FufLine<CR>
 " EasyMotion
@@ -140,6 +140,17 @@ autocmd BufNewFile,BufRead *.hs setlocal omnifunc=necoghc#omnifunc
 set scrolloff=10
 
 set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
+if executable('ack')
+  set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
+  set grepformat=%f:%l:%c:%m
+endif
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+  set grepformat=%f:%l:%c:%m
+  let g:unite_source_grep_command='ag'
+  let g:unite_source_grep_default_opts='--nocolor --nogroup -S'
+  let g:unite_source_grep_recursive_opt=''
+endif
 
 " Need to associate p6 files, the plugin doesn't for some reason
 autocmd BufNewFile,BufRead *.p6 setf perl6
