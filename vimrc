@@ -96,18 +96,18 @@ nnoremap <Space>k <C-W>k
 nnoremap <Space>n :bn<CR>
 nnoremap <Space>p :bp<CR>
 " Quick buffer list
-nnoremap <Space>e :CommandTBuffer<CR>
+nnoremap <Space>e :Unite -no-split -buffer-name=buffer  buffer<cr>
 " Remove the current buffer without closing the window
 nnoremap <Space>x :Kwbd<CR>
 " Open various panels or whatever
 nnoremap <silent> <Space>t :TagbarToggle<CR>
 nnoremap <silent> <Space>r :NERDTreeToggle<CR>
-nnoremap <Space>o :CommandTFlush<CR>:CommandT<CR>
+nnoremap <Space>o :Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
 nnoremap <Space>u :GundoToggle<CR>
 " Clear trailing whitespace and save
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
-" Fast access to grep (used to be ack, hence the 'a')
-nnoremap <Space>a :Ag 
+" Fast access to ag
+nnoremap <Space>a :Unite -no-split -buffer-name=ag grep:.<CR>
 " Fuzzy find
 nnoremap <Space>i :FufLine<CR>
 " EasyMotion
@@ -151,6 +151,9 @@ if executable('ag')
   let g:unite_source_grep_default_opts='--nocolor --nogroup -S'
   let g:unite_source_grep_recursive_opt=''
 endif
+
+let g:unite_source_file_rec_max_cache_files = 0
+call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate', 'max_candidates', 0)
 
 " Need to associate p6 files, the plugin doesn't for some reason
 autocmd BufNewFile,BufRead *.p6 setf perl6
