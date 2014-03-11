@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: rec.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 18 Nov 2013.
+" Last Modified: 15 Feb 2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -41,10 +41,11 @@ call unite#util#set_default(
       \ 'g:unite_source_file_rec_max_cache_files')
 call unite#util#set_default('g:unite_source_rec_unit', 200)
 call unite#util#set_default(
-      \ 'g:unite_source_rec_async_command',
-      \ (executable('ag') ?
-      \  'ag --nocolor --nogroup --skip-vcs-ignores --ignore ' .
-      \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'' --ignore ''_darcs'' --hidden -g ""' :
+      \ 'g:unite_source_rec_async_command', (
+      \  executable('ag') ?
+      \  'ag --nocolor --nogroup --hidden -g ""' :
+      \  executable('pt') ?
+      \  'pt --nocolor --nogroup -l ""' :
       \  !unite#util#is_windows() && executable('find') ? 'find' : ''),
       \ 'g:unite_source_file_rec_async_command')
 "}}}
@@ -412,8 +413,8 @@ endfunction"}}}
 
 " Misc.
 function! s:get_path(args, context) "{{{
-  let directory = get(
-        \ filter(copy(a:args), "v:val != '!'"), 0, '')
+  let args = unite#helper#parse_project_bang(a:args)
+  let directory = get(args, 0, '')
   if directory == ''
     let directory = isdirectory(a:context.input) ?
           \ a:context.input : getcwd()
@@ -422,11 +423,6 @@ function! s:get_path(args, context) "{{{
   if a:context.is_restart
     let directory = unite#util#input('Target: ',
           \ directory, 'dir', a:context.source_name)
-  endif
-
-  if get(a:args, 0, '') == '!'
-    " Use project directory.
-    return unite#util#path2project_directory(directory, 1)
   endif
 
   let directory = unite#util#substitute_path_separator(

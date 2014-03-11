@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: helpers.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 23 Jul 2013.
+" Last Modified: 15 Feb 2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -54,14 +54,20 @@ function! unite#helper#call_hook(sources, hook_name) "{{{
 endfunction"}}}
 
 function! unite#helper#get_substitute_input(input) "{{{
-  let input = a:input
-
   let unite = unite#get_current_unite()
+
+  let input = a:input
+  if empty(unite.args) && input =~ '^.\{-}\%(\\\@<!\s\)\+'
+    " Ignore source name
+    let input = matchstr(input, '^.\{-}\%(\\\@<!\s\)\+\zs.*')
+  endif
+
   let substitute_patterns = reverse(unite#util#sort_by(
         \ values(unite#custom#get_profile(unite.profile_name,
         \        'substitute_patterns')),
         \ 'v:val.priority'))
   if unite.input != '' && stridx(input, unite.input) == 0
+        \ && !empty(unite.args)
     " Substitute after input.
     let input_save = input
     let input = input_save[len(unite.input) :]
@@ -152,6 +158,20 @@ function! unite#helper#parse_options_args(args) "{{{
   endfor
 
   return [_, options]
+endfunction"}}}
+
+function! unite#helper#parse_project_bang(args) "{{{
+  let args = filter(copy(a:args), "v:val != '!'")
+  if empty(args)
+    let args = ['']
+  endif
+
+  if get(a:args, 0, '') == '!'
+    " Use project directory.
+    let args[0] = unite#util#path2project_directory(args[0], 1)
+  endif
+
+  return args
 endfunction"}}}
 
 function! unite#helper#get_marked_candidates() "{{{
@@ -264,7 +284,7 @@ endfunction"}}}
 
 function! unite#helper#get_current_candidate(...) "{{{
   let linenr = a:0 >= 1? a:1 : line('.')
-  let num = linenr <= unite#get_current_unite().prompt_linenr ?
+  let num = linenr == unite#get_current_unite().prompt_linenr ?
         \ 0 : linenr - (unite#get_current_unite().prompt_linenr+1)
 
   return get(unite#get_unite_candidates(), num, {})
@@ -302,6 +322,66 @@ function! unite#helper#get_source_args(sources) "{{{
   return map(copy(a:sources),
         \ 'type(v:val) == type([]) ? [v:val[0], v:val[1:]] : [v:val, []]')
 endfunction"}}}
+
+function! unite#helper#choose_window() "{{{
+  " Create key table.
+  let keys = {}
+  for [key, number] in items(g:unite_quick_match_table)
+    let keys[number] = key
+  endfor
+
+  " Save statusline.
+  let save_statuslines = map(unite#helper#get_choose_windows(),
+        \ "[v:val, getbufvar(winbufnr(v:val), '&statusline')]")
+
+  try
+    let winnr_save = winnr()
+    for [winnr, statusline] in save_statuslines
+      noautocmd execute winnr.'wincmd w'
+      let &l:statusline =
+            \ repeat(' ', winwidth(0)/2-len(winnr())).get(keys, winnr()-1, 0)
+      redraw
+    endfor
+
+    noautocmd execute winnr_save.'wincmd w'
+    redraw
+
+    while 1
+      echohl PreProc
+      echon 'choose > '
+      echohl Normal
+
+      let num = get(g:unite_quick_match_table,
+            \ nr2char(getchar()), 0) + 1
+      if num < 0 || winbufnr(num) > 0
+        return num
+      endif
+
+      echo ''
+    endwhile
+  finally
+    echo ''
+
+    let winnr_save = winnr()
+    for [winnr, statusline] in save_statuslines
+      noautocmd execute winnr.'wincmd w'
+      let &l:statusline = statusline
+      redraw
+    endfor
+
+    noautocmd execute winnr_save.'wincmd w'
+    redraw
+  endtry
+endfunction"}}}
+
+function! unite#helper#get_choose_windows() "{{{
+  return filter(range(1, winnr('$')), "v:val != winnr()
+        \ && !getwinvar(v:val, '&previewwindow')
+        \ && (getwinvar(v:val, '&buftype') !~# 'nofile'
+        \   || getwinvar(v:val, '&buftype') =~# 'acwrite')
+        \ && !getwinvar(v:val, '&filetype') !=# 'qf'")
+endfunction"}}}
+
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

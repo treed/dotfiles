@@ -1,7 +1,7 @@
 "=============================================================================
-" FILE: mru.vim
+" FILE: matcher_project_files.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 05 Oct 2010
+" Last Modified: 19 Jan 2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -24,37 +24,26 @@
 " }}}
 "=============================================================================
 
-if exists('g:loaded_unite_source_mru')
-      \ || ($SUDO_USER != '' && $USER !=# $SUDO_USER
-      \     && $HOME !=# expand('~'.$USER)
-      \     && $HOME ==# expand('~'.$SUDO_USER))
-  finish
-endif
-
 let s:save_cpo = &cpo
 set cpo&vim
 
-augroup plugin-unite-source-mru
-  autocmd!
-  autocmd BufEnter,VimEnter,BufNew,BufWinEnter *
-        \ call s:append(expand('<amatch>'))
-  autocmd VimLeavePre *
-        \ call unite#sources#mru#_save({'event' : 'VimLeavePre'})
-augroup END
+function! unite#filters#matcher_project_files#define() "{{{
+  return s:matcher
+endfunction"}}}
 
-let g:loaded_unite_source_mru = 1
+let s:matcher = {
+      \ 'name' : 'matcher_project_files',
+      \ 'description' : 'project files matcher',
+      \}
 
-function! s:append(path) "{{{
-  if bufnr('%') != expand('<abuf>')
-        \ || a:path == ''
-    return
-  endif
+function! s:matcher.filter(candidates, context) "{{{
+  let project = unite#util#path2project_directory(getcwd()) . '/'
 
-  call unite#sources#mru#variables#append()
+  return filter(a:candidates, "!has_key(v:val, 'action__path')
+        \ || stridx(v:val.action__path, project) == 0")
 endfunction"}}}
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
 
-" __END__
 " vim: foldmethod=marker

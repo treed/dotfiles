@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: unite.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 04 Sep 2013.
+" Last Modified: 15 Feb 2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -59,10 +59,6 @@ let g:unite_prompt =
       \ get(g:, 'unite_prompt', '> ')
 let g:unite_enable_start_insert =
       \ get(g:, 'unite_enable_start_insert', 0)
-let g:unite_enable_ignore_case =
-      \ get(g:, 'unite_enable_ignore_case', &ignorecase)
-let g:unite_enable_smart_case =
-      \ get(g:, 'unite_enable_smart_case', &infercase)
 let g:unite_split_rule =
       \ get(g:, 'unite_split_rule', 'topleft')
 let g:unite_enable_split_vertically =
@@ -90,8 +86,8 @@ let g:unite_candidate_icon =
 let g:unite_force_overwrite_statusline =
       \ get(g:, 'unite_force_overwrite_statusline', 1)
 let g:unite_data_directory =
-      \ substitute(substitute(fnamemodify(get(
-      \   g:, 'unite_data_directory', '~/.unite'),
+      \ substitute(substitute(fnamemodify(
+      \ get(g:, 'unite_data_directory', '~/.cache/unite'),
       \  ':p'), '\\', '/', 'g'), '/$', '', '')
 if !isdirectory(g:unite_data_directory)
   call mkdir(g:unite_data_directory, 'p')
@@ -99,7 +95,7 @@ endif
 "}}}
 
 " Wrapper command.
-command! -nargs=+ -complete=customlist,unite#complete#source
+command! -nargs=* -complete=customlist,unite#complete#source
       \ Unite
       \ call s:call_unite_empty(<q-args>)
 function! s:call_unite_empty(args) "{{{
@@ -134,6 +130,25 @@ function! s:call_unite_buffer_dir(args) "{{{
     let path = &filetype ==# 'vimfiler' ?
           \ b:vimfiler.current_dir :
           \ unite#substitute_path_separator(fnamemodify(bufname('%'), ':p:h'))
+    if path !~ '/$'
+      let path .= '/'
+    endif
+    let options.input = escape(path, ' ')
+  endif
+
+  call unite#start(args, options)
+endfunction"}}}
+
+command! -nargs=+ -complete=customlist,unite#complete#source
+      \ UniteWithProjectDir
+      \ call s:call_unite_project_dir(<q-args>)
+function! s:call_unite_project_dir(args) "{{{
+  let [args, options] = unite#helper#parse_options_args(a:args)
+  if !has_key(options, 'input')
+    let path = &filetype ==# 'vimfiler' ?
+          \ b:vimfiler.current_dir :
+          \ unite#substitute_path_separator(getcwd())
+    let path = unite#util#path2project_directory(path)
     if path !~ '/$'
       let path .= '/'
     endif
@@ -189,7 +204,7 @@ function! s:call_unite_resume(args) "{{{
   call unite#resume(join(args), options)
 endfunction"}}}
 
-command! -nargs=1 -complete=customlist,unite#complete#buffer_name
+command! -nargs=? -complete=customlist,unite#complete#buffer_name
       \ UniteClose call unite#view#_close(<q-args>)
 
 let g:loaded_unite = 1
