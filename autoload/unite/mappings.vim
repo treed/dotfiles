@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: mappings.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 19 Nov 2013.
+" Last Modified: 25 Feb 2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -113,7 +113,7 @@ function! unite#mappings#define_default_mappings() "{{{
   inoremap <silent><buffer> <Plug>(unite_exit)
         \ <ESC>:<C-u>call <SID>exit()<CR>
   inoremap <silent><expr><buffer> <Plug>(unite_insert_leave)
-        \ "\<ESC>0".((line('.') <= unite#get_current_unite().prompt_linenr) ?
+        \ "\<ESC>0".((line('.') == unite#get_current_unite().prompt_linenr) ?
         \ (unite#get_current_unite().prompt_linenr+1)."G" : "")
         \ . ":call unite#redraw()\<CR>"
   inoremap <silent><expr><buffer> <Plug>(unite_delete_backward_char)
@@ -183,14 +183,17 @@ function! unite#mappings#define_default_mappings() "{{{
   nmap <buffer> I         <Plug>(unite_insert_head)
   nmap <buffer> A         <Plug>(unite_append_end)
   nmap <buffer> q         <Plug>(unite_exit)
+  nmap <buffer> <C-g>     <Plug>(unite_exit)
   nmap <buffer> Q         <Plug>(unite_all_exit)
+  nmap <buffer> g<C-g>    <Plug>(unite_all_exit)
   nmap <buffer> <CR>      <Plug>(unite_do_default_action)
   nmap <buffer> <Space>   <Plug>(unite_toggle_mark_current_candidate)
   nmap <buffer> <S-Space> <Plug>(unite_toggle_mark_current_candidate_up)
   nmap <buffer> <Tab>     <Plug>(unite_choose_action)
   nmap <buffer> <C-n>     <Plug>(unite_rotate_next_source)
   nmap <buffer> <C-p>     <Plug>(unite_rotate_previous_source)
-  nmap <buffer> <C-g>     <Plug>(unite_print_message_log)
+  nmap <buffer> <C-a>     <Plug>(unite_print_message_log)
+  nmap <buffer> <C-k>     <Plug>(unite_print_candidate)
   nmap <buffer> <C-l>     <Plug>(unite_redraw)
   nmap <buffer> gg        <Plug>(unite_cursor_top)
   nmap <buffer> G         <Plug>(unite_cursor_bottom)
@@ -207,6 +210,8 @@ function! unite#mappings#define_default_mappings() "{{{
   nmap <buffer> ?         <Plug>(unite_quick_help)
   nmap <buffer> N         <Plug>(unite_new_candidate)
   nmap <buffer> .         <Plug>(unite_narrowing_dot)
+  nmap <buffer> <2-LeftMouse>   <Plug>(unite_do_default_action)
+  nmap <buffer> <RightMouse>    <Plug>(unite_exit)
 
   nmap <silent><buffer><expr> a
         \ unite#smart_map("\<Plug>(unite_append_enter)",
@@ -225,6 +230,8 @@ function! unite#mappings#define_default_mappings() "{{{
         \ unite#smart_map('t', unite#do_action('tabopen'))
   nnoremap <silent><buffer><expr> yy
         \ unite#smart_map('yy', unite#do_action('yank'))
+  nnoremap <silent><buffer><expr> o
+        \ unite#smart_map('o', unite#do_action('open'))
 
   " Visual mode key-mappings.
   xmap <buffer> <Space>
@@ -247,9 +254,11 @@ function! unite#mappings#define_default_mappings() "{{{
   imap <buffer> <Home>    <Plug>(unite_move_head)
   imap <buffer> <C-l>     <Plug>(unite_redraw)
   if has('gui_running')
-    imap <buffer> <ESC>     <Plug>(unite_insert_leave)
+    imap <buffer> <ESC>   <Plug>(unite_insert_leave)
   endif
   imap <buffer> <C-g>     <Plug>(unite_exit)
+  imap <buffer> <2-LeftMouse>   <Plug>(unite_do_default_action)
+  imap <buffer> <RightMouse>    <Plug>(unite_exit)
 
   imap <silent><buffer><expr> <Space>
         \ unite#smart_map(' ', "\<Plug>(unite_toggle_mark_current_candidate)")
@@ -264,12 +273,17 @@ function! unite#mappings#define_default_mappings() "{{{
         \ unite#do_action('tabopen')
   inoremap <silent><buffer><expr> <C-y>
         \ unite#do_action('yank')
+  inoremap <silent><buffer><expr> <C-o>
+        \ unite#do_action('open')
 endfunction"}}}
 
-function! unite#mappings#narrowing(word) "{{{
+function! unite#mappings#narrowing(word, ...) "{{{
+  let is_escape = get(a:000, 0, 1)
+
   setlocal modifiable
   let unite = unite#get_current_unite()
-  let unite.input = escape(a:word, ' *')
+
+  let unite.input .= is_escape ? escape(a:word, ' *') : a:word
   let prompt_linenr = unite.prompt_linenr
   call setline(prompt_linenr, unite.prompt . unite.input)
   call unite#redraw()
@@ -352,7 +366,7 @@ function! s:delete_backward_path() "{{{
         \      matchstr(getline('.'),
         \         '^.*\%' . col('.') . 'c' . (mode() ==# 'i' ? '' : '.'))
   let path = matchstr(cur_text[
-        \ len(unite#get_context().prompt):], '[^/]*.$')
+        \ len(unite#get_context().prompt):], '[^/ ]*.$')
   return repeat("\<C-h>", unite#util#strchars(path))
 endfunction"}}}
 function! s:normal_delete_backward_path() "{{{
@@ -361,11 +375,15 @@ function! s:normal_delete_backward_path() "{{{
   call setline(unite#get_current_unite().prompt_linenr,
         \ substitute(getline(unite#get_current_unite().prompt_linenr)[
         \    len(unite#get_current_unite().prompt):],
-        \                 '[^/]*.$', '', ''))
+        \                 '[^/ ]*.$', '', ''))
   call unite#redraw()
   let &l:modifiable = modifiable_save
 endfunction"}}}
-function! s:toggle_mark(...) "{{{
+function! s:toggle_mark(map) "{{{
+  if line('.') == unite#get_current_unite().prompt_linenr
+    call cursor(line('.')+1, 0)
+  endif
+
   let candidate = unite#helper#get_current_candidate()
   if empty(candidate) || get(candidate, 'is_dummy', 0)
     return
@@ -374,33 +392,11 @@ function! s:toggle_mark(...) "{{{
   let candidate.unite__is_marked = !candidate.unite__is_marked
   let candidate.unite__marked_time = localtime()
 
-  let prompt_linenr = unite#get_current_unite().prompt_linenr
-
   call unite#view#_redraw_line()
 
-  let map = get(a:000, 0, '')
-  if map == ''
-    return
-  endif
-
-  while 1
-    if map ==# 'j'
-      if line('.') != line('$')
-        normal! j
-      endif
-    elseif map ==# 'k'
-      if line('.') > prompt_linenr
-        normal! k
-      endif
-    endif
-
-    let candidate = unite#helper#get_current_candidate()
-    if (map ==# 'j' && line('.') <= prompt_linenr ||
-          \ map ==# 'k' && line('.') == line('$')) ||
-          \ !get(candidate, 'is_dummy', 0)
-      break
-    endif
-  endwhile
+  execute 'normal!' a:map ==# 'j' ?
+        \ s:loop_cursor_down(1) :
+        \ unite#mappings#loop_cursor_up_expr(1)
 endfunction"}}}
 function! s:toggle_mark_all_candidates() "{{{
   call s:redraw_all_candidates()
@@ -495,7 +491,7 @@ function! s:rotate_source(is_next) "{{{
   call unite#view#_redraw_candidates()
 endfunction"}}}
 function! s:print_candidate() "{{{
-  if line('.') <= unite#get_current_unite().prompt_linenr
+  if line('.') == unite#get_current_unite().prompt_linenr
     " Ignore.
     return
   endif
@@ -513,7 +509,7 @@ function! s:print_message_log() "{{{
   endfor
 endfunction"}}}
 function! s:insert_selected_candidate() "{{{
-  if line('.') <= unite#get_current_unite().prompt_linenr
+  if line('.') == unite#get_current_unite().prompt_linenr
     " Ignore.
     return
   endif
@@ -576,7 +572,7 @@ function! s:loop_cursor_down(is_skip_not_matched) "{{{
   let is_insert = mode() ==# 'i'
   let prompt_linenr = unite#get_current_unite().prompt_linenr
 
-  if line('.') <= prompt_linenr && !is_insert
+  if line('.') == prompt_linenr && !is_insert
     return line('.') == line('$') &&
           \ empty(unite#get_unite_candidates()) ? '2G' : 'j'
   endif
@@ -592,7 +588,7 @@ function! s:loop_cursor_down(is_skip_not_matched) "{{{
 
   let num = line('.') - (prompt_linenr + 1)
   let cnt = 1
-  if line('.') <= prompt_linenr
+  if line('.') == prompt_linenr
     let cnt += prompt_linenr - line('.')
   endif
   if is_insert && line('.') == prompt_linenr
@@ -641,7 +637,7 @@ function! unite#mappings#loop_cursor_up_expr(is_skip_not_matched) "{{{
 
   let num = line('.') - (prompt_linenr + 1)
   let cnt = 1
-  if line('.') <= prompt_linenr
+  if line('.') == prompt_linenr
     let cnt += prompt_linenr - line('.')
   endif
   if is_insert && line('.') == prompt_linenr+2
@@ -710,7 +706,7 @@ function! s:disable_max_candidates() "{{{
   call s:redraw_all_candidates()
 endfunction"}}}
 function! s:narrowing_path() "{{{
-  if line('.') <= unite#get_current_unite().prompt_linenr
+  if line('.') == unite#get_current_unite().prompt_linenr
     " Ignore.
     return
   endif

@@ -22,9 +22,25 @@ Context Source.run()
               \ [{'word' : 'source/r', 'action__path' : ''},
               \  {'word' : 'sort.vim', 'action__path' : ''}],
               \  'so', has_lua), 'v:val.word'), ['sort.vim', 'source/r']
+        ShouldEqual map(unite#filters#sorter_rank#_sort(
+              \ [{'word' : 'spammers.txt', 'action__path' : ''},
+              \  {'word' : 'thread_parsing.py', 'action__path' : ''}],
+              \  'pars', has_lua), 'v:val.word'),
+              \ ['thread_parsing.py', 'spammers.txt']
       endfor
     End
   endif
+
+  It tests group feature.
+    ShouldEqual unite#candidates#_group_post_filters([
+          \ {'word' : 'foo', 'group' : 'bar'},
+          \ {'word' : 'bar', 'group' : 'baz'}]), [
+          \ {'word' : 'bar', 'is_dummy' : 1},
+          \ {'word' : 'foo', 'group' : 'bar'},
+          \ {'word' : 'baz', 'is_dummy' : 1},
+          \ {'word' : 'bar', 'group' : 'baz'},
+          \]
+  End
 End
 
 Fin

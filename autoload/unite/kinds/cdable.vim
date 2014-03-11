@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: cdable.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 19 Nov 2013.
+" Last Modified: 10 Jan 2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -27,6 +27,12 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+" Variables {{{
+call unite#util#set_default('g:unite_kind_cdable_cd_command',
+      \ 'cd', 'g:unite_kind_openable_cd_command')
+call unite#util#set_default('g:unite_kind_cdable_lcd_command',
+      \ 'lcd', 'g:unite_kind_openable_lcd_command')
+" }}}
 function! unite#kinds#cdable#define() "{{{
   return s:kind
 endfunction"}}}
@@ -49,7 +55,7 @@ function! s:kind.action_table.cd.func(candidate) "{{{
   if &filetype ==# 'vimfiler' || &filetype ==# 'vimshell'
     call s:external_cd(a:candidate)
   elseif a:candidate.action__directory != ''
-    execute g:unite_kind_openable_cd_command '`=a:candidate.action__directory`'
+    execute g:unite_kind_cdable_cd_command '`=a:candidate.action__directory`'
   endif
 endfunction"}}}
 
@@ -64,7 +70,7 @@ function! s:kind.action_table.lcd.func(candidate) "{{{
   if &filetype ==# 'vimfiler' || &filetype ==# 'vimshell'
     call s:external_cd(a:candidate)
   elseif a:candidate.action__directory != ''
-    execute g:unite_kind_openable_lcd_command '`=a:candidate.action__directory`'
+    execute g:unite_kind_cdable_lcd_command '`=a:candidate.action__directory`'
   endif
 endfunction"}}}
 
@@ -103,7 +109,7 @@ function! s:kind.action_table.tabnew_cd.func(candidate) "{{{
   if &filetype ==# 'vimfiler' || &filetype ==# 'vimshell'
     tabnew | call s:external_cd(a:candidate)
   elseif a:candidate.action__directory != ''
-    tabnew | execute g:unite_kind_openable_cd_command '`=a:candidate.action__directory`'
+    tabnew | execute g:unite_kind_cdable_cd_command '`=a:candidate.action__directory`'
   endif
 endfunction"}}}
 
@@ -117,7 +123,7 @@ function! s:kind.action_table.narrow.func(candidate) "{{{
     return
   endif
 
-  call unite#start_temporary([['file'], ['file/new']])
+  call unite#start_temporary([['file'], ['file/new'], ['directory/new']])
   let directory = isdirectory(a:candidate.word) ?
         \ a:candidate.word : a:candidate.action__directory
   if directory[-1:] != '/'
@@ -162,7 +168,7 @@ let s:kind.action_table.vimfiler = {
       \ 'description' : 'open vimfiler buffer here',
       \ }
 function! s:kind.action_table.vimfiler.func(candidate) "{{{
-  if !exists(':VimFilerCreate')
+  if !exists(':VimFiler')
     echo 'vimfiler is not installed.'
     return
   endif
@@ -171,7 +177,7 @@ function! s:kind.action_table.vimfiler.func(candidate) "{{{
     return
   endif
 
-  execute 'VimFilerCreate' escape(a:candidate.action__directory, '\ ')
+  execute 'VimFiler' escape(a:candidate.action__directory, '\ ')
 
   if has_key(a:candidate, 'action__path')
         \ && a:candidate.action__directory !=# a:candidate.action__path

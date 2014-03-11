@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: filters.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 18 Dec 2013.
+" Last Modified: 09 Jan 2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -141,13 +141,15 @@ endfunction"}}}
 function! unite#filters#fuzzy_escape(string) "{{{
   " Escape string for lua regexp.
   return substitute(unite#filters#escape(a:string),
-        \ '[[:alnum:]._-]\ze.', '\0[^\0/]-', 'g')
+        \ '\%([[:alnum:]_-]\|%.\)\ze.', '\0.-', 'g')
 endfunction"}}}
 
 function! unite#filters#escape(string) "{{{
   " Escape string for lua regexp.
-  return substitute(a:string,
-        \ '[%\[\]().*+?^$-]', '%\0', 'g')
+  return substitute(substitute(substitute(a:string,
+        \ '[%\[\]().+?^$-]', '%\0', 'g'),
+        \ '\*\@<!\*\*\@!', '.*', 'g'),
+        \ '\*\*\+', '.*', 'g')
 endfunction"}}}
 
 let &cpo = s:save_cpo

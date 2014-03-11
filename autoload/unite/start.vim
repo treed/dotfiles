@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: start.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 30 Oct 2013.
+" Last Modified: 06 Mar 2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -28,11 +28,6 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! unite#start#standard(sources, ...) "{{{
-  if empty(a:sources)
-    call unite#print_error('[unite.vim] Source names is required.')
-    return
-  endif
-
   " Check command line window.
   if unite#util#is_cmdwin()
     call unite#print_error(
@@ -44,6 +39,15 @@ function! unite#start#standard(sources, ...) "{{{
   let context = get(a:000, 0, {})
   let context = unite#init#_context(context,
         \ unite#helper#get_source_names(a:sources))
+
+  if empty(a:sources)
+    if !get(context, 'no_start_insert', 0)
+      let context.start_insert = 1
+    endif
+
+    call unite#print_message(
+          \ '[unite.vim] interactive mode: Please input source name')
+  endif
 
   if context.resume
     " Check resume buffer.
@@ -161,6 +165,8 @@ function! unite#start#temporary(sources, ...) "{{{
   let context.is_resize = 0
   let context.is_restart = 0
   let context.quick_match = 0
+  let context.start_insert = g:unite_enable_start_insert
+  let context.no_start_insert = 0
 
   if context.script
     " Set buffer-name automatically.
@@ -169,7 +175,7 @@ function! unite#start#temporary(sources, ...) "{{{
 
   let buffer_name = get(a:000, 1,
         \ matchstr(context.buffer_name, '^\S\+')
-        \ . ' - ' . len(context.old_buffer_info))
+        \ . '-' . len(context.old_buffer_info))
 
   let context.buffer_name = buffer_name
 
@@ -183,6 +189,7 @@ function! unite#start#temporary(sources, ...) "{{{
   let unite = unite#get_current_unite()
   let unite.prev_bufnr = unite_save.prev_bufnr
   let unite.prev_winnr = unite_save.prev_winnr
+  let unite.args = a:sources
   if has_key(unite, 'update_time_save')
     let unite.update_time_save = unite_save.update_time_save
   endif
@@ -355,6 +362,8 @@ function! unite#start#resume(buffer_name, ...) "{{{
   let unite.access_time = localtime()
   let unite.context = context
   let unite.is_finalized = 0
+  let unite.preview_candidate = {}
+  let unite.highlight_candidate = {}
 
   call unite#set_current_unite(unite)
 

@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: unite.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 21 Oct 2013.
+" Last Modified: 02 Feb 2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -33,7 +33,7 @@ augroup plugin-unite
 augroup END
 
 function! unite#version() "{{{
-  return str2nr(printf('%02d%02d', 5, 1))
+  return str2nr(printf('%02d%02d', 6, 0))
 endfunction"}}}
 
 " User functions. "{{{
@@ -116,7 +116,7 @@ function! unite#do_action(action) "{{{
         \             (mode() ==# 'i' ? "\<ESC>" : ''), string(a:action))
 endfunction"}}}
 function! unite#smart_map(narrow_map, select_map) "{{{
-  return (line('.') <= unite#get_current_unite().prompt_linenr
+  return (line('.') == unite#get_current_unite().prompt_linenr
         \ && empty(unite#helper#get_marked_candidates())) ?
         \   a:narrow_map : a:select_map
 endfunction"}}}

@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: file.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 25 Nov 2013.
+" Last Modified: 10 Feb 2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -66,7 +66,6 @@ let s:kind = {
       \ 'name' : 'file',
       \ 'default_action' : 'open',
       \ 'action_table' : {},
-      \ 'alias_table' : { 'unite__new_candidate' : 'vimfiler__newfile' },
       \ 'parents' : ['openable', 'cdable', 'uri'],
       \}
 
@@ -84,8 +83,6 @@ function! s:kind.action_table.open.func(candidates) "{{{
     else
       call s:execute_command('edit', candidate)
     endif
-
-    doautocmd BufWinEnter
 
     call unite#remove_previewed_buffer_list(
           \ bufnr(unite#util#escape_file_searching(
@@ -173,6 +170,16 @@ function! s:kind.action_table.backup.func(candidates) "{{{
     let filename = candidate.action__path . '.' . strftime('%y%m%d_%H%M')
 
     call unite#sources#file#copy_files(filename, [candidate])
+  endfor
+endfunction"}}}
+
+let s:kind.action_table.read = {
+      \ 'description' : ':read files',
+      \ 'is_selectable' : 1,
+      \ }
+function! s:kind.action_table.read.func(candidates) "{{{
+  for candidate in a:candidates
+    call s:execute_command('read', candidate)
   endfor
 endfunction"}}}
 
@@ -568,6 +575,9 @@ function! s:kind.action_table.vimfiler__newfile.func(candidate) "{{{
   endtry
 endfunction"}}}
 
+let s:kind.action_table.unite__new_candidate =
+      \ deepcopy(s:kind.action_table.vimfiler__newfile)
+
 let s:kind.action_table.vimfiler__shell = {
       \ 'description' : 'popup shell',
       \ 'is_listed' : 0,
@@ -584,7 +594,7 @@ function! s:kind.action_table.vimfiler__shell.func(candidate) "{{{
   let files = unite#get_context().vimfiler__files
   if !empty(files)
     call setline(line('.'), getline('.') . ' ' . join(files))
-    normal! l
+    call cursor(0, col('.')+1)
   endif
 endfunction"}}}
 
@@ -861,6 +871,8 @@ function! unite#kinds#file#do_rename(old_filename, new_filename) "{{{
   " Convert to relative path.
   let old_filename = substitute(fnamemodify(a:old_filename, ':p'),
         \ '[/\\]$', '', '')
+  let new_filename = substitute(fnamemodify(a:new_filename, ':p'),
+        \ '[/\\]$', '', '')
   let directory = unite#util#substitute_path_separator(
         \ fnamemodify(old_filename, ':h'))
   let current_dir_save = getcwd()
@@ -869,9 +881,9 @@ function! unite#kinds#file#do_rename(old_filename, new_filename) "{{{
   let hidden_save = &l:hidden
   try
     let old_filename = unite#util#substitute_path_separator(
-          \ fnamemodify(a:old_filename, ':.'))
+          \ fnamemodify(old_filename, ':.'))
     let new_filename = unite#util#substitute_path_separator(
-          \ fnamemodify(a:new_filename, ':.'))
+          \ fnamemodify(new_filename, ':.'))
 
     let bufnr = bufnr(unite#util#escape_file_searching(old_filename))
     if bufnr > 0
@@ -880,11 +892,11 @@ function! unite#kinds#file#do_rename(old_filename, new_filename) "{{{
       " Buffer rename.
       let bufnr_save = bufnr('%')
       noautocmd execute 'buffer' bufnr
-      saveas! `=new_filename`
+      execute 'saveas!' fnameescape(new_filename)
       noautocmd execute 'buffer' bufnr_save
-    endif
-
-    if rename(old_filename, new_filename)
+      silent! execute 'bdelete!' fnameescape(old_filename)
+      silent! call delete(old_filename)
+    elseif rename(old_filename, new_filename)
       call unite#print_error(
             \ printf('Failed file rename: "%s" to "%s".',
             \   a:old_filename, a:new_filename))

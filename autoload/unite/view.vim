@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: view.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 19 Dec 2013.
+" Last Modified: 15 Feb 2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -64,8 +64,13 @@ function! unite#view#_redraw_candidates(...) "{{{
   call s:set_syntax()
 endfunction"}}}
 function! unite#view#_redraw_line(...) "{{{
+  let prompt_linenr = unite#get_current_unite().prompt_linenr
   let linenr = a:0 > 0 ? a:1 : line('.')
-  if linenr <= unite#get_current_unite().prompt_linenr || &filetype !=# 'unite'
+  if linenr ==# prompt_linenr
+    let linenr += 1
+  endif
+
+  if linenr == prompt_linenr || &filetype !=# 'unite'
     " Ignore.
     return
   endif
@@ -74,7 +79,7 @@ function! unite#view#_redraw_line(...) "{{{
   setlocal modifiable
 
   let candidate = unite#get_unite_candidates()[linenr -
-        \ (unite#get_current_unite().prompt_linenr+1)]
+        \ (prompt_linenr+1)]
   call setline(linenr, unite#view#_convert_lines([candidate])[0])
 
   let &l:modifiable = modifiable_save
@@ -137,6 +142,7 @@ function! unite#view#_redraw(is_force, winnr, is_gather_all) "{{{
     if context.is_redraw
           \ || input !=# unite.last_input
           \ || unite.is_async
+          \ || empty(unite.args)
       " Recaching.
       call unite#candidates#_recache(input, a:is_force)
     endif
@@ -150,7 +156,7 @@ function! unite#view#_redraw(is_force, winnr, is_gather_all) "{{{
     if a:winnr > 0
       if unite.prompt_linenr != line_save
         " Updated.
-        normal! G
+        call cursor(line('$'), 0)
       endif
 
       " Restore current unite.
@@ -167,12 +173,18 @@ function! unite#view#_redraw(is_force, winnr, is_gather_all) "{{{
   endif
 endfunction"}}}
 
-function! unite#view#_set_highlight() "{{{
+function! unite#view#_set_syntax() "{{{
+  syntax clear
+
+  syntax match uniteQuickMatchLine /^.|.*/
+        \ contains=uniteQuickMatchTrigger,uniteCandidateSourceName
+  syntax match uniteQuickMatchTrigger /^.|/ contained
+  syntax match uniteInputCommand /\\\@<! :\S\+/ contained
+
   let unite = unite#get_current_unite()
 
   " Set highlight.
   let match_prompt = escape(unite.prompt, '\/*~.^$[]')
-  silent! syntax clear uniteInputPrompt
   execute 'syntax match uniteInputPrompt'
         \ '/^'.match_prompt.'/ contained'
 
@@ -229,6 +241,8 @@ function! unite#view#_set_highlight() "{{{
   endfor
 
   call s:set_syntax()
+
+  let b:current_syntax = 'unite'
 endfunction"}}}
 
 function! unite#view#_resize_window() "{{{
@@ -255,7 +269,7 @@ function! unite#view#_resize_window() "{{{
     return
   endif
 
-  if context.auto_resize && line('.') == unite.prompt_linenr
+  if context.auto_resize
     " Auto resize.
     let max_len = unite.prompt_linenr + len(unite.candidates)
     silent! execute 'resize' min([max_len, context.winheight])
@@ -382,6 +396,22 @@ endfunction"}}}
 
 function! unite#view#_close(buffer_name)  "{{{
   let buffer_name = a:buffer_name
+
+  if buffer_name == ''
+    " Use last unite buffer.
+    if !exists('t:unite') ||
+          \ !bufexists(t:unite.last_unite_bufnr)
+      call unite#util#print_error('No unite buffer.')
+      return
+    endif
+
+    let buffer_name = getbufvar(
+          \ t:unite.last_unite_bufnr, 'unite').buffer_name
+  endif
+
+  " Search unite window.
+  let quit_winnr = unite#helper#get_unite_winnr(buffer_name)
+
   if buffer_name !~ '@\d\+$'
     " Add postfix.
     let prefix = '[unite] - '
@@ -389,9 +419,6 @@ function! unite#view#_close(buffer_name)  "{{{
     let buffer_name .= unite#helper#get_postfix(
           \ prefix, 0, tabpagebuflist(tabpagenr()))
   endif
-
-  " Search unite window.
-  let quit_winnr = unite#helper#get_unite_winnr(a:buffer_name)
 
   if quit_winnr > 0
     " Quit unite buffer.
@@ -416,10 +443,16 @@ function! unite#view#_init_cursor() "{{{
   if context.start_insert && !context.auto_quit
     let unite.is_insert = 1
 
-    call cursor(unite.prompt_linenr, 0)
+    if is_restore
+      " Restore position.
+      call setpos('.', positions[key].pos)
+      startinsert
+    else
+      call cursor(unite.prompt_linenr, 0)
+      startinsert!
+    endif
 
     setlocal modifiable
-    startinsert!
   else
     let unite.is_insert = 0
 
@@ -430,7 +463,7 @@ function! unite#view#_init_cursor() "{{{
       call cursor(unite#helper#get_current_candidate_linenr(0), 0)
     endif
 
-    normal! 0
+    call cursor(0, 1)
     stopinsert
   endif
 
@@ -446,19 +479,19 @@ function! unite#view#_init_cursor() "{{{
     call unite#view#_redraw_candidates(1)
   endif
 
+  if context.quick_match
+    " Move to prompt linenr.
+    call cursor(unite.prompt_linenr, 0)
+
+    call unite#mappings#_quick_match(0)
+  endif
+
   if context.no_focus
     if winbufnr(winnr('#')) > 0
       wincmd p
     else
       execute bufwinnr(unite.prev_bufnr).'wincmd w'
     endif
-  endif
-
-  if context.quick_match
-    " Move to prompt linenr.
-    call cursor(unite.prompt_linenr, 0)
-
-    call unite#mappings#_quick_match(0)
   endif
 endfunction"}}}
 
@@ -564,7 +597,6 @@ function! unite#view#_quit(is_force, ...)  "{{{
     endif
   else
     redraw
-    stopinsert
   endif
 
   " Restore unite.
@@ -598,7 +630,7 @@ function! unite#view#_print_message(message) "{{{
   if !empty(unite)
     let unite.msgs += message
   endif
-  echohl Comment | call s:redraw_echo(message) | echohl None
+  echohl Comment | call s:redraw_echo(message[: &cmdheight-1]) | echohl None
 endfunction"}}}
 function! unite#view#_print_source_message(message, source_name) "{{{
   call unite#view#_print_message(
