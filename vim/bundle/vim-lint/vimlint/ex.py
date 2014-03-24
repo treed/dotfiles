@@ -19,25 +19,36 @@ class ExCommand():
 
 
 def read_ex_commands(lines):
-    start = 0
     endmarker = None
+    chunk = []
     for i in range(0, len(lines)):
         line = lines[i]
+        if endmarker:
+            if endmarker in line:
+                endmarker = None
+                chunk = []
+            continue
 
         embedded_lang = re.match('\s*\w+\s*<<\s*(\w+)', lines[i - 1])
         if embedded_lang:
             endmarker = embedded_lang.group(1)
-        if endmarker:
-            if endmarker not in line:
-                continue
-            endmarker = None
-
-        if re.match('\s*\\\\', line):
             continue
 
-        for cmd in create_ex(lines[start:i], start + 1, i):
+        if chunk and re.match('\s*\\\\', line):
+            line = re.sub('^\s*\\\\', '', line, count=1)
+
+        if i + 1 < len(lines) and re.match('^\s*\\\\', lines[i + 1]):
+            chunk += [line]
+            continue
+        else:
+            chunk += [line]
+
+        end = i
+        start = end - (len(chunk) - 1)
+        for cmd in create_ex(chunk, start + 1, end + 1):
             yield cmd
-        start = i
+
+        chunk = []
 
 
 quoted_ex = frozenset(['echo', 'echoerr', 'execute'])
@@ -50,10 +61,6 @@ def get_plain(lines):
     continuation markers, and splits the string again for every `|` separated
     command.
     """
-
-    if len(lines) > 1:
-        for i in range(1, len(lines)):
-            lines[i] = lines[i].replace('\\', ' ', 1)
 
     if len(lines) == 0 or re.match('\s*:*[A-Z]', lines[0]):
         # Skip user defined commands
@@ -71,6 +78,7 @@ def get_plain(lines):
     cmd = linecmd(joined_lines)
     mapping = cmd and 'map' in cmd and 'unmap' not in cmd
     splitbars = cmd not in barred_ex and not mapping
+    firstword = ''
 
     for i in range(0, len(line)):
         ch = line[i]
@@ -78,7 +86,7 @@ def get_plain(lines):
         if ch == "\n":
             cancel = False
             comment = False
-            ch = ' '
+            ch = ''
 
         elif comment:
             ch = ' '
@@ -101,10 +109,10 @@ def get_plain(lines):
             if quoted:
                 quoted = None
 
-            elif (lastnonspace == '' or re.match('[a-zA-Z0-9\]})\'";/]', lastnonspace)) \
-                    and last_exword not in quoted_ex \
-                    and not mapping:
-
+            elif ((lastnonspace == '' or re.match('[a-zA-Z0-9\]})\'";/]', lastnonspace))
+                    and last_exword not in quoted_ex
+                    and not mapping) or \
+                    (expand(firstword) and expand(firstword).startswith('set') and lastch != '='):
                 comment = True
                 ch = ' '
 
@@ -117,10 +125,13 @@ def get_plain(lines):
                 for j in range(0, i):
                     line[j] = ' '
                 ch = ' '
+                firstword = ''
 
-        if ch not in [" ", "\t"]:
+        if ch not in ["", " ", "\t"]:
             lastnonspace = ch
             if lastch in [" ", "\t", "|", ":", "%"]:
+                if not firstword:
+                    firstword = lastword
                 lastword = ''
             lastword += ch
 
