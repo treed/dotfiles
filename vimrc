@@ -102,7 +102,8 @@ nnoremap <Space>x :Kwbd<CR>
 " Open various panels or whatever
 nnoremap <silent> <Space>t :TagbarToggle<CR>
 nnoremap <silent> <Space>r :NERDTreeToggle<CR>
-nnoremap <Space>o :Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
+nnoremap <Space>o :CommandTFlush<CR>:CommandT<CR>
+"nnoremap <Space>o :Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
 nnoremap <Space>u :GundoToggle<CR>
 " Clear trailing whitespace and save
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
