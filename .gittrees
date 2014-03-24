@@ -1,0 +1,4 @@
+[subtree "vim/bundle/vim-snippets"]
+	url = https://github.com/honza/vim-snippets
+	path = vim/bundle/vim-snippets
+	branch = master
