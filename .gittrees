@@ -42,10 +42,6 @@
     url = https://github.com/dbakker/vim-lint.git 
     path = vim/bundle/vim-lint
     branch = master
-[subtree "vim/bundle/vim-hardtime"]
-    url = https://github.com/takac/vim-hardtime.git 
-    path = vim/bundle/vim-hardtime
-    branch = master
 [subtree "vim/bundle/vim-airline"]
     url = https://github.com/bling/vim-airline.git 
     path = vim/bundle/vim-airline
