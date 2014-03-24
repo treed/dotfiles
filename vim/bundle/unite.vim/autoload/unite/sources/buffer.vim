@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: buffer.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 25 Feb 2014.
+" Last Modified: 11 Mar 2014.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -50,9 +50,12 @@ function! s:source_buffer_all.hooks.on_init(args, context) "{{{
         \ (get(a:args, 0, '') ==# '!')
   let a:context.source__is_question =
         \ (get(a:args, 0, '') ==# '?')
+  let a:context.source__is_plus =
+        \ (get(a:args, 0, '') ==# '+')
   let a:context.source__buffer_list =
         \ s:get_buffer_list(a:context.source__is_bang,
-        \                   a:context.source__is_question)
+        \                   a:context.source__is_question,
+        \                   a:context.source__is_plus)
 endfunction"}}}
 function! s:source_buffer_all.hooks.on_syntax(args, context) "{{{
   syntax match uniteSource__Buffer_Name /[^/ \[\]]\+\s/
@@ -77,7 +80,11 @@ function! s:source_buffer_all.hooks.on_post_filter(args, context) "{{{
           \ unite#util#substitute_path_separator(
           \       fnamemodify(s:make_word(candidate.action__buffer_nr), ':p'))
     let candidate.action__directory =
+<<<<<<< HEAD
           \ s:get_directory(candidate.action__buffer_nr)
+=======
+          \ unite#helper#get_buffer_directory(candidate.action__buffer_nr)
+>>>>>>> a22136eaf294845f970da1200e301bd0f0250bfe
   endfor
 endfunction"}}}
 
@@ -86,7 +93,12 @@ function! s:source_buffer_all.gather_candidates(args, context) "{{{
     " Recaching.
     let a:context.source__buffer_list =
           \ s:get_buffer_list(a:context.source__is_bang,
+<<<<<<< HEAD
           \                   a:context.source__is_question)
+=======
+          \                   a:context.source__is_question,
+          \                   a:context.source__is_plus)
+>>>>>>> a22136eaf294845f970da1200e301bd0f0250bfe
   endif
 
   let candidates = map(a:context.source__buffer_list, "{
@@ -115,7 +127,12 @@ function! s:source_buffer_tab.gather_candidates(args, context) "{{{
     " Recaching.
     let a:context.source__buffer_list =
           \ s:get_buffer_list(a:context.source__is_bang,
+<<<<<<< HEAD
           \                   a:context.source__is_question)
+=======
+          \                   a:context.source__is_question,
+          \                   a:context.source__is_plus)
+>>>>>>> a22136eaf294845f970da1200e301bd0f0250bfe
   endif
 
   if !exists('t:unite_buffer_dictionary')
@@ -195,6 +212,7 @@ endfunction"}}}
 function! s:compare(candidate_a, candidate_b) "{{{
   return a:candidate_b.source__time - a:candidate_a.source__time
 endfunction"}}}
+<<<<<<< HEAD
 function! s:get_directory(bufnr) "{{{
   let filetype = getbufvar(a:bufnr, '&filetype')
   if filetype ==# 'vimfiler'
@@ -209,6 +227,9 @@ function! s:get_directory(bufnr) "{{{
   return dir
 endfunction"}}}
 function! s:get_buffer_list(is_bang, is_question) "{{{
+=======
+function! s:get_buffer_list(is_bang, is_question, is_plus) "{{{
+>>>>>>> a22136eaf294845f970da1200e301bd0f0250bfe
   " Get :ls flags.
   redir => output
   silent! ls
@@ -224,7 +245,11 @@ function! s:get_buffer_list(is_bang, is_question) "{{{
   let bufnr = 1
   let buffer_list = unite#sources#buffer#variables#get_buffer_list()
   while bufnr <= bufnr('$')
+<<<<<<< HEAD
     if s:is_listed(a:is_bang, a:is_question, bufnr)
+=======
+    if s:is_listed(a:is_bang, a:is_question, a:is_plus, bufnr)
+>>>>>>> a22136eaf294845f970da1200e301bd0f0250bfe
           \ && bufnr != bufnr('%')
       let dict = get(buffer_list, bufnr, {
             \ 'action__buffer_nr' : bufnr,
@@ -239,7 +264,11 @@ function! s:get_buffer_list(is_bang, is_question) "{{{
 
   call sort(list, 's:compare')
 
+<<<<<<< HEAD
   if s:is_listed(a:is_bang, a:is_question, bufnr('%'))
+=======
+  if s:is_listed(a:is_bang, a:is_question, a:is_plus, bufnr('%'))
+>>>>>>> a22136eaf294845f970da1200e301bd0f0250bfe
     " Add current buffer.
     let dict = get(unite#sources#buffer#variables#get_buffer_list(),
           \ bufnr('%'), {
@@ -254,10 +283,18 @@ function! s:get_buffer_list(is_bang, is_question) "{{{
   return list
 endfunction"}}}
 
+<<<<<<< HEAD
 function! s:is_listed(is_bang, is_question, bufnr) "{{{
   return bufexists(a:bufnr) &&
         \ (a:is_question ? !buflisted(a:bufnr) :
         \    (a:is_bang || buflisted(a:bufnr)))
+=======
+function! s:is_listed(is_bang, is_question, is_plus, bufnr) "{{{
+  return bufexists(a:bufnr) &&
+        \ (a:is_question ? !buflisted(a:bufnr) :
+        \    (a:is_bang || buflisted(a:bufnr)))
+        \ && (!a:is_plus || getbufvar(a:bufnr, '&mod'))
+>>>>>>> a22136eaf294845f970da1200e301bd0f0250bfe
         \ && (getbufvar(a:bufnr, '&filetype') !=# 'unite'
         \      || getbufvar(a:bufnr, 'unite').buffer_name !=#
         \         unite#get_current_unite().buffer_name)

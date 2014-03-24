@@ -1,5 +1,9 @@
-" MIT License. Copyright (c) 2013 Bailey Ling.
+" MIT License. Copyright (c) 2013-2014 Bailey Ling.
 " vim: et ts=2 sts=2 sw=2
+
+if !exists(':UndotreeToggle')
+  finish
+endif
 
 function! airline#extensions#undotree#apply(...)
   if exists('t:undotree')

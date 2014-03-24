@@ -1,0 +1,56 @@
+[subtree "vim/bundle/vim-snippets"]
+	url = https://github.com/honza/vim-snippets
+	path = vim/bundle/vim-snippets
+	branch = master
+[subtree "vim/bundle/gundo"]
+    url = https://github.com/sjl/gundo.vim.git
+    path = vim/bundle/gundo
+    branch = master
+[subtree "vim/bundle/visual-star-search"]
+    url = https://github.com/nelstrom/vim-visual-star-search.git
+    path = vim/bundle/visual-star-search
+    branch = master
+[subtree "vim/bundle/ultisnips"]
+    url = https://github.com/SirVer/ultisnips.git 
+    path = vim/bundle/ultisnips
+    branch = master
+[subtree "vim/bundle/unite.vim"]
+    url = https://github.com/Shougo/unite.vim.git 
+    path = vim/bundle/unite.vim
+    branch = master
+[subtree "vim/bundle/vimproc"]
+    url = https://github.com/Shougo/vimproc.vim.git 
+    path = vim/bundle/vimproc
+    branch = master
+[subtree "vim/bundle/numbers.vim"]
+    url = https://github.com/myusuf3/numbers.vim.git 
+    path = vim/bundle/numbers.vim
+    branch = master
+[subtree "vim/bundle/vim-junos-syntax"]
+    url = https://github.com/ClockworkNet/vim-junos-syntax.git 
+    path = vim/bundle/vim-junos-syntax
+    branch = master
+[subtree "vim/bundle/vim-signify"]
+    url = https://github.com/mhinz/vim-signify.git 
+    path = vim/bundle/vim-signify
+    branch = master
+[subtree "vim/bundle/vim-easyclip"]
+    url = https://github.com/svermeulen/vim-easyclip.git 
+    path = vim/bundle/vim-easyclip
+    branch = master
+[subtree "vim/bundle/vim-lint"]
+    url = https://github.com/dbakker/vim-lint.git 
+    path = vim/bundle/vim-lint
+    branch = master
+[subtree "vim/bundle/vim-airline"]
+    url = https://github.com/bling/vim-airline.git 
+    path = vim/bundle/vim-airline
+    branch = master
+[subtree "vim/bundle/vim-exchange"]
+    url = https://github.com/tommcdo/vim-exchange.git 
+    path = vim/bundle/vim-exchange
+    branch = master
+[subtree "vim/bundle/ag.vim"]
+    url = https://github.com/rking/ag.vim.git 
+    path = vim/bundle/ag.vim
+    branch = master

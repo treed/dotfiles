@@ -1,4 +1,4 @@
-" MIT License. Copyright (c) 2013 Bailey Ling.
+" MIT License. Copyright (c) 2013-2014 Bailey Ling.
 " vim: et ts=2 sts=2 sw=2
 
 function! airline#debug#profile1()
@@ -28,6 +28,22 @@ function! airline#debug#profile2()
       redrawstatus
     endfor
   endfor
+  profile pause
+  noautocmd qall!
+endfunction
+
+function! airline#debug#profile3()
+  profile start airline-profile-mode.log
+  profile func *
+  profile file *
+
+  for i in range(1000)
+    startinsert
+    redrawstatus
+    stopinsert
+    redrawstatus
+  endfor
+
   profile pause
   noautocmd qall!
 endfunction

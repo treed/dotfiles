@@ -1,15 +1,16 @@
-scriptencoding utf-8
+" vim: et sw=2 sts=2
 
-if exists('b:autoloaded_sy_util')
-  finish
-endif
-let b:autoloaded_sy_util = 1
+scriptencoding utf-8
 
 " Function: #escape {{{1
 function! sy#util#escape(path) abort
   if exists('+shellslash')
     let old_ssl = &shellslash
-    set noshellslash
+    if fnamemodify(&shell, ':t') == 'cmd.exe'
+      set noshellslash
+    else
+      set shellslash
+    endif
   endif
 
   let path = shellescape(a:path)
@@ -26,4 +27,15 @@ function! sy#util#separator() abort
   return !exists('+shellslash') || &shellslash ? '/' : '\'
 endfunction
 
-" vim: et sw=2 sts=2
+" Function: #run_in_dir {{{1
+function! sy#util#run_in_dir(dir, cmd) abort
+  let chdir = haslocaldir() ? 'lcd' : 'cd'
+  let cwd = getcwd()
+  try
+    exe chdir .' '. fnameescape(fnamemodify(a:dir, ':p'))
+    let resp = system(a:cmd)
+  finally
+    exe chdir .' '. fnameescape(cwd)
+  endtry
+  return resp
+endfunction
