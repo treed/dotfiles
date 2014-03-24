@@ -1,52 +1,89 @@
+" vim: et sw=2 sts=2
+
 scriptencoding utf-8
 
-if exists('b:autoloaded_sy_repo')
-  finish
-endif
-let b:autoloaded_sy_repo = 1
-
 " Init: values {{{1
-if !empty(get(g:, 'signify_difftool'))
-  let s:difftool = g:signify_difftool
-else
-  if !executable('diff')
-    echomsg 'signify: No diff tool found!'
-    finish
-  endif
-  let s:difftool = 'diff'
+let s:sign_delete = get(g:, 'signify_sign_delete', '_')
+
+if !exists('g:signify_diffoptions')
+  let g:signify_diffoptions = {}
 endif
 
-let s:diffoptions = get(g:, 'signify_diffoptions', {})
+let s:difftool = get(g:, 'signify_difftool', 'diff')
+
+if executable(s:difftool)
+  let s:vcs_dict = {
+        \ 'git':      'git',
+        \ 'hg':       'hg',
+        \ 'svn':      'svn',
+        \ 'darcs':    'darcs',
+        \ 'bzr':      'bzr',
+        \ 'fossil':   'fossil',
+        \ 'cvs':      'cvs',
+        \ 'rcs':      'rcsdiff',
+        \ 'accurev':  'accurev',
+        \ 'perforce': 'p4'
+        \ }
+else
+  echomsg 'signify: No diff tool found -> no support for svn, darcs, bzr, fossil.'
+  let s:vcs_dict = {
+        \ 'git':      'git',
+        \ 'hg':       'hg',
+        \ 'cvs':      'cvs',
+        \ 'rcs':      'rcsdiff',
+        \ 'accurev':  'accurev',
+        \ 'perforce': 'p4'
+        \ }
+endif
+
+let s:vcs_list = get(g:, 'signify_vcs_list', [])
+if empty(s:vcs_list)
+  let s:vcs_list = keys(filter(s:vcs_dict, 'executable(v:val)'))
+endif
 
 " Function: #detect {{{1
-function! sy#repo#detect(path) abort
-  for type in get(g:, 'signify_vcs_list', [ 'git', 'hg', 'svn', 'darcs', 'bzr', 'fossil', 'cvs', 'rcs', 'accurev', 'perforce' ])
-    let diff = sy#repo#get_diff_{type}(a:path)
-    if !empty(diff)
+function! sy#repo#detect() abort
+  let dir = fnamemodify(b:sy.path, ':h')
+
+  " Simple cache. If there is a registered VCS-controlled file in this
+  " directory already, assume that this file is probably controlled by
+  " the same VCS. Thus we shuffle that VCS to the top of our vcs_list.
+  if has_key(g:sy_cache, dir)
+    let idx = index(s:vcs_list, g:sy_cache[dir])
+    if idx != -1
+      call remove(s:vcs_list, idx)
+      call insert(s:vcs_list, g:sy_cache[dir], 0)
+    endif
+  endif
+
+  for type in s:vcs_list
+    let [istype, diff] = sy#repo#get_diff_{type}()
+    if istype
       return [ diff, type ]
     endif
   endfor
 
-  return [ '', '' ]
+  return [ '', 'unknown' ]
 endfunction
 
 " Function: #get_diff_git {{{1
-function! sy#repo#get_diff_git(path) abort
-  let diffoptions = has_key(s:diffoptions, 'git') ? s:diffoptions.git : ''
-  let diff = system('cd '. sy#util#escape(fnamemodify(a:path, ':h')) .' && git diff --no-ext-diff -U0 '. diffoptions .' -- '. sy#util#escape(a:path))
-  return v:shell_error ? '' : diff
+function! sy#repo#get_diff_git() abort
+  let diffoptions = has_key(g:signify_diffoptions, 'git') ? g:signify_diffoptions.git : ''
+  let diff = sy#util#run_in_dir(fnamemodify(b:sy.path, ':h'), 'git diff --no-color --no-ext-diff -U0 '. diffoptions .' -- '. sy#util#escape(fnamemodify(b:sy.path, ':t')))
+
+  return v:shell_error ? [0, ''] : [1, diff]
 endfunction
 
 " Function: #get_stat_git {{{1
 function! sy#repo#get_stat_git() abort
   let s:stats = []
-  let root  = finddir('.git', fnamemodify(g:sy_path, ':h') .';')
+  let root  = finddir('.git', fnamemodify(b:sy.path, ':h') .';')
   if empty(root)
-    echohl ErrorMsg | echomsg 'Cannot find the git root directory: '. g:sy_path | echohl None
+    echohl ErrorMsg | echomsg 'Cannot find the git root directory: '. b:sy.path | echohl None
     return
   endif
   let root   = fnamemodify(root, ':h')
-  let output = system('cd '. sy#util#escape(root) .' && git diff --numstat')
+  let output = sy#util#run_in_dir(root, 'git diff --numstat')
   if v:shell_error
     echohl ErrorMsg | echomsg "'git diff --numstat' failed" | echohl None
     return
@@ -69,70 +106,73 @@ function! sy#repo#get_stat_git() abort
 endfunction
 
 " Function: #get_diff_hg {{{1
-function! sy#repo#get_diff_hg(path) abort
-  let diffoptions = has_key(s:diffoptions, 'hg') ? s:diffoptions.hg : ''
-  let diff = system('hg diff --nodates -U0 '. diffoptions .' -- '. sy#util#escape(a:path))
-  return v:shell_error ? '' : diff
+function! sy#repo#get_diff_hg() abort
+  let diffoptions = has_key(g:signify_diffoptions, 'hg') ? g:signify_diffoptions.hg : ''
+  let diff = system('hg diff --nodates -U0 '. diffoptions .' -- '. sy#util#escape(b:sy.path))
+
+  return v:shell_error ? [0, ''] : [1, diff]
 endfunction
 
 " Function: #get_diff_svn {{{1
-function! sy#repo#get_diff_svn(path) abort
-  let diffoptions = has_key(s:diffoptions, 'svn') ? s:diffoptions.svn : ''
-  let diff = system('svn diff --diff-cmd '. s:difftool .' -x -U0 '. diffoptions .' -- '. sy#util#escape(a:path))
-  return v:shell_error ? '' : diff
+function! sy#repo#get_diff_svn() abort
+  let diffoptions = has_key(g:signify_diffoptions, 'svn') ? g:signify_diffoptions.svn : ''
+  let diff = system('svn diff --diff-cmd '. s:difftool .' -x -U0 '. diffoptions .' -- '. sy#util#escape(b:sy.path))
+
+  return v:shell_error ? [0, ''] : [1, diff]
 endfunction
 
 " Function: #get_diff_bzr {{{1
-function! sy#repo#get_diff_bzr(path) abort
-  let diffoptions = has_key(s:diffoptions, 'bzr') ? s:diffoptions.bzr : ''
-  let diff = system('bzr diff --using '. s:difftool .' --diff-options=-U0 '. diffoptions .' -- '. sy#util#escape(a:path))
-  return ((v:shell_error == 0) || (v:shell_error == 1) || (v:shell_error == 2)) ? diff : ''
+function! sy#repo#get_diff_bzr() abort
+  let diffoptions = has_key(g:signify_diffoptions, 'bzr') ? g:signify_diffoptions.bzr : ''
+  let diff = system('bzr diff --using '. s:difftool .' --diff-options=-U0 '. diffoptions .' -- '. sy#util#escape(b:sy.path))
+
+  return (v:shell_error =~ '[012]') ? [1, diff] : [0, '']
 endfunction
 
 " Function: #get_diff_darcs {{{1
-function! sy#repo#get_diff_darcs(path) abort
-  let diffoptions = has_key(s:diffoptions, 'darcs') ? s:diffoptions.darcs : ''
-  let diff = system('cd '. sy#util#escape(fnamemodify(a:path, ':h')) .' && darcs diff --no-pause-for-gui --diff-command="'. s:difftool .' -U0 %1 %2 '. diffoptions .'" -- '. sy#util#escape(a:path))
-  return v:shell_error ? '' : diff
+function! sy#repo#get_diff_darcs() abort
+  let diffoptions = has_key(g:signify_diffoptions, 'darcs') ? g:signify_diffoptions.darcs : ''
+  let diff = sy#util#run_in_dir(fnamemodify(b:sy.path, ':h'), 'darcs diff --no-pause-for-gui --diff-command="'. s:difftool .' -U0 %1 %2 '. diffoptions .'" -- '. sy#util#escape(b:sy.path))
+  return v:shell_error ? [0, ''] : [1, diff]
 endfunction
 
 " Function: #get_diff_fossil {{{1
-function! sy#repo#get_diff_fossil(path) abort
-  let diffoptions = has_key(s:diffoptions, 'fossil') ? s:diffoptions.fossil : ''
-  let diff = system('cd '. sy#util#escape(fnamemodify(a:path, ':h')) .' && fossil set diff-command "'. s:difftool .' -U 0" && fossil diff --unified -c 0 '. diffoptions .' -- '. sy#util#escape(a:path))
-  return v:shell_error ? '' : diff
+function! sy#repo#get_diff_fossil() abort
+  let diffoptions = has_key(g:signify_diffoptions, 'fossil') ? g:signify_diffoptions.fossil : ''
+  let diff = sy#util#run_in_dir(fnamemodify(b:sy.path, ':h'), 'fossil set diff-command "'. s:difftool .' -U 0" && fossil diff --unified -c 0 '. diffoptions .' -- '. sy#util#escape(b:sy.path))
+  return v:shell_error ? [0, ''] : [1, diff]
 endfunction
 
 " Function: #get_diff_cvs {{{1
-function! sy#repo#get_diff_cvs(path) abort
-  let diffoptions = has_key(s:diffoptions, 'cvs') ? s:diffoptions.cvs : ''
-  let diff = system('cd '. sy#util#escape(fnamemodify(a:path, ':h')) .' && cvs diff -U0 '. diffoptions .' -- '. sy#util#escape(fnamemodify(a:path, ':t')))
-  return v:shell_error ? '' : diff
+function! sy#repo#get_diff_cvs() abort
+  let diffoptions = has_key(g:signify_diffoptions, 'cvs') ? g:signify_diffoptions.cvs : ''
+  let diff = sy#util#run_in_dir(fnamemodify(b:sy.path, ':h'), 'cvs diff -U0 '. diffoptions .' -- '. sy#util#escape(fnamemodify(b:sy.path, ':t')))
+  return ((v:shell_error == 1) && (diff =~ '+++')) ? [1, diff] : [0, '']
 endfunction
 
 " Function: #get_diff_rcs {{{1
-function! sy#repo#get_diff_rcs(path) abort
-  let diffoptions = has_key(s:diffoptions, 'rcs') ? s:diffoptions.rcs : ''
-  let diff = system('rcsdiff -U0 '. diffoptions .' '. sy#util#escape(a:path) .' 2>/dev/null')
-  return v:shell_error ? '' : diff
+function! sy#repo#get_diff_rcs() abort
+  let diffoptions = has_key(g:signify_diffoptions, 'rcs') ? g:signify_diffoptions.rcs : ''
+  let diff = system('rcsdiff -U0 '. diffoptions .' '. sy#util#escape(b:sy.path) .' 2>/dev/null')
+  return v:shell_error ? [0, ''] : [1, diff]
 endfunction
 
 " Function: #get_diff_accurev {{{1
-function! sy#repo#get_diff_accurev(path) abort
-  let diffoptions = has_key(s:diffoptions, 'accurev') ? s:diffoptions.accurev : ''
-  let diff = system('cd '. sy#util#escape(fnamemodify(a:path, ':h')) .' && accurev diff '. sy#util#escape(fnamemodify(a:path, ':t')) . ' -- -U0 '. diffoptions)
-  return (v:shell_error != 1) ? '' : diff
+function! sy#repo#get_diff_accurev() abort
+  let diffoptions = has_key(g:signify_diffoptions, 'accurev') ? g:signify_diffoptions.accurev : ''
+  let diff = sy#util#run_in_dir(fnamemodify(b:sy.path, ':h'), 'accurev diff '. sy#util#escape(fnamemodify(b:sy.path, ':t')) . ' -- -U0 '. diffoptions)
+  return (v:shell_error != 1) ? [0, ''] : [1, diff]
 endfunction
 
 " Function: #get_diff_perforce {{{1
-function! sy#repo#get_diff_perforce(path) abort
-  let diffoptions = has_key(s:diffoptions, 'perforce') ? s:diffoptions.perforce : ''
-  let diff = system('env P4DIFF=diff p4 diff -dU0 '. diffoptions .' -- '. sy#util#escape(a:path))
-  return v:shell_error ? '' : diff
+function! sy#repo#get_diff_perforce() abort
+  let diffoptions = has_key(g:signify_diffoptions, 'perforce') ? g:signify_diffoptions.perforce : ''
+  let diff = system('env P4DIFF=diff p4 diff -dU0 '. diffoptions .' '. sy#util#escape(b:sy.path))
+  return v:shell_error ? [0, ''] : [1, diff]
 endfunction
 
 " Function: #process_diff {{{1
-function! sy#repo#process_diff(path, diff) abort
+function! sy#repo#process_diff(diff) abort
   let added    = 0
   let deleted  = 0
   let modified = 0
@@ -141,7 +181,11 @@ function! sy#repo#process_diff(path, diff) abort
   for line in filter(split(a:diff, '\n'), 'v:val =~ "^@@ "')
     let tokens = matchlist(line, '^@@ -\v(\d+),?(\d*) \+(\d+),?(\d*)')
 
-    let [ old_line, old_count, new_line, new_count ] = [ str2nr(tokens[1]), empty(tokens[2]) ? 1 : str2nr(tokens[2]), str2nr(tokens[3]), empty(tokens[4]) ? 1 : str2nr(tokens[4]) ]
+    let old_line = str2nr(tokens[1])
+    let new_line = str2nr(tokens[3])
+
+    let old_count = empty(tokens[2]) ? 1 : str2nr(tokens[2])
+    let new_count = empty(tokens[4]) ? 1 : str2nr(tokens[4])
 
     let signs = []
 
@@ -153,10 +197,12 @@ function! sy#repo#process_diff(path, diff) abort
 
     if (old_count == 0) && (new_count >= 1)
       let added += new_count
-
       let offset = 0
+
       while offset < new_count
-        call add(signs, { 'type': 'SignifyAdd', 'lnum': new_line + offset, 'path': a:path })
+        call add(signs, {
+              \ 'type': 'SignifyAdd',
+              \ 'lnum': new_line + offset })
         let offset += 1
       endwhile
 
@@ -170,9 +216,19 @@ function! sy#repo#process_diff(path, diff) abort
       let deleted += old_count
 
       if new_line == 0
-        call add(signs, { 'type': 'SignifyDeleteFirstLine', 'lnum': 1, 'path': a:path })
+        call add(signs, {
+              \ 'type': 'SignifyRemoveFirstLine',
+              \ 'lnum': 1 })
+      elseif old_count <= 99
+        call add(signs, {
+              \ 'type': 'SignifyDelete'. old_count,
+              \ 'text': substitute(s:sign_delete . old_count, '.*\ze..$', '', ''),
+              \ 'lnum': new_line })
       else
-        call add(signs, { 'type': (old_count > 9) ? 'SignifyDeleteMore' : 'SignifyDelete'. old_count, 'lnum': new_line, 'path': a:path })
+        call add(signs, {
+              \ 'type': 'SignifyDeleteMore',
+              \ 'lnum': new_line,
+              \ 'text': s:sign_delete .'>' })
       endif
 
     " 2 lines changed:
@@ -185,10 +241,12 @@ function! sy#repo#process_diff(path, diff) abort
 
     elseif old_count == new_count
       let modified += old_count
+      let offset    = 0
 
-      let offset = 0
       while offset < new_count
-        call add(signs, { 'type': 'SignifyChange', 'lnum': new_line + offset, 'path': a:path })
+        call add(signs, {
+              \ 'type': 'SignifyChange',
+              \ 'lnum': new_line + offset })
         let offset += 1
       endwhile
     else
@@ -205,15 +263,20 @@ function! sy#repo#process_diff(path, diff) abort
 
       if old_count > new_count
         let modified += new_count
-        let deleted  += (old_count - new_count)
+        let removed   = (old_count - new_count)
+        let deleted  += removed
+        let offset    = 0
 
-        let offset = 0
         while offset < (new_count - 1)
-          call add(signs, { 'type': 'SignifyChange', 'lnum': new_line + offset, 'path': a:path })
+          call add(signs, {
+                \ 'type': 'SignifyChange',
+                \ 'lnum': new_line + offset })
           let offset += 1
         endwhile
-        let deleted += (old_count - new_count)
-        call add(signs, { 'type': (deleted > 9) ? 'SignifyChangeDeleteMore' : 'SignifyChangeDelete'. deleted, 'lnum': new_line, 'path': a:path })
+
+        call add(signs, {
+              \ 'type': (removed > 9) ? 'SignifyChangeDeleteMore' : 'SignifyChangeDelete'. removed,
+              \ 'lnum': new_line })
 
       " lines changed and added:
 
@@ -227,12 +290,18 @@ function! sy#repo#process_diff(path, diff) abort
         let modified += old_count
         let added    += (new_count - old_count)
         let offset    = 0
+
         while offset < old_count
-          call add(signs, { 'type': 'SignifyChange', 'lnum': new_line + offset, 'path': a:path })
+          call add(signs, {
+                \ 'type': 'SignifyChange',
+                \ 'lnum': new_line + offset })
           let offset += 1
         endwhile
+
         while offset < new_count
-          call add(signs, { 'type': 'SignifyAdd', 'lnum': new_line + offset, 'path': a:path })
+          call add(signs, {
+                \ 'type': 'SignifyAdd',
+                \ 'lnum': new_line + offset })
           let offset += 1
         endwhile
       endif
@@ -241,16 +310,14 @@ function! sy#repo#process_diff(path, diff) abort
     call sy#sign#set(signs)
   endfor
 
-  let g:sy[g:sy_path].stats = [added, modified, deleted]
+  let b:sy.stats = [added, modified, deleted]
 endfunction
 
 " Function: #get_stats {{{1
 function! sy#repo#get_stats() abort
-  if !exists('g:sy_path') || !has_key(g:sy, g:sy_path)
+  if !exists('b:sy') || !has_key(b:sy, 'stats')
     return [-1, -1, -1]
   endif
 
-  return g:sy[g:sy_path].stats
+  return b:sy.stats
 endfunction
-
-" vim: et sw=2 sts=2
