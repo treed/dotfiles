@@ -43,6 +43,7 @@ set showmatch
 set nohlsearch
 set cursorline
 set autoread
+set number
 autocmd CursorHold * checktime
 
 set list
