@@ -1,6 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
 import Data.IORef
-import Control.OldException(catchDyn,try)
 import Control.Category ((>>>))
 import Control.Monad
 import qualified DBus as D
@@ -48,7 +47,7 @@ myScratchpads =
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
-    , ((modm,               xK_c     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
+    , ((modm,               xK_c     ), spawn "exe=`dmenu_run` && eval \"exec $exe\"")
     , ((modm,               xK_l     ), spawn "gnome-screensaver-command -l")
     , ((0,                  xK_Print ), spawn "scrot screen_%Y-%m-%d-%H-%M-%S.png")
     , ((controlMask,        xK_Print ), spawn "scrot window_%Y-%m-%d-%H-%M-%S.png -u")
