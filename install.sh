@@ -5,6 +5,3 @@ done
 for dir in vim oh-my-zsh oh-my-zsh-custom; do
     test -d ~/.$dir/ || ln -sf "$(pwd)/$dir/" ~/.$dir
 done
-
-cd autojump
-./install.sh --local
