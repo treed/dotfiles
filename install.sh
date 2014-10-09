@@ -3,7 +3,7 @@ for file in tmux.conf cvsignore Xmodmap xsession xmobarrc bashrc shellrc vimrc g
 done
 
 for dir in vim oh-my-zsh oh-my-zsh-custom; do
-    test -d ~/.$dir/ || ln -sfT "$(pwd)/$dir/" ~/.$dir
+    test -d ~/.$dir/ || ln -sf "$(pwd)/$dir/" ~/.$dir
 done
 
 cd autojump
