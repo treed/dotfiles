@@ -1,25 +1,76 @@
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-call pathogen#infect()
-filetype plugin indent on
+call plug#begin()
+
+" Plumbing
+Plug 'tomtom/tlib_vim'
+if has("unix")
+    let s:uname = system("uname")
+    if s:uname == "Darwin\n"
+        Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
+    else
+        Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_unix.mak' }
+    endif
+endif
+
+" Sane Behavior
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tommcdo/vim-exchange'
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'sickill/vim-pasta'
+Plug 'svermeulen/vim-easyclip'
+Plug 'myusuf3/numbers.vim'
+Plug 'ervandew/supertab'
+
+" Utilities
+Plug 'bling/vim-airline'
+Plug 'mhinz/vim-signify'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+Plug 'scrooloose/syntastic'
+Plug 'tpope/vim-fugitive'
+Plug 'int3/vim-extradite'
+Plug 'godlygeek/tabular'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'moll/vim-bbye'
+
+" Colorschemes
+Plug 'nanotech/jellybeans.vim'
+Plug 'w0ng/vim-hybrid'
+
+" Snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+" Panels
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/neomru.vim'
+Plug 'majutsushi/tagbar'
+Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'wincent/Command-T', { 'on': 'CommandTFlush', 'do': 'cd ruby/command-t && ruby extconf.rb && make' }
+
+" Language-Specific
+Plug 'fatih/vim-go'
+Plug 'ClockworkNet/vim-junos-syntax', { 'for': 'junos' }
+Plug 'vim-scripts/nginx.vim', { 'for': 'nginx' }
+Plug 'dbakker/vim-lint', { 'for': 'vim' }
+Plug 'vim-perl/vim-perl', { 'for': 'perl' }
+Plug 'c9s/perlomni.vim', { 'for': 'perl' }
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
+call plug#end()
 
 " Woo Colors!
 set t_Co=256
 set background=dark
 if has("gui_macvim")
-    set guifont=Monaco\ for\ Powerline:h14
-    colorscheme jellybeans
+    set guifont=Meslo\ LG\ M\ for\ Powerline:h14
+    let g:hybrid_use_iTerm_colors = 1
 elseif has("gui_running")
     set guifont=Inconsolata-dz\ for\ Powerline\ 12
-    colorscheme jellybeans
-else
-    colorscheme jellybeans-approx
 endif
+colorscheme hybrid
 syntax on
-
-highlight DiffAdd term=reverse cterm=bold ctermbg=green ctermfg=white
-highlight DiffChange term=reverse cterm=bold ctermbg=cyan ctermfg=black
-highlight DiffText term=reverse cterm=bold ctermbg=gray ctermfg=black
-highlight DiffDelete term=reverse cterm=bold ctermbg=red ctermfg=black
 
 " Various Options
 set nocompatible
@@ -28,6 +79,7 @@ set viminfo='20,\"500
 set history=100
 set ruler
 set hidden
+set backspace=indent,eol,start " Backspace over linebreaks
 set encoding=utf-8
 set laststatus=2
 if version >= 703
@@ -82,7 +134,6 @@ nnoremap <C-J> <C-W>+<CR>
 nnoremap <C-K> <C-W>-<CR>
 
 " Y should work like D
-call yankstack#setup()
 map Y y$
 
 " Open a new split
@@ -100,7 +151,7 @@ nnoremap <Space>p :bp<CR>
 " Quick buffer list
 nnoremap <Space>e :Unite -no-split -buffer-name=buffer  buffer<cr>
 " Remove the current buffer without closing the window
-nnoremap <Space>x :Kwbd<CR>
+nnoremap <Space>x :Bdelete<CR>
 " Open various panels or whatever
 nnoremap <silent> <Space>t :TagbarToggle<CR>
 nnoremap <silent> <Space>r :NERDTreeToggle<CR>
@@ -111,10 +162,6 @@ nnoremap <Space>u :GundoToggle<CR>
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Fast access to ag
 nnoremap <Space>a :Unite -no-split -buffer-name=ag grep:.<CR>
-" Fuzzy find
-nnoremap <Space>i :FufLine<CR>
-" EasyMotion
-let g:EasyMotion_leader_key = '<Space>.'
 
 " Tabular.vim presets
 vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l2c0r0<CR>
@@ -129,9 +176,7 @@ autocmd BufNewFile,BufRead *.p[lm] vnoremap <silent> <Space>c :!perl perltidy.pl
 
 " Go Specific
 autocmd FileType go nnoremap <buffer><silent> <C-T> :call VimuxRunCommand("go test")<CR>
-autocmd FileType go nnoremap <buffer><silent> <Space>c :Fmt<CR>
 autocmd FileType go setlocal noexpandtab
-autocmd FileType go autocmd BufWritePre <buffer> execute "normal! mz:mkview\<esc>:Fmt\<esc>:loadview\<esc>`z"
 
 " Markdown Specific
 autocmd BufNewFile,BufRead *.md set filetype=markdown
@@ -142,17 +187,17 @@ autocmd BufNewFile,BufRead *.hs setlocal omnifunc=necoghc#omnifunc
 
 set scrolloff=10
 
-set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
-if executable('ack')
-  set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
-  set grepformat=%f:%l:%c:%m
-endif
 if executable('ag')
   set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
   set grepformat=%f:%l:%c:%m
   let g:unite_source_grep_command='ag'
   let g:unite_source_grep_default_opts='--nocolor --nogroup -S'
   let g:unite_source_grep_recursive_opt=''
+elseif executable('ack')
+  set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
+  set grepformat=%f:%l:%c:%m
+else
+  set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
 endif
 
 let g:unite_source_file_rec_max_cache_files = 0
@@ -161,9 +206,6 @@ call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate', 'max_cand
 " Need to associate p6 files, the plugin doesn't for some reason
 autocmd BufNewFile,BufRead *.p6 setf perl6
 autocmd BufNewFile,BufRead *.nel setf nel
-
-"avoiding annoying CSApprox warning message
-let g:CSApprox_verbose_level = 0
 
 let g:CommandTMaxHeight=20
 let g:CommandTMaxFiles=20000
@@ -243,6 +285,16 @@ let g:airline_theme="bubblegum"
 
 let g:signify_cursorhold_normal = 1
 
+let g:pandoc#formatting#smart_autoformat_on_cursor_moved = 1
+let g:pandoc#formatting#mode="hA"
+let g:pandoc#formatting#textwidth=80
+
 let g:EasyClipUseSubstituteDefaults = 1
 
-helptags ~/.vim/doc
+call airline#parts#define_function('goinfo', 'go#complete#GetInfo')
+call airline#parts#define_condition('goinfo', '&ft =~ "go"')
+function! AirlineInit()
+    let g:airline_section_x = airline#section#create_right(['goinfo', 'tagbar', 'filetype'])
+endfunction
+autocmd VimEnter * call AirlineInit()
+
