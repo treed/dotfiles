@@ -297,4 +297,3 @@ function! AirlineInit()
     let g:airline_section_x = airline#section#create_right(['goinfo', 'tagbar', 'filetype'])
 endfunction
 autocmd VimEnter * call AirlineInit()
-
