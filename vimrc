@@ -47,6 +47,7 @@ Plug 'majutsushi/tagbar'
 Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'wincent/Command-T', { 'on': 'CommandTFlush', 'do': 'cd ruby/command-t && ruby extconf.rb && make' }
+Plug 'kien/ctrlp.vim', { 'on': 'CtrlP' }
 
 " Language-Specific
 Plug 'fatih/vim-go'
@@ -156,7 +157,8 @@ nnoremap <Space>x :Bdelete<CR>
 nnoremap <silent> <Space>t :TagbarToggle<CR>
 nnoremap <silent> <Space>r :NERDTreeToggle<CR>
 "nnoremap <Space>o :CommandTFlush<CR>:CommandT<CR>
-nnoremap <Space>o :Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
+"nnoremap <Space>o :Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
+nnoremap <Space>o :CtrlP<CR>
 nnoremap <Space>u :GundoToggle<CR>
 " Clear trailing whitespace and save
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
