@@ -22,7 +22,6 @@ Plug 'myusuf3/numbers.vim'
 Plug 'ervandew/supertab'
 
 " Utilities
-Plug 'bling/vim-airline'
 Plug 'mhinz/vim-signify'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 Plug 'scrooloose/syntastic'
@@ -44,10 +43,9 @@ Plug 'honza/vim-snippets'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/neomru.vim'
 Plug 'majutsushi/tagbar'
-Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'wincent/Command-T', { 'on': 'CommandTFlush', 'do': 'cd ruby/command-t && ruby extconf.rb && make' }
-Plug 'kien/ctrlp.vim', { 'on': 'CtrlP' }
+Plug 'sjl/gundo.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'kien/ctrlp.vim'
 
 " Language-Specific
 Plug 'fatih/vim-go'
@@ -58,6 +56,9 @@ Plug 'vim-perl/vim-perl', { 'for': 'perl' }
 Plug 'c9s/perlomni.vim', { 'for': 'perl' }
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
+
+" Airline conditionally loads stuff based on what was loaded before
+Plug 'bling/vim-airline'
 
 call plug#end()
 
@@ -156,8 +157,6 @@ nnoremap <Space>x :Bdelete<CR>
 " Open various panels or whatever
 nnoremap <silent> <Space>t :TagbarToggle<CR>
 nnoremap <silent> <Space>r :NERDTreeToggle<CR>
-"nnoremap <Space>o :CommandTFlush<CR>:CommandT<CR>
-"nnoremap <Space>o :Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
 nnoremap <Space>o :CtrlP<CR>
 nnoremap <Space>u :GundoToggle<CR>
 " Clear trailing whitespace and save
@@ -211,6 +210,10 @@ autocmd BufNewFile,BufRead *.nel setf nel
 
 let g:CommandTMaxHeight=20
 let g:CommandTMaxFiles=20000
+
+let g:ctrlp_match_window='order:ttb'
+let g:ctrlp_clear_cache_on_exit=0
+let g:ctrlp_max_files=100000
 
 let g:syntastic_auto_loc_list=1
 
