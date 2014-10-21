@@ -30,6 +30,7 @@ Plug 'int3/vim-extradite'
 Plug 'godlygeek/tabular'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'moll/vim-bbye'
+Plug 'junegunn/vim-easy-align'
 
 " Colorschemes
 Plug 'nanotech/jellybeans.vim'
@@ -166,6 +167,8 @@ nnoremap <Space>a :Unite -no-split -buffer-name=ag grep:.<CR>
 
 " Tabular.vim presets
 vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l2c0r0<CR>
+
+vmap <Enter> <Plug>(EasyAlign)
 
 " Perl Specific
 " Make Ctrl-T increment the number of tests with Test::More
