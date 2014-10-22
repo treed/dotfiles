@@ -27,7 +27,6 @@ Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-fugitive'
 Plug 'int3/vim-extradite'
-Plug 'godlygeek/tabular'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'moll/vim-bbye'
 Plug 'junegunn/vim-easy-align'
@@ -165,8 +164,7 @@ nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>
 " Fast access to ag
 nnoremap <Space>a :Unite -no-split -buffer-name=ag grep:.<CR>
 
-" Tabular.vim presets
-vnoremap <silent> <Space>,$ :Tabularize /-\?\$/l2c0r0<CR>
+vnoremap <silent> <Space>,$ :EasyAlign /-\?\$/l2<CR>
 
 vmap <Enter> <Plug>(EasyAlign)
 
