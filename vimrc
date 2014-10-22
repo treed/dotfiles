@@ -299,9 +299,9 @@ let g:pandoc#formatting#textwidth=80
 
 let g:EasyClipUseSubstituteDefaults = 1
 
-call airline#parts#define_function('goinfo', 'go#complete#GetInfo')
-call airline#parts#define_condition('goinfo', '&ft =~ "go"')
-function! AirlineInit()
-    let g:airline_section_x = airline#section#create_right(['goinfo', 'tagbar', 'filetype'])
-endfunction
-autocmd VimEnter * call AirlineInit()
+"call airline#parts#define_function('goinfo', 'go#complete#GetInfo')
+"call airline#parts#define_condition('goinfo', '&ft =~ "go"')
+"function! AirlineInit()
+"    let g:airline_section_x = airline#section#create_right(['goinfo', 'tagbar', 'filetype'])
+"endfunction
+"autocmd VimEnter * call AirlineInit()
