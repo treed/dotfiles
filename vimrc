@@ -140,6 +140,7 @@ map Y y$
 
 " Open a new split
 nnoremap <silent> <Space>s :sp<CR>
+nnoremap <silent> <Space>v :vsp<CR>
 " Close
 nnoremap <silent> <Space>q :q<CR>
 " Move around between splits
