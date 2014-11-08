@@ -190,6 +190,7 @@ autocmd BufNewFile,BufRead *.hs setlocal omnifunc=necoghc#omnifunc
 
 set scrolloff=10
 
+let g:unite_source_grep_max_candidates=10000
 if executable('ag')
   set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
   set grepformat=%f:%l:%c:%m
