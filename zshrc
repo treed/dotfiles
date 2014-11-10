@@ -22,5 +22,6 @@ source $ZSH/oh-my-zsh.sh
 source ~/.shellrc
 
 bindkey "^R" history-incremental-search-backward
+bindkey "^F" history-incremental-search-forward
 bindkey "^[." insert-last-word
 bindkey "^?" backward-delete-char
