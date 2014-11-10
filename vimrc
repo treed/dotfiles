@@ -20,6 +20,7 @@ Plug 'sickill/vim-pasta'
 Plug 'svermeulen/vim-easyclip'
 Plug 'myusuf3/numbers.vim'
 Plug 'ervandew/supertab'
+Plug 'Konfekt/FastFold'
 
 " Utilities
 Plug 'mhinz/vim-signify'
