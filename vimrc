@@ -35,6 +35,9 @@ Plug 'junegunn/vim-easy-align'
 " Colorschemes
 Plug 'nanotech/jellybeans.vim'
 Plug 'w0ng/vim-hybrid'
+Plug 'altercation/vim-colors-solarized'
+    let g:solarized_contrast="high"
+    let g:solarized_visibility="normal"
 
 " Snippets
 Plug 'SirVer/ultisnips'
@@ -65,14 +68,14 @@ call plug#end()
 
 " Woo Colors!
 set t_Co=256
-set background=dark
+set background=light
 if has("gui_macvim")
     set guifont=Meslo\ LG\ M\ for\ Powerline:h14
     let g:hybrid_use_iTerm_colors = 1
 elseif has("gui_running")
     set guifont=Inconsolata-dz\ for\ Powerline\ 12
 endif
-colorscheme hybrid
+colorscheme solarized
 syntax on
 
 " Various Options
@@ -290,7 +293,7 @@ let g:airline#extensions#branch#symbol = ''
 let g:airline#extensions#readonly#symbol = ''
 let g:airline_linecolumn_prefix = ''
 let g:airline#extensions#hunks#non_zero_only = 1
-let g:airline_theme="bubblegum"
+let g:airline_theme="solarized"
 
 let g:signify_cursorhold_normal = 1
 
