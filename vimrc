@@ -16,16 +16,42 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tommcdo/vim-exchange'
 Plug 'vim-pandoc/vim-pandoc'
+    let g:pandoc#formatting#smart_autoformat_on_cursor_moved = 1
+    let g:pandoc#formatting#mode="hA"
+    let g:pandoc#formatting#textwidth=80
 Plug 'sickill/vim-pasta'
 Plug 'svermeulen/vim-easyclip'
+    let g:EasyClipUseSubstituteDefaults = 1
 Plug 'myusuf3/numbers.vim'
 Plug 'ervandew/supertab'
+    let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 Plug 'Konfekt/FastFold'
 
 " Utilities
 Plug 'mhinz/vim-signify'
+    let g:signify_cursorhold_normal = 1
 Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+    let g:ycm_key_list_select_completion = ['<C-j>']
+    let g:ycm_key_list_previous_completion = ['<C-k>']
+    let g:ycm_key_list_invoke_completion = ['<tab>']
+
+    let g:ycm_filetype_blacklist = {
+      \   'unite': 1,
+      \ }
+
+    let g:ycm_semantic_triggers =  {
+      \   'c' : ['->', '.'],
+      \   'objc' : ['->', '.'],
+      \   'cpp,objcpp' : ['->', '.', '::'],
+      \   'perl' : ['->'],
+      \   'php' : ['->', '::'],
+      \   'cs,java,javascript,d,vim,ruby,python,perl6,scala,vb,elixir,go' : ['.'],
+      \   'lua' : ['.', ':'],
+      \   'erlang' : [':'],
+      \   'haskell' : ['.'],
+      \ }
 Plug 'scrooloose/syntastic'
+    let g:syntastic_auto_loc_list=1
 Plug 'tpope/vim-fugitive'
 Plug 'int3/vim-extradite'
 Plug 'kien/rainbow_parentheses.vim'
@@ -45,11 +71,61 @@ Plug 'honza/vim-snippets'
 
 " Panels
 Plug 'Shougo/unite.vim'
+    let g:unite_source_grep_max_candidates=10000
+    if executable('ag')
+      set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+      set grepformat=%f:%l:%c:%m
+      let g:unite_source_grep_command='ag'
+      let g:unite_source_grep_default_opts='--nocolor --nogroup -S'
+      let g:unite_source_grep_recursive_opt=''
+    elseif executable('ack')
+      set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
+      set grepformat=%f:%l:%c:%m
+    else
+      set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
+    endif
+
+    let g:unite_source_file_rec_max_cache_files = 0
+    call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate', 'max_candidates', 0)
+
+    call unite#custom_source('file_rec,file_rec/async', 'matchers', ['matcher_fuzzy'])
+    call unite#custom_source('buffer,file,file_mru,file_rec,file_rec/async', 'sorters', 'sorter_length')
+    let g:unite_force_overwrite_statusline = 0
 Plug 'Shougo/neomru.vim'
 Plug 'majutsushi/tagbar'
+    let g:tagbar_type_go = {
+        \ 'ctagstype' : 'go',
+        \ 'kinds'     : [
+            \ 'p:package',
+            \ 'i:imports:1',
+            \ 'c:constants',
+            \ 'v:variables',
+            \ 't:types',
+            \ 'n:interfaces',
+            \ 'w:fields',
+            \ 'e:embedded',
+            \ 'm:methods',
+            \ 'r:constructor',
+            \ 'f:functions'
+        \ ],
+        \ 'sro' : '.',
+        \ 'kind2scope' : {
+            \ 't' : 'ctype',
+            \ 'n' : 'ntype'
+        \ },
+        \ 'scope2kind' : {
+            \ 'ctype' : 't',
+            \ 'ntype' : 'n'
+        \ },
+        \ 'ctagsbin'  : 'gotags',
+        \ 'ctagsargs' : '-sort -silent'
+        \ }
 Plug 'sjl/gundo.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'kien/ctrlp.vim'
+    let g:ctrlp_match_window='order:ttb'
+    let g:ctrlp_clear_cache_on_exit=0
+    let g:ctrlp_max_files=100000
 
 " Language-Specific
 Plug 'fatih/vim-go'
@@ -63,6 +139,15 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 
 " Airline conditionally loads stuff based on what was loaded before
 Plug 'bling/vim-airline'
+    let g:airline_left_sep = ''
+    let g:airline_left_alt_sep = ''
+    let g:airline_right_sep = ''
+    let g:airline_right_alt_sep = ''
+    let g:airline#extensions#branch#symbol = ''
+    let g:airline#extensions#readonly#symbol = ''
+    let g:airline_linecolumn_prefix = ''
+    let g:airline#extensions#hunks#non_zero_only = 1
+    let g:airline_theme="solarized"
 
 call plug#end()
 
@@ -123,7 +208,6 @@ set ttymouse=xterm2
 set mouse=a
 
 " different tab semantics
-let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 set ofu=syntaxcomplete#Complete
 set completeopt=longest,menu
 vnoremap <Tab> >gv
@@ -194,118 +278,12 @@ autocmd BufNewFile,BufRead *.hs setlocal omnifunc=necoghc#omnifunc
 
 set scrolloff=10
 
-let g:unite_source_grep_max_candidates=10000
-if executable('ag')
-  set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
-  set grepformat=%f:%l:%c:%m
-  let g:unite_source_grep_command='ag'
-  let g:unite_source_grep_default_opts='--nocolor --nogroup -S'
-  let g:unite_source_grep_recursive_opt=''
-elseif executable('ack')
-  set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
-  set grepformat=%f:%l:%c:%m
-else
-  set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
-endif
-
-let g:unite_source_file_rec_max_cache_files = 0
-call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate', 'max_candidates', 0)
-
 " Need to associate p6 files, the plugin doesn't for some reason
 autocmd BufNewFile,BufRead *.p6 setf perl6
 autocmd BufNewFile,BufRead *.nel setf nel
-
-let g:CommandTMaxHeight=20
-let g:CommandTMaxFiles=20000
-
-let g:ctrlp_match_window='order:ttb'
-let g:ctrlp_clear_cache_on_exit=0
-let g:ctrlp_max_files=100000
-
-let g:syntastic_auto_loc_list=1
-
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-    \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-    \ }
-
-let g:ycm_filetype_blacklist = {
-  \   'unite': 1,
-  \ }
-
-let g:ycm_semantic_triggers =  {
-  \   'c' : ['->', '.'],
-  \   'objc' : ['->', '.'],
-  \   'cpp,objcpp' : ['->', '.', '::'],
-  \   'perl' : ['->'],
-  \   'php' : ['->', '::'],
-  \   'cs,java,javascript,d,vim,ruby,python,perl6,scala,vb,elixir,go' : ['.'],
-  \   'lua' : ['.', ':'],
-  \   'erlang' : [':'],
-  \   'haskell' : ['.'],
-  \ }
 
 function! s:GoLint()
     cexpr system("golint " . shellescape(expand('%')))
     copen
 endfunction
 command! GoLint :call s:GoLint()
-
-let g:haddock_browser = ""
-let g:haddock_docdir = ""
-
-let g:ycm_key_list_select_completion = ['<C-j>']
-let g:ycm_key_list_previous_completion = ['<C-k>']
-let g:ycm_key_list_invoke_completion = ['<tab>']
-
-call unite#custom_source('file_rec,file_rec/async', 'matchers', ['matcher_fuzzy'])
-call unite#custom_source('buffer,file,file_mru,file_rec,file_rec/async', 'sorters', 'sorter_length')
-let g:unite_force_overwrite_statusline = 0
-
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline#extensions#branch#symbol = ''
-let g:airline#extensions#readonly#symbol = ''
-let g:airline_linecolumn_prefix = ''
-let g:airline#extensions#hunks#non_zero_only = 1
-let g:airline_theme="solarized"
-
-let g:signify_cursorhold_normal = 1
-
-let g:pandoc#formatting#smart_autoformat_on_cursor_moved = 1
-let g:pandoc#formatting#mode="hA"
-let g:pandoc#formatting#textwidth=80
-
-let g:EasyClipUseSubstituteDefaults = 1
-
-"call airline#parts#define_function('goinfo', 'go#complete#GetInfo')
-"call airline#parts#define_condition('goinfo', '&ft =~ "go"')
-"function! AirlineInit()
-"    let g:airline_section_x = airline#section#create_right(['goinfo', 'tagbar', 'filetype'])
-"endfunction
-"autocmd VimEnter * call AirlineInit()
