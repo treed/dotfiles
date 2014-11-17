@@ -84,12 +84,7 @@ Plug 'Shougo/unite.vim'
     else
       set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
     endif
-
     let g:unite_source_file_rec_max_cache_files = 0
-    call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate', 'max_candidates', 0)
-
-    call unite#custom_source('file_rec,file_rec/async', 'matchers', ['matcher_fuzzy'])
-    call unite#custom_source('buffer,file,file_mru,file_rec,file_rec/async', 'sorters', 'sorter_length')
     let g:unite_force_overwrite_statusline = 0
 Plug 'Shougo/neomru.vim'
 Plug 'majutsushi/tagbar'
@@ -150,6 +145,10 @@ Plug 'bling/vim-airline'
     let g:airline_theme="solarized"
 
 call plug#end()
+
+call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate', 'max_candidates', 0)
+call unite#custom#source('file_rec,file_rec/async', 'matchers', ['matcher_fuzzy'])
+call unite#custom#source('buffer,file,file_mru,file_rec,file_rec/async', 'sorters', 'sorter_length')
 
 " Woo Colors!
 set t_Co=256
