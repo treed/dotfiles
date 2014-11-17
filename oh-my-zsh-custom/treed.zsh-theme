@@ -53,7 +53,7 @@ prompt_end() {
   fi
   echo "%{%f%}"
   CURRENT_BG=''
-  echo -n "%{%F{white}%}%#%{%f%k%}"
+  echo -n "%{%F{bryellow}%}%#%{%f%k%}"
 }
 
 ### Prompt components
@@ -69,9 +69,9 @@ zle -N zle-keymap-select
 
 prompt_vimode() {
   if [[ ${VIMODE} = 'NOR' ]]; then
-    prompt_segment 154 28 "%B${VIMODE}"
+    prompt_segment 10 white "%B${VIMODE}"
   else
-    prompt_segment white 25 "%B${VIMODE}"
+    prompt_segment yellow white "%B${VIMODE}"
   fi
 }
 
@@ -103,7 +103,7 @@ prompt_git() {
     dirty=$(parse_git_dirty)
     ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git show-ref --head -s --abbrev |head -n1 2> /dev/null)"
     if [[ -n $dirty ]]; then
-      prompt_segment yellow black
+      prompt_segment 9 white
     else
       prompt_segment green black
     fi
