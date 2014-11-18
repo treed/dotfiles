@@ -91,7 +91,7 @@ prompt_context() {
     host_segment="%m"
   fi
   if [[ -n "$user_segment$host_segment" ]]; then
-    prompt_segment black default "%(!.%{%F{yellow}%}.)$user_segment$host_segment"
+    prompt_segment cyan white "%(!.%{%F{yellow}%}.)$user_segment$host_segment"
   fi
 }
 
@@ -105,7 +105,7 @@ prompt_git() {
     if [[ -n $dirty ]]; then
       prompt_segment 9 white
     else
-      prompt_segment green black
+      prompt_segment green white
     fi
     echo -n "${ref/refs\/heads\// }$dirty"
   fi
@@ -125,7 +125,7 @@ prompt_status() {
   [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}$RETVAL"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
 
-  [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
+  [[ -n "$symbols" ]] && prompt_segment violet white "$symbols"
 }
 
 ## Main prompt
