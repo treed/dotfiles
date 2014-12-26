@@ -121,6 +121,9 @@ Plug 'kien/ctrlp.vim'
     let g:ctrlp_match_window='order:ttb'
     let g:ctrlp_clear_cache_on_exit=0
     let g:ctrlp_max_files=100000
+Plug 'dahu/vim-lotr'
+    let g:lotr_left=1
+    let g:lotr_width=40
 
 " Language-Specific
 Plug 'fatih/vim-go'
@@ -245,6 +248,7 @@ nnoremap <Space>x :Bdelete<CR>
 " Open various panels or whatever
 nnoremap <silent> <Space>t :TagbarToggle<CR>
 nnoremap <silent> <Space>r :NERDTreeToggle<CR>
+nnoremap <silent> <Space>l :LOTRToggle<CR>
 nnoremap <Space>o :CtrlP<CR>
 nnoremap <Space>u :GundoToggle<CR>
 " Clear trailing whitespace and save
