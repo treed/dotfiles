@@ -1,0 +1,150 @@
+call plug#begin()
+
+" Plumbing
+Plug 'tomtom/tlib_vim'
+if has("unix")
+    let s:uname = system("uname")
+    if s:uname == "Darwin\n"
+        Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_mac.mak' }
+    else
+        Plug 'Shougo/vimproc.vim', { 'do': 'make -f make_unix.mak' }
+    endif
+endif
+
+" Sane Behavior
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tommcdo/vim-exchange'
+Plug 'vim-pandoc/vim-pandoc'
+    let g:pandoc#formatting#smart_autoformat_on_cursor_moved = 1
+    let g:pandoc#formatting#mode="hA"
+    let g:pandoc#formatting#textwidth=80
+Plug 'sickill/vim-pasta'
+Plug 'svermeulen/vim-easyclip'
+    let g:EasyClipUseSubstituteDefaults = 1
+Plug 'myusuf3/numbers.vim'
+Plug 'ervandew/supertab'
+    let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+Plug 'Konfekt/FastFold'
+
+" Utilities
+Plug 'mhinz/vim-signify'
+    let g:signify_cursorhold_normal = 1
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+    let g:ycm_key_list_select_completion = ['<C-j>']
+    let g:ycm_key_list_previous_completion = ['<C-k>']
+    let g:ycm_key_list_invoke_completion = ['<tab>']
+
+    let g:ycm_filetype_blacklist = {
+      \   'unite': 1,
+      \ }
+
+    let g:ycm_semantic_triggers =  {
+      \   'c' : ['->', '.'],
+      \   'objc' : ['->', '.'],
+      \   'cpp,objcpp' : ['->', '.', '::'],
+      \   'perl' : ['->'],
+      \   'php' : ['->', '::'],
+      \   'cs,java,javascript,d,vim,ruby,python,perl6,scala,vb,elixir,go' : ['.'],
+      \   'lua' : ['.', ':'],
+      \   'erlang' : [':'],
+      \   'haskell' : ['.'],
+      \ }
+Plug 'scrooloose/syntastic'
+    let g:syntastic_auto_loc_list=1
+Plug 'tpope/vim-fugitive'
+Plug 'int3/vim-extradite'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'moll/vim-bbye'
+Plug 'junegunn/vim-easy-align'
+
+" Colorschemes
+Plug 'nanotech/jellybeans.vim'
+Plug 'w0ng/vim-hybrid'
+Plug 'altercation/vim-colors-solarized'
+    let g:solarized_contrast="high"
+    let g:solarized_visibility="normal"
+
+" Snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+" Panels
+Plug 'Shougo/unite.vim'
+    let g:unite_source_grep_max_candidates=10000
+    if executable('ag')
+      set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+      set grepformat=%f:%l:%c:%m
+      let g:unite_source_grep_command='ag'
+      let g:unite_source_grep_default_opts='--nocolor --nogroup -S'
+      let g:unite_source_grep_recursive_opt=''
+    elseif executable('ack')
+      set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
+      set grepformat=%f:%l:%c:%m
+    else
+      set grepprg=grep\ --exclude-dir\ .git\ -nrI\ $*\ .\ /dev/null
+    endif
+    let g:unite_source_file_rec_max_cache_files = 0
+    let g:unite_force_overwrite_statusline = 0
+Plug 'Shougo/neomru.vim'
+Plug 'majutsushi/tagbar'
+    let g:tagbar_type_go = {
+        \ 'ctagstype' : 'go',
+        \ 'kinds'     : [
+            \ 'p:package',
+            \ 'i:imports:1',
+            \ 'c:constants',
+            \ 'v:variables',
+            \ 't:types',
+            \ 'n:interfaces',
+            \ 'w:fields',
+            \ 'e:embedded',
+            \ 'm:methods',
+            \ 'r:constructor',
+            \ 'f:functions'
+        \ ],
+        \ 'sro' : '.',
+        \ 'kind2scope' : {
+            \ 't' : 'ctype',
+            \ 'n' : 'ntype'
+        \ },
+        \ 'scope2kind' : {
+            \ 'ctype' : 't',
+            \ 'ntype' : 'n'
+        \ },
+        \ 'ctagsbin'  : 'gotags',
+        \ 'ctagsargs' : '-sort -silent'
+        \ }
+Plug 'sjl/gundo.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'kien/ctrlp.vim'
+    let g:ctrlp_match_window='order:ttb'
+    let g:ctrlp_clear_cache_on_exit=0
+    let g:ctrlp_max_files=100000
+Plug 'dahu/vim-lotr'
+    let g:lotr_left=1
+    let g:lotr_width=40
+
+" Language-Specific
+Plug 'fatih/vim-go'
+Plug 'ClockworkNet/vim-junos-syntax', { 'for': 'junos' }
+Plug 'vim-scripts/nginx.vim', { 'for': 'nginx' }
+Plug 'dbakker/vim-lint', { 'for': 'vim' }
+Plug 'vim-perl/vim-perl', { 'for': 'perl' }
+Plug 'c9s/perlomni.vim', { 'for': 'perl' }
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
+" Airline conditionally loads stuff based on what was loaded before
+Plug 'bling/vim-airline'
+    let g:airline_left_sep = ''
+    let g:airline_left_alt_sep = ''
+    let g:airline_right_sep = ''
+    let g:airline_right_alt_sep = ''
+    let g:airline#extensions#branch#symbol = ''
+    let g:airline#extensions#readonly#symbol = ''
+    let g:airline_linecolumn_prefix = ''
+    let g:airline#extensions#hunks#non_zero_only = 1
+    let g:airline_theme="solarized"
+
+call plug#end()
