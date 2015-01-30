@@ -1,7 +1,7 @@
 FROM tianon/ubuntu-core:14.04
 
 # Initial Setup, Basic Package Installs
-RUN DEBIAN_FRONTEND=noninteractive; apt-get update; apt-get upgrade -y; apt-get install --no-install-recommends -y vim-nox zsh golang-go build-essential tmux git mercurial cmake python-dev; apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN DEBIAN_FRONTEND=noninteractive; apt-get update; apt-get upgrade -y; apt-get install --no-install-recommends -y vim-nox zsh golang-go build-essential tmux git mercurial cmake python-dev openssh-client; apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install Basic Configs
 WORKDIR /home/treed
@@ -27,7 +27,7 @@ RUN chown -R treed:treed /home/treed
 RUN echo 'treed ALL=NOPASSWD: ALL' >> /etc/sudoers
 USER treed
 
-# Workspace
 VOLUME /home/treed/code
+VOLUME /home/treed/.ssh
 
 ENTRYPOINT ["zsh"]
