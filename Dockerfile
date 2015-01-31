@@ -1,7 +1,12 @@
 FROM tianon/ubuntu-core:14.04
 
 # Initial Setup, Basic Package Installs
-RUN DEBIAN_FRONTEND=noninteractive; apt-get update; apt-get upgrade -y; apt-get install --no-install-recommends -y vim-nox zsh golang-go build-essential tmux git mercurial cmake python-dev openssh-client; apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN DEBIAN_FRONTEND=noninteractive; apt-get update; apt-get upgrade -y; apt-get install --no-install-recommends -y vim-nox zsh golang-go build-essential tmux git mercurial cmake python-dev openssh-client wget curl; apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Other Installs
+RUN mkdir /home/treed/bin/
+ADD http://stedolan.github.io/jq/download/linux64/jq /home/treed/bin/
+RUN chmod +x /home/treed/bin/jq
 
 # Install Basic Configs
 WORKDIR /home/treed
