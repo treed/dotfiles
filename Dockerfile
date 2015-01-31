@@ -4,7 +4,7 @@ FROM tianon/ubuntu-core:14.04
 RUN DEBIAN_FRONTEND=noninteractive; apt-get update; apt-get upgrade -y; apt-get install --no-install-recommends -y vim-nox zsh golang-go build-essential tmux git mercurial cmake python-dev openssh-client wget curl; apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Other Installs
-RUN mkdir /home/treed/bin/
+RUN mkdir -p /home/treed/bin/
 ADD http://stedolan.github.io/jq/download/linux64/jq /home/treed/bin/
 RUN chmod +x /home/treed/bin/jq
 
