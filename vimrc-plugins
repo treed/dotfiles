@@ -57,6 +57,8 @@ Plug 'int3/vim-extradite'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'moll/vim-bbye'
 Plug 'junegunn/vim-easy-align'
+Plug 'benmills/vimux'
+Plug 'benmills/vimux-golang'
 
 " Colorschemes
 Plug 'nanotech/jellybeans.vim'
