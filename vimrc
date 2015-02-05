@@ -119,7 +119,8 @@ autocmd BufNewFile,BufRead *.p[lm] nnoremap <silent> <Space>c :%!perl perltidy.p
 autocmd BufNewFile,BufRead *.p[lm] vnoremap <silent> <Space>c :!perl perltidy.pl --profile=perltidyrc<CR>
 
 " Go Specific
-autocmd FileType go nnoremap <buffer><silent> <C-T> :call VimuxRunCommand("go test")<CR>
+autocmd FileType go nnoremap <buffer><silent> <C-T> :GolangTestCurrentPackage<CR>
+autocmd FileType go nnoremap <buffer><silent> <Space>c :GoFmt<CR>
 autocmd FileType go setlocal noexpandtab
 
 " Markdown Specific
