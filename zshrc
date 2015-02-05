@@ -8,7 +8,6 @@ DEFAULT_USER="treed"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 DISABLE_AUTO_UPDATE="true"
-DISABLE_CORRECTION="true"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -25,3 +24,5 @@ bindkey "^R" history-incremental-search-backward
 bindkey "^F" history-incremental-search-forward
 bindkey "^[." insert-last-word
 bindkey "^?" backward-delete-char
+
+unsetopt correctall
