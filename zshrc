@@ -7,8 +7,8 @@ DEFAULT_USER="treed"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Comment this out to disable bi-weekly auto-update checks
 DISABLE_AUTO_UPDATE="true"
+DISABLE_CORRECTION="true"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
