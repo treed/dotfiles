@@ -35,10 +35,6 @@ Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
     let g:ycm_key_list_previous_completion = ['<C-k>']
     let g:ycm_key_list_invoke_completion = ['<tab>']
 
-    let g:ycm_filetype_blacklist = {
-      \   'unite': 1,
-      \ }
-
     let g:ycm_semantic_triggers =  {
       \   'c' : ['->', '.'],
       \   'objc' : ['->', '.'],
