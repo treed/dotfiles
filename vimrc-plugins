@@ -135,13 +135,16 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 
 " Airline conditionally loads stuff based on what was loaded before
 Plug 'bling/vim-airline'
+    if !exists('g:airline_symbols')
+        let g:airline_symbols = {}
+    endif
     let g:airline_left_sep = ''
     let g:airline_left_alt_sep = ''
     let g:airline_right_sep = ''
     let g:airline_right_alt_sep = ''
     let g:airline#extensions#branch#symbol = ''
     let g:airline#extensions#readonly#symbol = ''
-    let g:airline_linecolumn_prefix = ''
+    let g:airline_symbols.linenr = ''
     let g:airline#extensions#hunks#non_zero_only = 1
     let g:airline_theme="solarized"
 
