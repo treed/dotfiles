@@ -115,10 +115,7 @@ Plug 'majutsushi/tagbar'
         \ }
 Plug 'sjl/gundo.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'kien/ctrlp.vim'
-    let g:ctrlp_match_window='order:ttb'
-    let g:ctrlp_clear_cache_on_exit=0
-    let g:ctrlp_max_files=100000
+Plug 'junegunn/fzf'
 Plug 'dahu/vim-lotr'
     let g:lotr_left=1
     let g:lotr_width=40

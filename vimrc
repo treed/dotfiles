@@ -99,7 +99,7 @@ nnoremap <Space>x :Bdelete<CR>
 nnoremap <silent> <Space>t :TagbarToggle<CR>
 nnoremap <silent> <Space>r :NERDTreeToggle<CR>
 nnoremap <silent> <Space>l :LOTRToggle<CR>
-nnoremap <Space>o :CtrlP<CR>
+nnoremap <Space>o :FZF<CR>
 nnoremap <Space>u :GundoToggle<CR>
 " Clear trailing whitespace and save
 nnoremap <silent> <Space>w :%s/\s\+$//g<CR>:w<CR>

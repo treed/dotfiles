@@ -5,3 +5,9 @@ done
 for dir in vim oh-my-zsh oh-my-zsh-custom; do
     test -d ~/.$dir/ || ln -sf "$(pwd)/$dir/" ~/.$dir
 done
+
+if uname -a | grep -q Darwin; then
+    brew install fzf
+else
+    curl -o ~/bin/fzf https://github.com/junegunn/fzf-bin/releases/download/0.9.4/fzf-0.9.4-linux_amd64.tgz
+fi
