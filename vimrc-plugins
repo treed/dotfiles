@@ -129,6 +129,7 @@ Plug 'vim-perl/vim-perl', { 'for': 'perl' }
 Plug 'c9s/perlomni.vim', { 'for': 'perl' }
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'ekalinin/Dockerfile.vim'
 
 " Airline conditionally loads stuff based on what was loaded before
 Plug 'bling/vim-airline'
