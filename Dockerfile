@@ -35,4 +35,6 @@ USER treed
 VOLUME /home/treed/code
 VOLUME /home/treed/.ssh
 
+ENV TZ America/Los_Angeles
+
 ENTRYPOINT ["zsh"]
