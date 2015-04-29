@@ -27,7 +27,7 @@ RUN mv .vimrc .vimrc-plugins
 ADD vimrc .vimrc
 
 # Handle User
-RUN adduser --disabled-password treed
+RUN adduser --disabled-password -u 500 treed
 RUN chown -R treed:treed /home/treed
 RUN echo 'treed ALL=NOPASSWD: ALL' >> /etc/sudoers
 USER treed
