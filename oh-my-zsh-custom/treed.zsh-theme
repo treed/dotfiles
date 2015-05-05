@@ -111,6 +111,16 @@ prompt_git() {
   fi
 }
 
+prompt_kube_context() {
+  local context
+  if test -x $(which kubectl); then
+    context=$(kubectl config view -o template --template='{{ index . "current-context" }}')
+    if ! echo $context | grep -q 'no value'; then
+      prompt_segment blue white "☸ $context"
+    fi
+  fi
+}
+
 # Dir: current working directory
 prompt_dir() {
   prompt_segment 23 white '%~'
@@ -136,6 +146,7 @@ build_prompt() {
   prompt_context
   prompt_dir
   prompt_git
+  prompt_kube_context
   prompt_status
   prompt_end
 }
