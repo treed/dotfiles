@@ -98,7 +98,7 @@ nnoremap <Space>x :Bdelete<CR>
 " Open various panels or whatever
 nnoremap <silent> <Space>t :TagbarToggle<CR>
 nnoremap <silent> <Space>r :NERDTreeToggle<CR>
-nnoremap <silent> <Space>l :LOTRToggle<CR>
+nnoremap <silent> <Space>c :LOTRToggle<CR>
 nnoremap <Space>o :FZF<CR>
 nnoremap <Space>u :GundoToggle<CR>
 " Clear trailing whitespace and save
