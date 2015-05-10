@@ -130,6 +130,9 @@ autocmd BufNewFile,BufRead *.md setlocal spell spelllang=en_us
 " Haskell Specific
 autocmd BufNewFile,BufRead *.hs setlocal omnifunc=necoghc#omnifunc
 
+" JS Specific
+autocmd FileType javascript nnoremap <buffer><silent> <Space>c :call JsBeautify()<CR>
+
 set scrolloff=10
 
 " Need to associate p6 files, the plugin doesn't for some reason
