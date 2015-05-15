@@ -113,7 +113,7 @@ prompt_git() {
 
 prompt_kube_context() {
   local context
-  if test -x $(which kubectl); then
+  if test -x "$(which kubectl)"; then
     context=$(kubectl config view -o template --template='{{ index . "current-context" }}')
     if ! echo $context | grep -q 'no value'; then
       prompt_segment blue white "☸ $context"
