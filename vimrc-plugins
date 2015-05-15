@@ -30,7 +30,7 @@ Plug 'Konfekt/FastFold'
 " Utilities
 Plug 'mhinz/vim-signify'
     let g:signify_cursorhold_normal = 1
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --gocode-completer' }
     let g:ycm_key_list_select_completion = ['<C-j>']
     let g:ycm_key_list_previous_completion = ['<C-k>']
     let g:ycm_key_list_invoke_completion = ['<tab>']
