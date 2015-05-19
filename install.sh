@@ -11,10 +11,11 @@ done
 if uname -a | grep -q Darwin; then
     brew install fzf
 else
-    wget -O /tmp/fzf.tgz https://github.com/junegunn/fzf-bin/releases/download/0.9.4/fzf-0.9.4-linux_amd64.tgz
+    wget -O /tmp/fzf.tgz https://github.com/junegunn/fzf-bin/releases/download/0.9.11/fzf-0.9.11-linux_amd64.tgz
     pushd ~/bin > /dev/null
+    rm fzf*
     tar xf /tmp/fzf.tgz
-    mv fzf* fzf
+    mv -f fzf* fzf
     popd > /dev/null
     rm /tmp/fzf.tgz
 fi
