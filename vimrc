@@ -1,3 +1,7 @@
+if &shell =~# 'fish$'
+    set shell=sh
+endif
+
 source ~/.vimrc-plugins
 call unite#custom#source('file_mru,file_rec,file_rec/async,grepocate', 'max_candidates', 0)
 call unite#custom#source('file_rec,file_rec/async', 'matchers', ['matcher_fuzzy'])

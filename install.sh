@@ -8,6 +8,13 @@ for dir in vim oh-my-zsh oh-my-zsh-custom; do
     test -d ~/.$dir/ || ln -sf "$(pwd)/$dir/" ~/.$dir
 done
 
+test -d ~/.config/fish || mkdir -p ~/.config/fish
+for fish_config in fish/*.fish; do
+    ln -sf "$(pwd)/$fish_config" ~/.config/$fish_config
+done
+
+ln -sf "$(pwd)/fish/functions/" ~/.config/fish/functions
+
 if uname -a | grep -q Darwin; then
     brew install fzf
 else

@@ -132,6 +132,7 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'maksimr/vim-jsbeautify'
 Plug 'einars/js-beautify'
+Plug 'dag/vim-fish'
 
 " Airline conditionally loads stuff based on what was loaded before
 Plug 'bling/vim-airline'
