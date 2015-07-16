@@ -50,18 +50,16 @@ function fish_prompt --description 'Write out the prompt'
         end
 
         if test -n "$dirty"
-            fish_prompt_segment cb4b16 white "$ref±"
+            fish_prompt_segment cb4b16 white " $ref±"
         else
-            fish_prompt_segment green white "$ref"
+            fish_prompt_segment green white " $ref"
         end
     end
 
     set kubectl (which kubectl)
     if test -n "$kubectl"
         set context (kubectl config view -o template --template='{{ index . "current-context" }}')
-        if ! echo $context | grep -q 'no value'
-            prompt_segment blue white "☸ $context"
-        end
+        echo $context | grep -q 'no value'; or fish_prompt_segment blue white "☸ $context"
     end
 
     if test $last_status -ne 0
