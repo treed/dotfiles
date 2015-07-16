@@ -43,7 +43,7 @@ function fish_prompt --description 'Write out the prompt'
     fish_prompt_segment 005f5f white (pwd)
 
     if git rev-parse --is-inside-work-tree >/dev/null ^&1
-        if test -n "(git status --ignore-submodules=dirty ^/dev/null)"
+        if test -n "(git status -s --ignore-submodules=dirty ^/dev/null)"
             set dirty "±"
         end
         set ref (basename (git symbolic-ref HEAD ^/dev/null))
