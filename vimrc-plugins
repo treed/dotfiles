@@ -30,7 +30,7 @@ Plug 'Konfekt/FastFold'
 " Utilities
 Plug 'mhinz/vim-signify'
     let g:signify_cursorhold_normal = 1
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --gocode-completer' }
     let g:ycm_key_list_select_completion = ['<C-j>']
     let g:ycm_key_list_previous_completion = ['<C-k>']
     let g:ycm_key_list_invoke_completion = ['<tab>']
@@ -68,6 +68,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " Panels
+Plug 'dnhgff/vache'
 Plug 'Shougo/unite.vim'
     let g:unite_source_grep_max_candidates=10000
     if executable('ag')
