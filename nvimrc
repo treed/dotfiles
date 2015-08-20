@@ -65,10 +65,10 @@ Plug 'bling/vim-airline'                      " Pimped-out status line
 
 Plug 'junegunn/fzf'                           " Fuzzy finder
 Plug 'Shougo/deoplete.nvim'                   " nvim-specific autocompletion
-let g:deoplete#enable_at_startup = 1
+    let g:deoplete#enable_at_startup = 1
 Plug 'benekastah/neomake'                     " nvim-specific async 'make' running (syntax checking)
-let g:neomake_json_enabled_makers = ['jsonlint']
-autocmd! BufWritePost * Neomake
+    let g:neomake_json_enabled_makers = ['jsonlint']
+    autocmd! BufWritePost * Neomake
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
