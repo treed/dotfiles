@@ -69,8 +69,9 @@ Plug 'Shougo/deoplete.nvim'                   " nvim-specific autocompletion
 Plug 'benekastah/neomake'                     " nvim-specific async 'make' running (syntax checking)
     let g:neomake_json_enabled_makers = ['jsonlint']
     autocmd! BufWritePost * Neomake
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'                     " git stuff
+Plug 'airblade/vim-gitgutter'                 " adds diff symbols
+Plug 'edkolev/tmuxline.vim'                   " synchronizes airline theme to tmux status line
 
 """ Language Specific
 
