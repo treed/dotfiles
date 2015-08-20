@@ -1,10 +1,10 @@
 #!/bin/bash
 
-for file in tmux.conf cvsignore Xmodmap xsession xmobarrc bashrc shellrc vimrc vimrc-plugins gitconfig gtkrc-2.0 zshrc; do
+for file in tmux.conf cvsignore Xmodmap xsession xmobarrc bashrc shellrc vimrc vimrc-plugins gitconfig gtkrc-2.0 zshrc nvimrc; do
 	ln -sf "$(pwd)/$file" ~/.$file
 done
 
-for dir in vim oh-my-zsh oh-my-zsh-custom; do
+for dir in vim oh-my-zsh oh-my-zsh-custom nvim; do
     test -d ~/.$dir/ || ln -sf "$(pwd)/$dir/" ~/.$dir
 done
 
@@ -13,7 +13,7 @@ for fish_config in fish/*.fish; do
     ln -sf "$(pwd)/$fish_config" ~/.config/$fish_config
 done
 
-ln -sf "$(pwd)/fish/functions/" ~/.config/fish/functions
+ln -sf "$(pwd)/fish/functions/" ~/.config/fish/functions/
 
 if uname -a | grep -q Darwin; then
     brew install fzf
