@@ -9,12 +9,10 @@ set gdefault           " /g default on s//
 set laststatus=2       " forces status on all the time
 set number             " line numbers (see numbers.vim)
 set cursorline         " show a line wherever the cursor is
-set autoread           " automatically reread a file if it's been changed outside of vim
 set list               " Shows otherwise invisible characters
 set listchars=tab:╾─,eol:↩,trail:␠
 
 " Indentation options
-set ai
 set tabstop=4
 set shiftwidth=4
 set expandtab
