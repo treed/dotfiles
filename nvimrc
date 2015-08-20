@@ -1,9 +1,23 @@
+" vim doesn't like fish as a shell
 if &shell =~# 'fish$'
-	set shell=sh
+    set shell=sh
 endif
 
-set laststatus=2
-set number
+set ignorecase         " Ignore case in searching
+set smartcase          " Ignore ignorecase if uppercase is used
+set gdefault           " /g default on s//
+set laststatus=2       " forces status on all the time
+set number             " line numbers (see numbers.vim)
+set cursorline         " show a line wherever the cursor is
+set autoread           " automatically reread a file if it's been changed outside of vim
+set list               " Shows otherwise invisible characters
+set listchars=tab:╾─,eol:↩,trail:␠
+
+" Indentation options
+set ai
+set tabstop=4
+set shiftwidth=4
+set expandtab
 
 call plug#begin('~/.nvim/plugged')
 
@@ -55,6 +69,8 @@ let g:deoplete#enable_at_startup = 1
 Plug 'benekastah/neomake'                     " nvim-specific async 'make' running (syntax checking)
 let g:neomake_json_enabled_makers = ['jsonlint']
 autocmd! BufWritePost * Neomake
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 """ Language Specific
 
@@ -80,3 +96,12 @@ nnoremap <Space>n :bn<CR>
 nnoremap <Space>p :bp<CR>
 
 nnoremap <Space>o :FZF<CR>
+
+function ToggleCopyMode()
+    set list!
+    set number!
+    set relativenumber!
+endfunction
+
+nnoremap <F4> :set paste!<CR>
+nnoremap <F5> :call ToggleCopyMode()<CR>
