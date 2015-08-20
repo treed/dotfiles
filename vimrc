@@ -148,3 +148,12 @@ function! s:GoLint()
     copen
 endfunction
 command! GoLint :call s:GoLint()
+
+function ToggleCopyMode()
+    set list!
+    set number!
+    set relativenumber!
+endfunction
+
+nnoremap <F4> :set paste!<CR>
+nnoremap <F5> :call ToggleCopyMode()<CR>
