@@ -1,6 +1,6 @@
 function fish_user_key_bindings
     fish_vi_key_bindings
-    bind -M insert \.e history-token-search-backward
+    bind -M insert \e. history-token-search-backward
 
     function __fzf_select
         find * -path '*/\.*' -prune \
