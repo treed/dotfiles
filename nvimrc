@@ -71,6 +71,7 @@ Plug 'tpope/vim-fugitive'                     " git stuff
 Plug 'airblade/vim-gitgutter'                 " adds diff symbols
 Plug 'edkolev/tmuxline.vim'                   " synchronizes airline theme to tmux status line
 Plug 'ervandew/supertab'                      " Tab handling
+Plug 'moll/vim-bbye'                          " Close Buffers
 
 """ Language Specific
 
@@ -102,6 +103,9 @@ nnoremap <Space>n :bn<CR>
 nnoremap <Space>p :bp<CR>
 
 nnoremap <Space>o :FZF<CR>
+
+" Remove the current buffer without closing the window
+nnoremap <Space>x :Bdelete<CR>
 
 function ToggleCopyMode()
     set list!
