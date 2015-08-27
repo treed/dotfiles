@@ -70,10 +70,17 @@ Plug 'benekastah/neomake'                     " nvim-specific async 'make' runni
 Plug 'tpope/vim-fugitive'                     " git stuff
 Plug 'airblade/vim-gitgutter'                 " adds diff symbols
 Plug 'edkolev/tmuxline.vim'                   " synchronizes airline theme to tmux status line
+Plug 'ervandew/supertab'                      " Tab handling
 
 """ Language Specific
 
 Plug 'Shougo/neco-vim'                        " autocompletion support for vimL
+Plug 'fatih/vim-go'                           " all the golang stuff
+
+""" Snippets
+
+Plug 'SirVer/ultisnips'                       " Snippet engine
+Plug 'honza/vim-snippets'                     " The actual premade snippets
 
 call plug#end()
 
