@@ -62,8 +62,6 @@ Plug 'bling/vim-airline'                      " Pimped-out status line
 """ Utilities
 
 Plug 'junegunn/fzf'                           " Fuzzy finder
-Plug 'Shougo/deoplete.nvim'                   " nvim-specific autocompletion
-    let g:deoplete#enable_at_startup = 1
 Plug 'benekastah/neomake'                     " nvim-specific async 'make' running (syntax checking)
     let g:neomake_json_enabled_makers = ['jsonlint']
     autocmd! BufWritePost * Neomake
@@ -71,7 +69,11 @@ Plug 'tpope/vim-fugitive'                     " git stuff
 Plug 'airblade/vim-gitgutter'                 " adds diff symbols
 Plug 'edkolev/tmuxline.vim'                   " synchronizes airline theme to tmux status line
 Plug 'ervandew/supertab'                      " Tab handling
+    let g:SuperTabDefaultCompletionType = '<C-n>'
 Plug 'moll/vim-bbye'                          " Close Buffers
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --gocode-completer' }
+    let g:ycm_key_list_select_completion = ['<C-n>', '<Down>'] " make YCM compatible with UltiSnips (using supertab)
+    let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 
 """ Language Specific
 
@@ -81,6 +83,9 @@ Plug 'fatih/vim-go'                           " all the golang stuff
 """ Snippets
 
 Plug 'SirVer/ultisnips'                       " Snippet engine
+    let g:UltiSnipsExpandTrigger = "<tab>"
+    let g:UltiSnipsJumpForwardTrigger = "<tab>"
+    let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 Plug 'honza/vim-snippets'                     " The actual premade snippets
 
 call plug#end()
