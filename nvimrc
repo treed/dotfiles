@@ -71,7 +71,7 @@ Plug 'edkolev/tmuxline.vim'                   " synchronizes airline theme to tm
 Plug 'ervandew/supertab'                      " Tab handling
     let g:SuperTabDefaultCompletionType = '<C-n>'
 Plug 'moll/vim-bbye'                          " Close Buffers
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --gocode-completer' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --gocode-completer' }
     let g:ycm_key_list_select_completion = ['<C-n>', '<Down>'] " make YCM compatible with UltiSnips (using supertab)
     let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 
