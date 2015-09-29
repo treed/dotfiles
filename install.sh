@@ -13,7 +13,7 @@ for fish_config in fish/*.fish; do
     ln -sf "$(pwd)/$fish_config" ~/.config/$fish_config
 done
 
-ln -sf "$(pwd)/fish/functions/" ~/.config/fish/functions/
+ln -sf "$(pwd)/fish/functions/" ~/.config/fish/functions
 
 if uname -a | grep -q Darwin; then
     brew install fzf

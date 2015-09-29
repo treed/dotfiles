@@ -56,7 +56,7 @@ function fish_prompt --description 'Write out the prompt'
         end
     end
 
-    set kubectl (which kubectl)
+    set kubectl (which kubectl ^/dev/null)
     if test -n "$kubectl"
         set context (kubectl config view -o template --template='{{ index . "current-context" }}')
         echo $context | grep -q 'no value'; or fish_prompt_segment blue white "☸ $context"
