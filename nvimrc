@@ -75,6 +75,7 @@ Plug 'moll/vim-bbye'                          " Close Buffers
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --gocode-completer' }
     let g:ycm_key_list_select_completion = ['<C-n>', '<Down>'] " make YCM compatible with UltiSnips (using supertab)
     let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+Plug 'Numkil/ag.nvim'
 
 """ Language Specific
 
@@ -109,6 +110,7 @@ nnoremap <Space>n :bn<CR>
 nnoremap <Space>p :bp<CR>
 
 nnoremap <Space>o :FZF<CR>
+nnoremap <Space>a :Ag 
 
 " Remove the current buffer without closing the window
 nnoremap <Space>x :Bdelete<CR>
