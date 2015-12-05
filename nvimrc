@@ -66,12 +66,13 @@ Plug 'benekastah/neomake'                     " nvim-specific async 'make' runni
     let g:neomake_json_enabled_makers = ['jsonlint']
     autocmd! BufWritePost * Neomake
 Plug 'tpope/vim-fugitive'                     " git stuff
+Plug 'int3/vim-extradite'                     " git commit browser
 Plug 'airblade/vim-gitgutter'                 " adds diff symbols
 Plug 'edkolev/tmuxline.vim'                   " synchronizes airline theme to tmux status line
 Plug 'ervandew/supertab'                      " Tab handling
     let g:SuperTabDefaultCompletionType = '<C-n>'
 Plug 'moll/vim-bbye'                          " Close Buffers
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --gocode-completer' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --gocode-completer' }
     let g:ycm_key_list_select_completion = ['<C-n>', '<Down>'] " make YCM compatible with UltiSnips (using supertab)
     let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 
