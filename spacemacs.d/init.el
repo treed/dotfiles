@@ -229,6 +229,9 @@ layers configuration. You are free to put any user code."
     (cons msg code))
   ;; Specify my function (maybe I should have done a lambda function)
   (setq compilation-exit-message-function 'compilation-exit-autoclose) (add-hook 'typescript-mode-hook 'typescript-errors)
+
+  ;; try to work around a problem that makes solarized light bg yellow
+  (custom-set-faces (if (not window-system) '(default ((t (:background "nil"))))))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
