@@ -27,7 +27,9 @@ values."
                       auto-completion-private-snippets-directory (expand-file-name
                                                                   (concat user-home-directory
                                                                           ".spacemacs.d/snippets/"))
-                      auto-completion-enable-snippets-in-popup t)
+                      auto-completion-enable-snippets-in-popup t
+                      auto-completion-enable-sort-by-usage t
+                      auto-completion-enable-help-tooltip t)
      better-defaults
      colors
      dockerfile
