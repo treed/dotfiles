@@ -204,6 +204,8 @@ user code."
   "Configuration function for user code.
  This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
+
+  ;; error handling for typescript
   (require 'compile)
   (add-to-list 'compilation-error-regexp-alist 'typescript)
   (add-to-list 'compilation-error-regexp-alist-alist 
@@ -213,6 +215,7 @@ layers configuration. You are free to put any user code."
     (make-local-variable 'compile-command)
     (setq compile-command "tsc")
   )
+
   ;; Helper for compilation. Close the compilation window if
   ;; there was no error at all.
   (defun compilation-exit-autoclose (status code msg)
