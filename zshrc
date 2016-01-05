@@ -84,3 +84,5 @@ bindkey '^R' fzf-history-widget
 fi
 
 unsetopt correctall
+
+eval "$(thefuck --alias)"
