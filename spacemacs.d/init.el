@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp -*-
+;; -*- mode: dotspacemacs -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
@@ -42,6 +42,8 @@ values."
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
+     spacemacs-layouts
+     php
      semantic
      spell-checking
      syntax-checking
