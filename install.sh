@@ -1,12 +1,14 @@
 #!/bin/bash
 
-for file in tmux.conf cvsignore Xmodmap xsession xmobarrc bashrc shellrc vimrc vimrc-plugins gitconfig gtkrc-2.0 zshrc nvimrc; do
+for file in tmux.conf cvsignore Xmodmap xsession xmobarrc bashrc shellrc vimrc vimrc-plugins gitconfig gtkrc-2.0 zshrc; do
 	ln -sf "$(pwd)/$file" ~/.$file
 done
 
-for dir in vim oh-my-zsh oh-my-zsh-custom nvim spacemacs.d; do
+for dir in vim oh-my-zsh oh-my-zsh-custom spacemacs.d; do
     test -d ~/.$dir/ || ln -sf "$(pwd)/$dir/" ~/.$dir
 done
+
+test -d ~/.config/nvim/ || ln -sf "$(pwd)/nvim/" ~/.config/nvim
 
 test -d ~/.config/fish || mkdir -p ~/.config/fish
 for fish_config in fish/*.fish; do

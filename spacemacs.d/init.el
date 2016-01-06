@@ -25,8 +25,7 @@ values."
      ;; ----------------------------------------------------------------
      (auto-completion :variables
                       auto-completion-private-snippets-directory (expand-file-name
-                                                                  (concat user-home-directory
-                                                                          ".spacemacs.d/snippets/"))
+                                                                  (concat user-home-directory ".spacemacs.d/snippets/"))
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-help-tooltip t)
@@ -43,7 +42,6 @@ values."
             shell-default-height 30
             shell-default-position 'bottom)
      spacemacs-layouts
-     php
      semantic
      spell-checking
      syntax-checking
@@ -88,11 +86,11 @@ values."
    ;; List of items to show in the startup buffer. If nil it is disabled.
    ;; Possible values are: `recents' `bookmarks' `projects'.
    ;; (default '(recents projects))
-   dotspacemacs-startup-lists '(recents projects)
+   dotspacemacs-startup-lists '(recents projects bookmarks)
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(solarized-light)
+   dotspacemacs-themes '(spacemacs-dark spacemacs-light)
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state nil
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
@@ -165,11 +163,11 @@ values."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-active-transparency 90
+   dotspacemacs-active-transparency 100
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-inactive-transparency 90
+   dotspacemacs-inactive-transparency 70
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
    dotspacemacs-mode-line-unicode-symbols t
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
@@ -233,8 +231,12 @@ layers configuration. You are free to put any user code."
   ;; Specify my function (maybe I should have done a lambda function)
   (setq compilation-exit-message-function 'compilation-exit-autoclose) (add-hook 'typescript-mode-hook 'typescript-errors)
 
-  ;; try to work around a problem that makes solarized light bg yellow
-  (custom-set-faces (if (not window-system) '(default ((t (:background "nil"))))))
+  ;; line numbers
+  (global-linum-mode)
+  (linum-relative-toggle)
+
+  ;; Enable caching in projectile
+  (setq projectile-enable-caching t)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
