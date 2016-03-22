@@ -5,14 +5,14 @@ function fish_prompt --description 'Write out the prompt'
 
     switch $fish_bind_mode
     case default
-        fish_prompt_segment 586e75 white NOR
+        fish_prompt_segment deb359 white NOR
     case insert
-        fish_prompt_segment yellow white INS
+        fish_prompt_segment green white INS
     case visual
-        fish_prompt_segment magenta white VIS
+        fish_prompt_segment grey white VIS
     end
 
-    fish_prompt_segment 005f00 white (date +%T)
+    fish_prompt_segment blue white (date +%T)
 
     if not set -q __fish_prompt_username
         set -l user (whoami)
@@ -40,7 +40,7 @@ function fish_prompt --description 'Write out the prompt'
         set prompt_status ' ' (set_color $fish_color_status) "[$last_status]" "$normal"
     end
 
-    fish_prompt_segment 005f5f white (pwd)
+    fish_prompt_segment 05766e  white (pwd)
 
     if git rev-parse --is-inside-work-tree >/dev/null ^&1
         set dirty (git status -s --ignore-submodules=dirty ^/dev/null)
