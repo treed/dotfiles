@@ -26,7 +26,7 @@ function fish_user_key_bindings
     rm -f $TMPDIR/fzf.result
   end
   function __fzf_ctrl_r
-    history | eval (__fzfcmd) +s +m --tiebreak=index --toggle-sort=ctrl-r $FZF_CTRL_R_OPTS > $TMPDIR/fzf.result
+    history | eval (__fzfcmd) +m --tiebreak=index --toggle-sort=ctrl-r $FZF_CTRL_R_OPTS > $TMPDIR/fzf.result
     and commandline (cat $TMPDIR/fzf.result)
     commandline -f repaint
     rm -f $TMPDIR/fzf.result
