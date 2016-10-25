@@ -3,7 +3,7 @@
 	umail = ted.reed@gmail.com
 	email = ted.reed@gmail.com
 [core]
-	editor = vim
+	editor = nvim
 	excludesfile = ~/.cvsignore
 [color]
 	ui = true
