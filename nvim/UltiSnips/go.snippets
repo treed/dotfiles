@@ -1,6 +1,5 @@
-snippet iferr "return if err != nil"
+snippet iferr "if err" !b
 if err != nil {
-	${1:return}
-}`!p snip.unshift(200); snip += ""`
-`!p snip.reset_indent()`
+	${1}
+}
 endsnippet
