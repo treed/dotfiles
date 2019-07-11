@@ -8,7 +8,7 @@
     ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default)))
  '(package-selected-packages
    (quote
-    (delight evil-collection mu4e poly-ansible yaml-mode yaml prettier-js add-node-modules-path solarized-theme spacemacs-theme evil-magit magit exec-path-from-shell tide flycheck company web-mode js2-mode typescript-mode helm-rg helm-ag helm-projectile dashboard general spaceline evil gnuplot evil-org org-bullets helm spaceline-all-the-icons use-package evil-visual-mark-mode))))
+    (spacebar delight evil-collection mu4e poly-ansible yaml-mode yaml prettier-js add-node-modules-path solarized-theme spacemacs-theme evil-magit magit exec-path-from-shell tide flycheck company web-mode js2-mode typescript-mode helm-rg helm-ag helm-projectile dashboard general spaceline evil gnuplot evil-org org-bullets helm spaceline-all-the-icons use-package evil-visual-mark-mode))))
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/"))
 
@@ -130,6 +130,11 @@
     (hud :priority 99)))
   :ensure t)
 
+(use-package spacebar
+  :config
+  (spacebar-mode)
+  :ensure t)
+
 (use-package helm
   :config
   (setq helm-mode-fuzzy-match t
@@ -204,6 +209,22 @@
 
 (require 'windmove)
 (space-def
+  "ac" 'spacebar-open
+  "aq" 'spacebar-close
+  "aa" 'spacebar-switch-last
+  "a0" 'spacebar-switch-0
+  "a1" 'spacebar-switch-1
+  "a2" 'spacebar-switch-2
+  "a3" 'spacebar-switch-3
+  "a4" 'spacebar-switch-4
+  "a5" 'spacebar-switch-5
+  "a6" 'spacebar-switch-6
+  "a7" 'spacebar-switch-7
+  "a8" 'spacebar-switch-8
+  "a9" 'spacebar-switch-9
+  "ap" 'spacebar-switch-prev
+  "an" 'spacebar-switch-next
+  "ar" 'spacebar-rename
   "ff" 'helm-find-files
   "fr" 'helm-mini
   "fs" 'save-buffer
