@@ -8,7 +8,7 @@
     ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default)))
  '(package-selected-packages
    (quote
-    (evil-collection mu4e poly-ansible yaml-mode yaml prettier-js add-node-modules-path solarized-theme spacemacs-theme evil-magit magit exec-path-from-shell tide flycheck company web-mode js2-mode typescript-mode helm-rg helm-ag helm-projectile dashboard general spaceline evil gnuplot evil-org org-bullets helm spaceline-all-the-icons use-package evil-visual-mark-mode))))
+    (delight evil-collection mu4e poly-ansible yaml-mode yaml prettier-js add-node-modules-path solarized-theme spacemacs-theme evil-magit magit exec-path-from-shell tide flycheck company web-mode js2-mode typescript-mode helm-rg helm-ag helm-projectile dashboard general spaceline evil gnuplot evil-org org-bullets helm spaceline-all-the-icons use-package evil-visual-mark-mode))))
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/"))
 
@@ -49,6 +49,15 @@
 
 (eval-when-compile
   (require 'use-package))
+
+(use-package delight
+  :ensure t)
+
+(use-package undo-tree
+  :ensure t
+  :delight
+  :config
+  (global-undo-tree-mode))
 
 (use-package solarized-theme
   :config
@@ -91,6 +100,7 @@
      :priority 100)
     (anzu :priority 95)
     auto-compile
+    (projectile-root :when active)
     ((buffer-modified buffer-size buffer-id remote-host)
      :priority 98)
     (major-mode :priority 79)
@@ -125,6 +135,7 @@
   (setq helm-mode-fuzzy-match t
 	helm-completion-in-region-fuzzy-match t)
   (helm-mode 1)
+  :delight
   :ensure t)
 
 (setq org-hide-emphasis-markers t
@@ -217,6 +228,7 @@
 
 (use-package projectile
   :ensure t
+  :delight
   :config
   (projectile-mode +1))
 
