@@ -265,6 +265,30 @@
 (use-package flycheck
   :ensure t)
 
+(use-package lsp-mode
+  :commands lsp
+  :config (require 'lsp-clients)
+  :ensure t)
+
+(use-package lsp-ui
+  :ensure t)
+
+(use-package toml-mode
+  :ensure t)
+
+(use-package rust-mode
+  :hook (rust-mode . lsp)
+  :ensure t)
+
+(use-package cargo
+  :hook (rust-mode . cargo-minor-mode)
+  :delight cargo-minor-mode
+  :ensure t)
+
+(use-package flycheck-rust
+  :hook (rust-mode . flycheck-rust-setup)
+  :ensure t)
+
 (use-package add-node-modules-path
   :ensure t)
 
