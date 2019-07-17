@@ -207,6 +207,12 @@
 (setq evil-emacs-state-modes nil)
 (general-create-definer space-def :prefix "SPC" :states '(normal visual motion) :keymaps 'override)
 
+(use-package deadgrep
+  :commands deadgrep
+  :init
+  (setq deadgrep-project-root-function 'projectile-project-root)
+  :ensure t)
+
 (require 'windmove)
 (space-def
   "ac" 'spacebar-open
@@ -227,7 +233,7 @@
   "ar" 'spacebar-rename
   "ff" 'helm-find-files
   "fr" 'helm-mini
-  "fs" 'save-buffer
+  "fs" 'deadgrep
   "bd" 'kill-this-buffer
   "bn" 'next-buffer
   "bp" 'previous-buffer
@@ -256,7 +262,6 @@
 (use-package helm-projectile
   :after helm projectile
   :config (space-def "fo" 'helm-projectile-find-file)
-  :config (space-def "fs" 'helm-projectile-rg)
   :ensure t)
 
 (use-package company
