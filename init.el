@@ -9,7 +9,7 @@
  '(lsp-ui-doc-include-signature t)
  '(package-selected-packages
    (quote
-    (spacebar delight evil-collection mu4e poly-ansible yaml-mode yaml prettier-js add-node-modules-path solarized-theme spacemacs-theme evil-magit magit exec-path-from-shell tide flycheck company web-mode js2-mode typescript-mode helm-rg helm-ag helm-projectile dashboard general spaceline evil gnuplot evil-org org-bullets helm spaceline-all-the-icons use-package evil-visual-mark-mode))))
+    (string-inflection company-lsp company-anaconda anaconda-mode company-go go-mode graphviz-dot-mode spacebar delight evil-collection mu4e poly-ansible yaml-mode yaml prettier-js add-node-modules-path solarized-theme spacemacs-theme evil-magit magit exec-path-from-shell tide flycheck company web-mode js2-mode typescript-mode helm-rg helm-ag helm-projectile dashboard general spaceline evil gnuplot evil-org org-bullets helm spaceline-all-the-icons use-package evil-visual-mark-mode))))
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/"))
 
