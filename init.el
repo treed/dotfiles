@@ -6,6 +6,7 @@
  '(custom-safe-themes
    (quote
     ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default)))
+ '(lsp-ui-doc-include-signature t)
  '(package-selected-packages
    (quote
     (spacebar delight evil-collection mu4e poly-ansible yaml-mode yaml prettier-js add-node-modules-path solarized-theme spacemacs-theme evil-magit magit exec-path-from-shell tide flycheck company web-mode js2-mode typescript-mode helm-rg helm-ag helm-projectile dashboard general spaceline evil gnuplot evil-org org-bullets helm spaceline-all-the-icons use-package evil-visual-mark-mode))))
@@ -280,6 +281,7 @@
   :ensure t)
 
 (use-package company
+  :hook python
   :ensure t)
 
 (use-package flycheck
@@ -287,11 +289,35 @@
 
 (use-package lsp-mode
   :commands lsp
-  :config (require 'lsp-clients)
+  :hook (python-mode . lsp)
+  :config
+
+  (defun lsp-set-cfg ()
+    (let ((lsp-cfg `(:pyls (:configurationSources ("flake8")))))
+      ;; TODO: check lsp--cur-workspace here to decide per server / project
+      (lsp--set-configuration lsp-cfg)))
+
+  (add-hook 'lsp-after-initialize-hook 'lsp-set-cfg)
+
   :ensure t)
 
+
 (use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :config (setq lsp-ui-sideline-ignore-duplicate t)
   :ensure t)
+
+(use-package company-lsp
+  :after company lsp-mode
+  :config (push 'company-lsp company-backends)
+  :ensure t)
+
+(use-package pipenv
+  :hook (python-mode . pipenv-mode)
+  :init
+  (setq
+   pipenv-projectile-after-switch-function
+   #'pipenv-projectile-after-switch-extended))
 
 (use-package toml-mode
   :ensure t)
