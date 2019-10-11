@@ -335,6 +335,17 @@
   :hook (rust-mode . flycheck-rust-setup)
   :ensure t)
 
+(use-package go-mode
+  :mode "\\.go$"
+  :ensure t)
+
+(use-package company-go
+  :hook (go-mode . (lambda ()
+        (set (make-local-variable 'company-backends) '(company-go))
+        (company-mode)))
+  :init (setq company-go-gocode-command "/Users/treed/go/bin/gocode")
+  :ensure t)
+
 (use-package add-node-modules-path
   :ensure t)
 
