@@ -381,8 +381,10 @@
 (use-package tide
   :ensure t
   :after (js2-mode web-mode company flycheck add-node-modules-path prettier-js)
-  :hook ((js2-mode . setup-tide-mode)
-	 (web-mode . setup-tide-mode)))
+  :commands tide-setup
+  :init
+  (add-hook 'web-mode-hook #'setup-tide-mode)
+  (add-hook 'js2-mode-hook #'setup-tide-mode))
 
 (use-package yaml-mode
   :mode "\\.ya?ml$"
