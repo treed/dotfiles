@@ -218,6 +218,9 @@
   (setq deadgrep-project-root-function 'projectile-project-root)
   :ensure t)
 
+(use-package string-inflection
+  :ensure t)
+
 (require 'windmove)
 (space-def
   "ac" 'spacebar-open
@@ -244,6 +247,9 @@
   "bp" 'previous-buffer
   "bb" 'helm-buffers-list
   "bc" 'clean-buffer-list
+  "su" 'string-inflection-underscore
+  "sc" 'string-inflection-lower-camelcase
+  "sC" 'string-inflection-camelcase
   "wc" 'delete-window
   "ws" 'split-window-below
   "wv" 'split-window-right
