@@ -184,7 +184,12 @@
    '(
      (gnuplot . t)
      (dot . t)
-     )))
+     ))
+  (setq org-agenda-files '("/Users/treed/Dropbox/Org"))
+  (setq org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
+  (setq org-refile-use-outline-path 'file)
+  (setq org-outline-path-complete-in-steps nil)
+  (setq org-refile-allow-creating-parent-nodes 'confirm))
 
 (use-package org-bullets
   :after org
