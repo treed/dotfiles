@@ -221,7 +221,9 @@
 (use-package string-inflection
   :ensure t)
 
+(winner-mode)
 (require 'windmove)
+
 (space-def
   "ac" 'spacebar-open
   "aq" 'spacebar-close
@@ -257,6 +259,8 @@
   "wj" 'windmove-down
   "wh" 'windmove-left
   "wl" 'windmove-right
+  "wu" 'winner-undo
+  "wr" 'winner-redo
   "x"  'helm-M-x)
 
 (use-package dashboard
