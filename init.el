@@ -430,6 +430,9 @@
    mu4e-trash-folder "/gmail[Gmail].Trash"
    mu4e-sent-folder "/gmail[Gmail].Sent Mail"))
 
+(use-package graphviz-dot-mode
+  :mode "\\.dot$"
+  :ensure t)
 
 ;; Auto toggle embedded latex
 ;(require 'org-latex-cursor-toggle)
