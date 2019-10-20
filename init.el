@@ -501,7 +501,9 @@
   delete-old-versions t
   kept-new-versions 6
   kept-old-versions 2
-  version-control t)
+  version-control t
+  ; get rid of lockfiles too
+  create-lockfiles nil)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
