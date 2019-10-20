@@ -413,7 +413,7 @@
   (setq exec-path (append exec-path '("/usr/local/texlive/2018/bin/x86_64-darwin")))
 
   ;; Nix
-  (setenv "PATH" (concat "/Users/treed/.nix-profile/bin" (getenv "PATH")))
+  (setenv "PATH" (concat "/Users/treed/.nix-profile/bin:" (getenv "PATH")))
   (setq exec-path (append exec-path '("/Users/treed/.nix-profile/bin")))
 
   :ensure t)
