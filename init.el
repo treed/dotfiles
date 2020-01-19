@@ -14,6 +14,30 @@
     (package-refresh-contents)
     (package-install 'use-package)))
 
+(use-package dash :ensure t)
+
+(defun ensure-in-path (newpath)
+  "Ensures that newpath is present in PATH and exec-path, but only if it exists"
+  (if (file-directory-p newpath)
+    (progn
+      (when (not (-contains? (parse-colon-path (getenv "PATH")) newpath))
+	(setenv "PATH" (concat newpath ":" (getenv "PATH"))))
+      (when (not (-contains? exec-path newpath))
+	(setq exec-path (cons newpath exec-path))))
+
+    (display-warning
+     "init"
+     (format "Path '%s' either doesn't exist or isn't a dir; not adding to PATH" newpath))))
+
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize)
+
+  (ensure-in-path "/usr/local/texlive/2018/bin/x86_64-darwin") ;; Necessary for latex in orgmode
+  (ensure-in-path "/Users/treed/.nix-profile/bin") ;; Nix
+
+  :ensure t)
+
 (use-package paradox
   :ensure t)
 
@@ -503,28 +527,6 @@
 
 (use-package evil-magit
   :after magit
-  :ensure t)
-
-(defun ensure-in-path (newpath)
-  "Ensures that newpath is present in PATH and exec-path, but only if it exists"
-  (if (file-directory-p newpath)
-    (progn
-      (when (not (-contains? (parse-colon-path (getenv "PATH")) newpath))
-	(setenv "PATH" (concat newpath ":" (getenv "PATH"))))
-      (when (not (-contains? exec-path newpath))
-	(setq exec-path (cons newpath exec-path))))
-
-    (display-warning
-     "init"
-     (format "Path '%s' either doesn't exist or isn't a dir; not adding to PATH" newpath))))
-
-(use-package exec-path-from-shell
-  :config
-  (exec-path-from-shell-initialize)
-
-  (ensure-in-path "/usr/local/texlive/2018/bin/x86_64-darwin") ;; Necessary for latex in orgmode
-  (ensure-in-path "/Users/treed/.nix-profile/bin") ;; Nix
-
   :ensure t)
 
 (let ((default-directory "/usr/local/share/emacs/site-lisp"))
