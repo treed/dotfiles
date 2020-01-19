@@ -1,38 +1,4 @@
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default)))
- '(lsp-ui-doc-include-signature t)
- '(package-selected-packages
-   (quote
-    (string-inflection company-lsp company-anaconda anaconda-mode company-go go-mode graphviz-dot-mode spacebar delight evil-collection mu4e poly-ansible yaml-mode yaml prettier-js add-node-modules-path solarized-theme spacemacs-theme evil-magit magit exec-path-from-shell tide flycheck company web-mode js2-mode typescript-mode helm-rg helm-ag helm-projectile dashboard general spaceline evil gnuplot evil-org org-bullets helm spaceline-all-the-icons use-package evil-visual-mark-mode))))
-
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/"))
-
-(custom-theme-set-faces
- 'user
- '(variable-pitch ((t (:family "ETBembo" :height 180 :weight light))))
- '(fixed-pitch ((t (:family "Menlo" :slant normal :weight normal :height 1.0 :width normal)))))
-
-(add-hook 'org-mode-hook 'variable-pitch-mode)
-(add-hook 'org-mode-hook 'visual-line-mode)
-(custom-theme-set-faces
- 'user
- '(org-block                 ((t (:inherit fixed-pitch))))
- '(org-table                 ((t (:inherit fixed-pitch))))
- '(org-document-info         ((t (:foreground "dark orange"))))
- '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
- '(org-link                  ((t (:foreground "royal blue" :underline t))))
- '(org-meta-line             ((t (:inherit (font-lock-comment-face fixed-pitch)))))
- '(org-property-value        ((t (:inherit fixed-pitch))) t)
- '(org-special-keyword       ((t (:inherit (font-lock-comment-face fixed-pitch)))))
- '(org-tag                   ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
- '(org-verbatim              ((t (:inherit (shadow fixed-pitch)))))
- '(org-indent                ((t (:inherit (org-hide fixed-pitch))))))
 
 (require 'package)
 
@@ -43,10 +9,13 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
-(package-refresh-contents)
-
 (unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+  (progn
+    (package-refresh-contents)
+    (package-install 'use-package)))
+
+(use-package paradox
+  :ensure t)
 
 (eval-when-compile
   (require 'use-package))
@@ -70,6 +39,13 @@
   :init
   (load-theme 'solarized-light t)
   :ensure t)
+
+;; Get rid of the toolbar
+(tool-bar-mode -1)
+
+;; Correctly set modifiers
+(setq mac-option-modifier 'meta
+      mac-command-modfier 'super)
 
 (use-package general
   :init
@@ -136,42 +112,25 @@
   (spacebar-mode)
   :ensure t)
 
-(use-package helm
+
+(use-package ivy
   :config
-  (setq helm-mode-fuzzy-match t
-	helm-completion-in-region-fuzzy-match t)
-  (helm-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq ivy-height 20)
+  (ivy-mode 1)
   :delight
   :ensure t)
 
-(setq org-hide-emphasis-markers t
-      org-startup-indented t
-      org-bullets-bullet-list '(" ")
-      org-pretty-entities t)
+(use-package swiper
+  :ensure t)
 
-(font-lock-add-keywords 'org-mode
-                        '(("^ *\\([-]\\) "
-                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-(let* ((variable-tuple
-        (cond ((x-list-fonts "ETBembo")         '(:font "ETBembo"))
-              ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-              ((x-list-fonts "Verdana")         '(:font "Verdana"))
-              ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-              (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-       (base-font-color     (face-foreground 'default nil 'default))
-       (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+(use-package counsel
+  :ensure t)
 
-  (custom-theme-set-faces
-   'user
-   `(org-level-8 ((t (,@headline ,@variable-tuple))))
-   `(org-level-7 ((t (,@headline ,@variable-tuple))))
-   `(org-level-6 ((t (,@headline ,@variable-tuple))))
-   `(org-level-5 ((t (,@headline ,@variable-tuple :height 1.1))))
-   `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.25))))
-   `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.5))))
-   `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.75))))
-   `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.9))))
-   `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+(use-package counsel-projectile
+  :ensure t)
+
 
 (use-package gnuplot
   :ensure t)
@@ -186,17 +145,86 @@
      (gnuplot . t)
      (dot . t)
      ))
+  (setq org-directory "/Users/treed/Dropbox/Org")
   (setq org-agenda-files '("/Users/treed/Dropbox/Org"))
   (setq org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
   (setq org-refile-use-outline-path 'file)
   (setq org-outline-path-complete-in-steps nil)
-  (setq org-refile-allow-creating-parent-nodes 'confirm))
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
+  (setq org-clock-report-include-clocking-task t)
+  (setq org-refile-allow-creating-parent-nodes 'confirm)
+
+  (setq org-hide-emphasis-markers t
+        org-startup-indented t
+        org-bullets-bullet-list '(" ")
+        org-pretty-entities t)
+
+  (setq org-capture-templates
+	'(("t" "Todo" entry (file "inbox.org")
+	   "* TODO %?\n")
+	  ("w" "Work")
+	  ("wc" "Conversation" entry (file+headline "work.org" "Conversations")
+	   "*** Conversation With %^{Whom} At %U\n%?\n" :clock-in t :clock-resume t)
+	  ("wr" "Review" entry (file+headline "work.org" "Reviews")
+	   "*** Review %^{What} At %U\n%?\n" :clock-in t :clock-resume t)))
+
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  (let* ((variable-tuple
+          (cond ((x-list-fonts "ETBembo")         '(:font "ETBembo"))
+                ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+                ((x-list-fonts "Verdana")         '(:font "Verdana"))
+                ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+                (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+         (base-font-color     (face-foreground 'default nil 'default))
+         (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+
+    (custom-theme-set-faces
+     'user
+     `(org-level-8 ((t (,@headline ,@variable-tuple))))
+     `(org-level-7 ((t (,@headline ,@variable-tuple))))
+     `(org-level-6 ((t (,@headline ,@variable-tuple))))
+     `(org-level-5 ((t (,@headline ,@variable-tuple :height 1.1))))
+     `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.25))))
+     `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.5))))
+     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.75))))
+     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.9))))
+     `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))
+     '(org-block                 ((t (:inherit fixed-pitch))))
+     '(org-table                 ((t (:inherit fixed-pitch))))
+     '(org-document-info         ((t (:foreground "dark orange"))))
+     '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+     '(org-link                  ((t (:foreground "royal blue" :underline t))))
+     '(org-meta-line             ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+     '(org-property-value        ((t (:inherit fixed-pitch))) t)
+     '(org-special-keyword       ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+     '(org-tag                   ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+     '(org-verbatim              ((t (:inherit (shadow fixed-pitch)))))
+     '(org-indent                ((t (:inherit (org-hide fixed-pitch))))))
+
+  (custom-theme-set-faces
+   'user
+   '(variable-pitch ((t (:family "ETBembo" :height 180 :weight light))))
+   '(fixed-pitch ((t (:family "Menlo" :slant normal :weight normal :height 1.0 :width normal)))))
+
+  (add-hook 'org-mode-hook 'variable-pitch-mode)
+  (add-hook 'org-mode-hook 'visual-line-mode))
 
 (use-package org-bullets
   :after org
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   :ensure t)
+
+(use-package org-mru-clock
+  :ensure t
+  :bind* (("C-c C-x i" . org-mru-clock-in)
+          ("C-c C-x C-j" . org-mru-clock-select-recent-task))
+  :init
+  (setq org-mru-clock-how-many 100
+        org-mru-clock-completing-read #'ivy-completing-read))
 
 (use-package evil-org
   :ensure t
@@ -211,7 +239,6 @@
 
 (setq evil-motion-state-modes nil)
 (setq evil-emacs-state-modes nil)
-(general-create-definer space-def :prefix "SPC" :states '(normal visual motion) :keymaps 'override)
 
 (use-package deadgrep
   :commands deadgrep
@@ -222,63 +249,135 @@
 (use-package string-inflection
   :ensure t)
 
+(use-package expand-region
+  :bind ("C-=" . er/expand-region)
+  :ensure t)
+
+(use-package ace-jump-mode
+  :bind ("C-." . ace-jump-mode)
+  :ensure t)
+
+(use-package jump-char
+  :bind (("M-m" . jump-char-forward)
+	 ("M-M" . jump-char-backward))
+  :ensure t)
+
+(use-package which-key
+  :delight
+  :config
+  (which-key-mode)
+  :ensure t)
+
+(use-package ace-window
+  :bind ("M-o" . ace-window)
+  :init
+  (setq aw-ignore-on t)
+  :ensure t)
+
 (winner-mode)
 (require 'windmove)
 
-(space-def
-  "ac" 'spacebar-open
-  "aq" 'spacebar-close
-  "aa" 'spacebar-switch-last
-  "a0" 'spacebar-switch-0
-  "a1" 'spacebar-switch-1
-  "a2" 'spacebar-switch-2
-  "a3" 'spacebar-switch-3
-  "a4" 'spacebar-switch-4
-  "a5" 'spacebar-switch-5
-  "a6" 'spacebar-switch-6
-  "a7" 'spacebar-switch-7
-  "a8" 'spacebar-switch-8
-  "a9" 'spacebar-switch-9
-  "ap" 'spacebar-switch-prev
-  "an" 'spacebar-switch-next
-  "ar" 'spacebar-rename
-  "ff" 'helm-find-files
-  "fr" 'helm-mini
-  "fs" 'deadgrep
-  "bd" 'kill-this-buffer
-  "bn" 'next-buffer
-  "bp" 'previous-buffer
-  "bb" 'helm-buffers-list
-  "bc" 'clean-buffer-list
-  "su" 'string-inflection-underscore
-  "sc" 'string-inflection-lower-camelcase
-  "sC" 'string-inflection-camelcase
-  "wc" 'delete-window
-  "ws" 'split-window-below
-  "wv" 'split-window-right
-  "wk" 'windmove-up
-  "wj" 'windmove-down
-  "wh" 'windmove-left
-  "wl" 'windmove-right
-  "wu" 'winner-undo
-  "wr" 'winner-redo
-  "x"  'helm-M-x)
+(setq my-tabs-map (make-sparse-keymap))
+(general-define-key
+ :keymaps 'my-tabs-map
+  "c" 'spacebar-open
+  "q" 'spacebar-close
+  "a" 'spacebar-switch-last
+  "0" 'spacebar-switch-0
+  "1" 'spacebar-switch-1
+  "2" 'spacebar-switch-2
+  "3" 'spacebar-switch-3
+  "4" 'spacebar-switch-4
+  "5" 'spacebar-switch-5
+  "6" 'spacebar-switch-6
+  "7" 'spacebar-switch-7
+  "8" 'spacebar-switch-8
+  "9" 'spacebar-switch-9
+  "p" 'spacebar-switch-prev
+  "n" 'spacebar-switch-next
+  "r" 'spacebar-rename)
+
+(setq my-files-map (make-sparse-keymap))
+(general-define-key
+ :keymaps 'my-files-map
+  "f" 'counsel-find-file
+  "r" 'counsel-recentf
+  "o" 'counsel-projectile-find-file
+  "s" 'deadgrep)
+
+(setq my-buffers-map (make-sparse-keymap))
+(general-define-key
+ :keymaps 'my-buffers-map
+  "d" 'kill-this-buffer
+  "n" 'next-buffer
+  "p" 'previous-buffer
+  "b" 'ivy-switch-buffer
+  "c" 'clean-buffer-list
+  "S" 'swiper
+  "s" 'swiper-thing-at-point)
+
+(setq my-strings-map (make-sparse-keymap))
+(general-define-key
+ :keymaps 'my-strings-map
+  "u" 'string-inflection-underscore
+  "c" 'string-inflection-lower-camelcase
+  "C" 'string-inflection-camelcase)
+
+(setq my-windows-map (make-sparse-keymap))
+(general-define-key
+ :keymaps 'my-windows-map
+  "w" 'ace-window
+  "c" 'delete-window
+  "s" 'split-window-below
+  "v" 'split-window-right
+  "k" 'windmove-up
+  "j" 'windmove-down
+  "h" 'windmove-left
+  "l" 'windmove-right
+  "u" 'winner-undo
+  "r" 'winner-redo)
+
+(setq my-org-clock-map (make-sparse-keymap))
+(general-define-key
+ :keymaps 'my-org-clock-map
+ "i" 'org-mru-clock-in
+ "o" 'org-clock-out)
+
+(setq my-global-org-map (make-sparse-keymap))
+(general-define-key
+ :keymaps 'my-global-org-map
+ "c" '(:keymap my-org-clock-map :wk "Clock")
+ "o" 'org-capture)
+
+(setq my-leader-map (make-sparse-keymap))
+(general-define-key
+ :keymaps 'my-leader-map
+  "a" '(:keymap my-tabs-map :wk "Tabs")
+  "f" '(:keymap my-files-map :wk "Files")
+  "b" '(:keymap my-buffers-map :wk "Buffers")
+  "o" '(:keymap my-global-org-map :wk "Org")
+  "s" '(:keymap my-strings-map :wk "String Manipulation")
+  "w" '(:keymap my-windows-map :wk "Windows")
+  "x"  'counsel-M-x)
+
+(general-define-key
+ :states '(normal visual motion) :keymaps 'override
+ "SPC" '(:keymap my-leader-map :wk "Leader"))
+
+(general-define-key "M-SPC" '(:keymap my-leader-map :wk "Leader"))
 
 (use-package dashboard
   :ensure t
   :config
   (dashboard-setup-startup-hook))
 
+(use-package w3m :ensure t)
+
 (use-package projectile
   :ensure t
   :delight
   :config
   (projectile-mode +1))
-
-(use-package helm-projectile
-  :after helm projectile
-  :config (space-def "fo" 'helm-projectile-find-file)
-  :ensure t)
 
 (use-package company
   :hook python
@@ -291,6 +390,7 @@
   :commands lsp
   :hook (python-mode . lsp)
   :config
+  (setq lsp-prefer-flymake nil)
 
   (defun lsp-set-cfg ()
     (let ((lsp-cfg `(:pyls (:configurationSources ("flake8")))))
@@ -301,10 +401,12 @@
 
   :ensure t)
 
-
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
-  :config (setq lsp-ui-sideline-ignore-duplicate t)
+  :config
+  (setq lsp-ui-sideline-ignore-duplicate t)
+  (setq lsp-ui-doc-position 'top)
+  (setq lsp-ui-doc-alignment 'window)
   :ensure t)
 
 (use-package company-lsp
@@ -336,14 +438,12 @@
   :ensure t)
 
 (use-package go-mode
+  :init
+  (setenv "GO111MODULE" "on")
+  :config
+  (add-hook 'go-mode-hook #'flycheck-mode)
+  (add-hook 'go-mode-hook #'lsp)
   :mode "\\.go$"
-  :ensure t)
-
-(use-package company-go
-  :hook (go-mode . (lambda ()
-        (set (make-local-variable 'company-backends) '(company-go))
-        (company-mode)))
-  :init (setq company-go-gocode-command "/Users/treed/go/bin/gocode")
   :ensure t)
 
 (use-package add-node-modules-path
@@ -356,6 +456,7 @@
   :after (flycheck)
   :mode "\\.tsx?$"
   :config
+  (setq web-mode-enable-auto-quoting nil)
   (flycheck-add-mode 'typescript-tslint 'web-mode)
   :ensure t)
 
@@ -404,18 +505,24 @@
   :after magit
   :ensure t)
 
-(use-package exec-path-from-shell
+(defun ensure-in-path (newpath)
+  "Ensures that newpath is present in PATH and exec-path, but only if it exists"
+  (if (file-directory-p newpath)
+    (progn
+      (when (not (-contains? (parse-colon-path (getenv "PATH")) newpath))
+	(setenv "PATH" (concat newpath ":" (getenv "PATH"))))
+      (when (not (-contains? exec-path newpath))
+	(setq exec-path (cons newpath exec-path))))
 
+    (display-warning
+     "init"
+     (format "Path '%s' either doesn't exist or isn't a dir; not adding to PATH" newpath))))
+
+(use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize)
-  ;; Necessary for latex in orgmode
-  (setenv "PATH" (concat "/usr/local/texlive/2018/bin/x86_64-darwin:" (getenv "PATH")))
-  (setq exec-path (append exec-path '("/usr/local/texlive/2018/bin/x86_64-darwin")))
-
-  ;; Nix
-  (setenv "PATH" (concat "/Users/treed/.nix-profile/bin" (getenv "PATH")))
-  (setq exec-path (append exec-path '("/Users/treed/.nix-profile/bin")))
-
+  (ensure-in-path "/usr/local/texlive/2018/bin/x86_64-darwin") ;; Necessary for latex in orgmode
+  (ensure-in-path "/Users/treed/.nix-profile/bin") ;; Nix
   :ensure t)
 
 (let ((default-directory "/usr/local/share/emacs/site-lisp"))
@@ -448,6 +555,11 @@
 
 ;; Answering just 'y' or 'n' will do
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-step 1) ;; keyboard scroll one line at a time
 
 ;; UTF-8 please
 (setq locale-coding-system 'utf-8) ; pretty
@@ -489,9 +601,6 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
-;; Get rid of the toolbar
-(tool-bar-mode -1)
-
 ;; Tidy up backups
 (setq
   ; Don't litter the filesystem with backup files
@@ -509,6 +618,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(fixed-pitch ((t (:family "Menlo" :slant normal :weight normal :height 1.0 :width normal))))
+ '(lsp-ui-doc-background ((t (:background "#EEEEEE"))))
  '(org-block ((t (:inherit fixed-pitch))))
  '(org-document-info ((t (:foreground "dark orange"))))
  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
@@ -530,3 +640,17 @@
  '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
  '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
  '(variable-pitch ((t (:family "ETBembo" :height 180 :weight light)))))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default)))
+ '(lsp-ui-doc-include-signature t)
+ '(package-selected-packages
+   (quote
+    (expand-region ace-window jump-char ace-jump-mode paradox flycheck-rust toml-mode counsel-projectile counsel swiper ivy org-mru-clock hercules origami sublimity emacs-w3m helm-dash string-inflection company-lsp company-anaconda anaconda-mode company-go spacebar delight mu4e poly-ansible yaml prettier-js add-node-modules-path js2-mode helm-ag helm-projectile org-bullets spaceline-all-the-icons evil-visual-mark-mode)))
+ '(paradox-github-token t))
