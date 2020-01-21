@@ -522,6 +522,14 @@
 (use-package poly-ansible
   :ensure t)
 
+(use-package json-mode
+  :ensure t)
+
+(use-package nix-mode
+  :after json-mode
+  :mode "\\.nix\\'"
+  :ensure t)
+
 (use-package magit
   :ensure t)
 
@@ -658,5 +666,5 @@
  '(lsp-ui-doc-include-signature t)
  '(package-selected-packages
    (quote
-    (expand-region ace-window jump-char ace-jump-mode paradox flycheck-rust toml-mode counsel-projectile counsel swiper ivy org-mru-clock hercules origami sublimity emacs-w3m helm-dash string-inflection company-lsp company-anaconda anaconda-mode company-go spacebar delight mu4e poly-ansible yaml prettier-js add-node-modules-path js2-mode helm-ag helm-projectile org-bullets spaceline-all-the-icons evil-visual-mark-mode)))
+    (json-mode nix-mode expand-region ace-window jump-char ace-jump-mode paradox flycheck-rust toml-mode counsel-projectile counsel swiper ivy org-mru-clock hercules origami sublimity emacs-w3m helm-dash string-inflection company-lsp company-anaconda anaconda-mode company-go spacebar delight mu4e poly-ansible yaml prettier-js add-node-modules-path js2-mode helm-ag helm-projectile org-bullets spaceline-all-the-icons evil-visual-mark-mode)))
  '(paradox-github-token t))
