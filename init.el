@@ -532,6 +532,8 @@
   :ensure t)
 
 (use-package magit
+  :config
+  (add-hook 'after-save-hook 'magit-after-save-refresh-status)
   :ensure t)
 
 (use-package evil-magit
