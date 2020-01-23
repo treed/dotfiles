@@ -271,6 +271,16 @@
   (setq deadgrep-project-root-function 'projectile-project-root)
   :ensure t)
 
+(use-package dumb-jump
+  :bind (("M-g o" . dumb-jump-go-other-window)
+         ("M-g j" . dumb-jump-go)
+         ("M-g b" . dumb-jump-back)
+         ("M-g i" . dumb-jump-go-prompt)
+         ("M-g x" . dumb-jump-go-prefer-external)
+         ("M-g z" . dumb-jump-go-prefer-external-other-window))
+  :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
+  :ensure)
+
 (use-package string-inflection
   :ensure t)
 
@@ -512,6 +522,10 @@
   (add-hook 'web-mode-hook #'setup-tide-mode)
   (add-hook 'js2-mode-hook #'setup-tide-mode))
 
+(use-package groovy-mode
+  :mode "\\.groovy$"
+  :ensure t)
+
 (use-package yaml-mode
   :mode "\\.ya?ml$"
   :ensure t)
@@ -669,5 +683,5 @@
  '(lsp-ui-doc-include-signature t)
  '(package-selected-packages
    (quote
-    (json-mode nix-mode expand-region ace-window jump-char ace-jump-mode paradox flycheck-rust toml-mode counsel-projectile counsel swiper ivy org-mru-clock hercules origami sublimity emacs-w3m helm-dash string-inflection company-lsp company-anaconda anaconda-mode company-go spacebar delight mu4e poly-ansible yaml prettier-js add-node-modules-path js2-mode helm-ag helm-projectile org-bullets spaceline-all-the-icons evil-visual-mark-mode)))
+    (groovy-mode nix-mode json-mode dumb-jump expand-region ace-window jump-char ace-jump-mode paradox flycheck-rust toml-mode counsel-projectile counsel swiper ivy org-mru-clock hercules origami sublimity emacs-w3m helm-dash string-inflection company-lsp company-anaconda anaconda-mode company-go spacebar delight mu4e poly-ansible yaml prettier-js add-node-modules-path js2-mode helm-ag helm-projectile org-bullets spaceline-all-the-icons evil-visual-mark-mode)))
  '(paradox-github-token t))
