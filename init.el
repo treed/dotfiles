@@ -51,6 +51,7 @@
   :ensure t
   :delight
   :config
+  (setq undo-tree-enable-undo-in-region t)
   (global-undo-tree-mode))
 
 (use-package solarized-theme
