@@ -54,17 +54,6 @@
   (setq undo-tree-enable-undo-in-region t)
   (global-undo-tree-mode))
 
-(use-package solarized-theme
-  :config
-  (setq solarized-height-minus-1 1.0)
-  (setq solarized-height-plus-1 1.0)
-  (setq solarized-height-plus-2 1.0)
-  (setq solarized-height-plus-3 1.0)
-  (setq solarized-height-plus-4 1.0)
-  :init
-  (load-theme 'solarized-light t)
-  :ensure t)
-
 ;; Get rid of the toolbar
 (tool-bar-mode -1)
 
@@ -85,52 +74,19 @@
   (add-hook 'god-mode-disabled-hook 'my-update-cursor)
   :ensure t)
 
-(use-package spaceline
+(use-package doom-themes
   :config
-  (require 'spaceline-config)
-  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-  (spaceline-emacs-theme)
- (spaceline-compile
-  ; left side
-  '((evil-state
-     :priority 100)
-    (anzu :priority 95)
-    auto-compile
-    (projectile-root :when active)
-    ((buffer-modified buffer-size buffer-id remote-host)
-     :priority 98)
-    (major-mode :priority 79)
-    (process :when active)
-    ((flycheck-error flycheck-warning flycheck-info)
-     :when active
-     :priority 89)
-    (minor-modes :when active
-     :separator ","
-                 :priority 9)
-    (mu4e-alert-segment :when active)
-    (version-control :when active
-                     :priority 78))
-  ; right side
-  '(which-function
-    (python-pyvenv :fallback python-pyenv)
-    (purpose :priority 94)
-    (selection-info :priority 95)
-    input-method
-    ((buffer-encoding-abbrev
-      point-position
-      line-column)
-     :separator " | "
-     :priority 96)
-    (global :when active)
-    (buffer-position :priority 99)
-    (hud :priority 99)))
+  (load-theme 'doom-opera-light t)
+  :ensure t)
+
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode)
   :ensure t)
 
 (use-package spacebar
   :config
   (spacebar-mode)
   :ensure t)
-
 
 (use-package ivy
   :config
@@ -149,7 +105,6 @@
 
 (use-package counsel-projectile
   :ensure t)
-
 
 (use-package gnuplot
   :ensure t)
@@ -547,7 +502,6 @@
 ;(require 'org-latex-cursor-toggle)
 ; this is buggy as hell, might be interactions with evil?
 
-
 ;; Auto refresh buffers
 (global-auto-revert-mode 1)
 
@@ -626,16 +580,16 @@
  '(org-block ((t (:inherit fixed-pitch))))
  '(org-document-info ((t (:foreground "dark orange"))))
  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
- '(org-document-title ((t (:inherit default :weight bold :foreground "#657b83" :font "ETBembo" :height 2.0 :underline nil))))
+ '(org-document-title ((t (:inherit default :weight bold :foreground "#2a2a2a" :font "ETBembo" :height 2.0 :underline nil))))
  '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
- '(org-level-1 ((t (:inherit default :weight bold :foreground "#657b83" :font "ETBembo" :height 1.9))))
- '(org-level-2 ((t (:inherit default :weight bold :foreground "#657b83" :font "ETBembo" :height 1.75))))
- '(org-level-3 ((t (:inherit default :weight bold :foreground "#657b83" :font "ETBembo" :height 1.5))))
- '(org-level-4 ((t (:inherit default :weight bold :foreground "#657b83" :font "ETBembo" :height 1.25))))
- '(org-level-5 ((t (:inherit default :weight bold :foreground "#657b83" :font "ETBembo" :height 1.1))))
- '(org-level-6 ((t (:inherit default :weight bold :foreground "#657b83" :font "ETBembo"))))
- '(org-level-7 ((t (:inherit default :weight bold :foreground "#657b83" :font "ETBembo"))))
- '(org-level-8 ((t (:inherit default :weight bold :foreground "#657b83" :font "ETBembo"))))
+ '(org-level-1 ((t (:inherit default :weight bold :foreground "#2a2a2a" :font "ETBembo" :height 1.9))))
+ '(org-level-2 ((t (:inherit default :weight bold :foreground "#2a2a2a" :font "ETBembo" :height 1.75))))
+ '(org-level-3 ((t (:inherit default :weight bold :foreground "#2a2a2a" :font "ETBembo" :height 1.5))))
+ '(org-level-4 ((t (:inherit default :weight bold :foreground "#2a2a2a" :font "ETBembo" :height 1.25))))
+ '(org-level-5 ((t (:inherit default :weight bold :foreground "#2a2a2a" :font "ETBembo" :height 1.1))))
+ '(org-level-6 ((t (:inherit default :weight bold :foreground "#2a2a2a" :font "ETBembo"))))
+ '(org-level-7 ((t (:inherit default :weight bold :foreground "#2a2a2a" :font "ETBembo"))))
+ '(org-level-8 ((t (:inherit default :weight bold :foreground "#2a2a2a" :font "ETBembo"))))
  '(org-link ((t (:foreground "royal blue" :underline t))))
  '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
  '(org-property-value ((t (:inherit fixed-pitch))) t)
