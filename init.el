@@ -73,23 +73,17 @@
       mac-command-modfier 'super)
 
 (use-package general
-  :init
-  (setq general-override-states '(insert emacs hybrid normal visual motion operator replace))
   :ensure t)
 
-(use-package evil
-  :ensure t
-  :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
+(use-package god-mode
+  :bind ("<escape>" . god-mode-all)
   :config
-  (evil-mode 1))
+  (defun my-update-cursor ()
+  (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
 
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init))
+  (add-hook 'god-mode-enabled-hook 'my-update-cursor)
+  (add-hook 'god-mode-disabled-hook 'my-update-cursor)
+  :ensure t)
 
 (use-package spaceline
   :config
@@ -252,20 +246,6 @@
   (setq org-mru-clock-how-many 100
         org-mru-clock-completing-read #'ivy-completing-read))
 
-(use-package evil-org
-  :ensure t
-  :after org
-  :config
-  (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook
-            (lambda ()
-              (evil-org-set-key-theme)))
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
-
-(setq evil-motion-state-modes nil)
-(setq evil-emacs-state-modes nil)
-
 (use-package deadgrep
   :commands deadgrep
   :init
@@ -395,10 +375,6 @@
   "s" '(:keymap my-strings-map :wk "String Manipulation")
   "w" '(:keymap my-windows-map :wk "Windows")
   "x"  'counsel-M-x)
-
-(general-define-key
- :states '(normal visual motion) :keymaps 'override
- "SPC" '(:keymap my-leader-map :wk "Leader"))
 
 (general-define-key "M-SPC" '(:keymap my-leader-map :wk "Leader"))
 
@@ -549,10 +525,6 @@
 (use-package magit
   :config
   (add-hook 'after-save-hook 'magit-after-save-refresh-status)
-  :ensure t)
-
-(use-package evil-magit
-  :after magit
   :ensure t)
 
 (let ((default-directory "/usr/local/share/emacs/site-lisp"))
