@@ -610,5 +610,5 @@
  '(lsp-ui-doc-include-signature t)
  '(package-selected-packages
    (quote
-    (groovy-mode nix-mode json-mode dumb-jump expand-region ace-window jump-char ace-jump-mode paradox flycheck-rust toml-mode counsel-projectile counsel swiper ivy org-mru-clock hercules origami sublimity emacs-w3m helm-dash string-inflection company-lsp company-anaconda anaconda-mode company-go spacebar delight mu4e poly-ansible yaml prettier-js add-node-modules-path js2-mode helm-ag helm-projectile org-bullets spaceline-all-the-icons evil-visual-mark-mode)))
+    (god-mode doom-modeline doom-themes groovy-mode nix-mode json-mode dumb-jump expand-region ace-window jump-char ace-jump-mode paradox flycheck-rust toml-mode counsel-projectile counsel swiper ivy org-mru-clock hercules origami sublimity emacs-w3m helm-dash string-inflection company-lsp company-anaconda anaconda-mode company-go spacebar delight mu4e poly-ansible yaml prettier-js add-node-modules-path js2-mode helm-ag helm-projectile org-bullets spaceline-all-the-icons)))
  '(paradox-github-token t))
