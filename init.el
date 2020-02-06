@@ -74,6 +74,9 @@
 
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
+  :config
+  (setq doom-modeline-minor-modes t
+	doom-modeline-checker-simple-format nil)
   :ensure t)
 
 (use-package spacebar
