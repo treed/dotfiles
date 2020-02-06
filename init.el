@@ -76,7 +76,7 @@
 
 (use-package doom-themes
   :config
-  (load-theme 'doom-opera-light t)
+  (load-theme 'doom-solarized-light t)
   :ensure t)
 
 (use-package doom-modeline
