@@ -134,9 +134,9 @@
 	   "* TODO %?\n")
 	  ("w" "Work")
 	  ("wc" "Conversation" entry (file+headline "work.org" "Conversations")
-	   "*** Conversation With %^{Whom} At %U\n%?\n" :clock-in t :clock-resume t)
+	   "*** Conversation With %^{Whom} At %U\n%?\n\n" :clock-in t :clock-resume t)
 	  ("wr" "Review" entry (file+headline "work.org" "Reviews")
-	   "*** Review %^{What} At %U\n%?\n" :clock-in t :clock-resume t)))
+	   "*** Review %^{What} At %U\n%?\n\n" :clock-in t :clock-resume t)))
 
   (font-lock-add-keywords 'org-mode
                           '(("^ *\\([-]\\) "
