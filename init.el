@@ -242,7 +242,8 @@
 (use-package ace-window
   :bind ("M-o" . ace-window)
   :init
-  (setq aw-ignore-on t)
+  (setq aw-ignore-on t
+	aw-dispatch-when-more-than 0)
   :ensure t)
 
 (winner-mode)
