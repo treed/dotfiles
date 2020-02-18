@@ -32,6 +32,7 @@
      (format "Path '%s' either doesn't exist or isn't a dir; not adding to PATH" newpath))))
 
 (use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
   :config
   (exec-path-from-shell-initialize)
 
