@@ -344,6 +344,12 @@
   :config
   (projectile-mode +1))
 
+(use-package direnv
+  :ensure t
+  :delight
+  :config
+  (direnv-mode))
+
 (use-package company
   :hook python
   :ensure t)
@@ -352,19 +358,18 @@
   :ensure t)
 
 (use-package lsp-mode
-  :commands lsp
-  :hook (python-mode . lsp)
+  :commands (lsp lsp-deferred)
+  :hook (python-mode . lsp-deferred)
   :config
   (setq lsp-prefer-flymake nil)
-
-  (defun lsp-set-cfg ()
-    (let ((lsp-cfg `(:pyls (:configurationSources ("flake8")))))
-      ;; TODO: check lsp--cur-workspace here to decide per server / project
-      (lsp--set-configuration lsp-cfg)))
-
-  (add-hook 'lsp-after-initialize-hook 'lsp-set-cfg)
-
   :ensure t)
+
+(use-package python
+  :custom
+  (lsp-pyls-plugins-pycodestyle-enabled nil)
+  (lsp-pyls-plugins-flake8-enabled t)
+  (lsp-pyls-plugins-flake8-max-line-length 120)
+  (lsp-pyls-plugins-flake8-config ".flake8"))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
@@ -378,13 +383,6 @@
   :after company lsp-mode
   :config (push 'company-lsp company-backends)
   :ensure t)
-
-(use-package pipenv
-  :hook (python-mode . pipenv-mode)
-  :init
-  (setq
-   pipenv-projectile-after-switch-function
-   #'pipenv-projectile-after-switch-extended))
 
 (use-package toml-mode
   :ensure t)
@@ -605,5 +603,6 @@
  '(lsp-ui-doc-include-signature t)
  '(package-selected-packages
    (quote
-    (god-mode doom-modeline doom-themes groovy-mode nix-mode json-mode dumb-jump expand-region ace-window jump-char ace-jump-mode paradox flycheck-rust toml-mode counsel-projectile counsel swiper ivy org-mru-clock hercules origami sublimity emacs-w3m helm-dash string-inflection company-lsp company-anaconda anaconda-mode company-go spacebar delight mu4e poly-ansible yaml prettier-js add-node-modules-path js2-mode helm-ag helm-projectile org-bullets spaceline-all-the-icons)))
- '(paradox-github-token t))
+    (direnv god-mode doom-modeline doom-themes groovy-mode nix-mode json-mode dumb-jump expand-region ace-window jump-char ace-jump-mode paradox flycheck-rust toml-mode counsel-projectile counsel swiper ivy org-mru-clock hercules origami sublimity emacs-w3m helm-dash string-inflection company-lsp company-anaconda anaconda-mode company-go spacebar delight mu4e poly-ansible yaml prettier-js add-node-modules-path js2-mode helm-ag helm-projectile org-bullets spaceline-all-the-icons)))
+ '(paradox-github-token t)
+ '(safe-local-variable-values (quote ((lsp-pyls-plugins-flake8-config . "setup.cfg")))))
