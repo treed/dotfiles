@@ -221,6 +221,9 @@
   :bind ("C-=" . er/expand-region)
   :ensure t)
 
+(use-package multiple-cursors
+  :ensure t)
+
 (use-package ace-jump-mode
   :bind ("C-." . ace-jump-mode)
   :ensure t)
@@ -318,6 +321,13 @@
  "c" '(:keymap my-org-clock-map :wk "Clock")
  "o" 'org-capture)
 
+(setq my-cursors-map (make-sparse-keymap))
+(general-define-key
+ :keymaps 'my-cursors-map
+ "l" 'mc/edit-lines
+ "n" 'mc/mark-next-like-this-symbol
+ "p" 'mc/mark-previous-like-this-symbol)
+
 (setq my-leader-map (make-sparse-keymap))
 (general-define-key
  :keymaps 'my-leader-map
@@ -327,6 +337,7 @@
   "o" '(:keymap my-global-org-map :wk "Org")
   "s" '(:keymap my-strings-map :wk "String Manipulation")
   "w" '(:keymap my-windows-map :wk "Windows")
+  "c" '(:keymap my-cursors-map :wk "Cursors")
   "x"  'counsel-M-x)
 
 (general-define-key "M-SPC" '(:keymap my-leader-map :wk "Leader"))
@@ -603,6 +614,6 @@
  '(lsp-ui-doc-include-signature t)
  '(package-selected-packages
    (quote
-    (direnv god-mode doom-modeline doom-themes groovy-mode nix-mode json-mode dumb-jump expand-region ace-window jump-char ace-jump-mode paradox flycheck-rust toml-mode counsel-projectile counsel swiper ivy org-mru-clock hercules origami sublimity emacs-w3m helm-dash string-inflection company-lsp company-anaconda anaconda-mode company-go spacebar delight mu4e poly-ansible yaml prettier-js add-node-modules-path js2-mode helm-ag helm-projectile org-bullets spaceline-all-the-icons)))
+    (multiple-cursors direnv god-mode doom-modeline doom-themes groovy-mode nix-mode json-mode dumb-jump expand-region ace-window jump-char ace-jump-mode paradox flycheck-rust toml-mode counsel-projectile counsel swiper ivy org-mru-clock hercules origami sublimity emacs-w3m helm-dash string-inflection company-lsp company-anaconda anaconda-mode company-go spacebar delight mu4e poly-ansible yaml prettier-js add-node-modules-path js2-mode helm-ag helm-projectile org-bullets spaceline-all-the-icons)))
  '(paradox-github-token t)
  '(safe-local-variable-values (quote ((lsp-pyls-plugins-flake8-config . "setup.cfg")))))
