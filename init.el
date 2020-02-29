@@ -366,6 +366,8 @@
   :ensure t)
 
 (use-package flycheck
+  :config
+  (setq flycheck-checker-error-threshold 500)
   :ensure t)
 
 (use-package lsp-mode
