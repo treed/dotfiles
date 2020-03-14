@@ -587,6 +587,13 @@
   ; get rid of lockfiles too
   create-lockfiles nil)
 
+(defun treed/round-to-place (value places)
+  (let ((mult (expt 10 places)))
+    (/ (fround (* value mult)) mult)))
+
+(defun treed/normalize-hours (hours days)
+  (concat (number-to-string (treed/round-to-place (/ (string-to-number (substring hours 0 -1)) days) 1)) "h"))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
