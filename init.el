@@ -106,7 +106,11 @@
 (use-package gnuplot
   :ensure t)
 
+(use-package ob-http
+  :ensure t)
+
 (use-package org
+  :after ob-http
   :config
   (plist-put org-format-latex-options :scale 2.0)
   (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
@@ -117,6 +121,7 @@
      (dot . t)
      (abc . t)
      (sql . t)
+     (http . t)
      ))
   (setq org-directory "/Users/treed/Dropbox/Org")
   (setq org-agenda-files '("/Users/treed/Dropbox/Org"))
