@@ -164,8 +164,8 @@
      'user
      `(org-level-8 ((t (,@headline ,@variable-tuple))))
      `(org-level-7 ((t (,@headline ,@variable-tuple))))
-     `(org-level-6 ((t (,@headline ,@variable-tuple))))
-     `(org-level-5 ((t (,@headline ,@variable-tuple :height 1.1))))
+     `(org-level-6 ((t (,@headline ,@variable-tuple :height 1.05))))
+     `(org-level-5 ((t (,@headline ,@variable-tuple :height 1.15))))
      `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.25))))
      `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.5))))
      `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.75))))
@@ -185,7 +185,7 @@
 
   (custom-theme-set-faces
    'user
-   '(variable-pitch ((t (:family "ETBembo" :height 180 :weight light))))
+   '(variable-pitch ((t (:family "ETBembo" :height 150 :weight light))))
    '(fixed-pitch ((t (:family "Menlo" :slant normal :weight normal :height 1.0 :width normal)))))
 
   (add-hook 'org-mode-hook 'variable-pitch-mode)
