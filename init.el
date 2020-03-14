@@ -518,6 +518,16 @@
   :mode "\\.dot$"
   :ensure t)
 
+(use-package omni-quotes
+  :init
+  (omni-quotes-mode)
+  :ensure t)
+
+(use-package remind-bindings
+  :after omni-quotes
+  :hook (after-init . remind-bindings-initialise)
+  :ensure t)
+
 ;; Auto toggle embedded latex
 ;(require 'org-latex-cursor-toggle)
 ; this is buggy as hell, might be interactions with evil?
