@@ -116,6 +116,7 @@
      (gnuplot . t)
      (dot . t)
      (abc . t)
+     (sql . t)
      ))
   (setq org-directory "/Users/treed/Dropbox/Org")
   (setq org-agenda-files '("/Users/treed/Dropbox/Org"))
