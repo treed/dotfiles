@@ -132,6 +132,7 @@
   (org-clock-persistence-insinuate)
   (setq org-clock-report-include-clocking-task t)
   (setq org-refile-allow-creating-parent-nodes 'confirm)
+  (setq org-clock-mode-line-total 'today)
 
   (setq org-hide-emphasis-markers t
         org-startup-indented t
@@ -203,6 +204,10 @@
   :init
   (setq org-mru-clock-how-many 100
         org-mru-clock-completing-read #'ivy-completing-read))
+
+(use-package org-duration
+  :init
+  (setq org-duration-format '(("h" . t) (special . 1))))
 
 (use-package deadgrep
   :commands deadgrep
