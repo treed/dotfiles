@@ -377,12 +377,14 @@
   :ensure t)
 
 (use-package flycheck
+  :delight
   :config
   (setq flycheck-checker-error-threshold 500)
   :ensure t)
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
+  :delight
   :hook (python-mode . lsp-deferred)
   :config
   (setq lsp-prefer-flymake nil)
@@ -527,6 +529,7 @@
   :ensure t)
 
 (use-package omni-quotes
+  :delight
   :init
   (omni-quotes-mode)
   :ensure t)
