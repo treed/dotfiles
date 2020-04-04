@@ -173,6 +173,7 @@
      `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))
      '(org-block                 ((t (:inherit fixed-pitch))))
      '(org-table                 ((t (:inherit fixed-pitch))))
+     '(org-agenda-done           ((t (:foreground "black"))))
      '(org-document-info         ((t (:foreground "dark orange"))))
      '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
      '(org-link                  ((t (:foreground "royal blue" :underline t))))
