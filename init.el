@@ -667,8 +667,8 @@
  '(org-level-2 ((t (:inherit default :weight bold :foreground "#556b72" :font "ETBembo" :height 1.75))))
  '(org-level-3 ((t (:inherit default :weight bold :foreground "#556b72" :font "ETBembo" :height 1.5))))
  '(org-level-4 ((t (:inherit default :weight bold :foreground "#556b72" :font "ETBembo" :height 1.25))))
- '(org-level-5 ((t (:inherit default :weight bold :foreground "#556b72" :font "ETBembo" :height 1.1))))
- '(org-level-6 ((t (:inherit default :weight bold :foreground "#556b72" :font "ETBembo"))))
+ '(org-level-5 ((t (:inherit default :weight bold :foreground "#556b72" :font "ETBembo" :height 1.15))))
+ '(org-level-6 ((t (:inherit default :weight bold :foreground "#556b72" :font "ETBembo" :height 1.05))))
  '(org-level-7 ((t (:inherit default :weight bold :foreground "#556b72" :font "ETBembo"))))
  '(org-level-8 ((t (:inherit default :weight bold :foreground "#556b72" :font "ETBembo"))))
  '(org-link ((t (:foreground "royal blue" :underline t))))
@@ -678,7 +678,7 @@
  '(org-table ((t (:inherit fixed-pitch))))
  '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
  '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
- '(variable-pitch ((t (:family "ETBembo" :height 180 :weight light)))))
+ '(variable-pitch ((t (:family "ETBembo" :height 150 :weight light)))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
