@@ -609,12 +609,57 @@
   ; get rid of lockfiles too
   create-lockfiles nil)
 
+(defun treed/first-non-empty (list)
+  "Get the first non-empty string from LIST."
+  (seq-some (lambda (elem) (when (> (length elem) 0) elem)) list))
+
+(ert-deftest treed/first-non-empty ()
+  (should (equal (treed/first-non-empty '("" "0.5h")) "0.5h")))
+
 (defun treed/round-to-place (value places)
+  "Round VALUE to PLACES after the decimal point."
   (let ((mult (expt 10 places)))
     (/ (fround (* value mult)) mult)))
 
-(defun treed/normalize-hours (hours days)
-  (concat (number-to-string (treed/round-to-place (/ (string-to-number (substring hours 0 -1)) days) 1)) "h"))
+(ert-deftest treed/round-to-place ()
+  (should (equal (treed/round-to-place 10.101 1) 10.1))
+  (should (equal (treed/round-to-place 12.345 2) 12.34))
+  (should (equal (treed/round-to-place 12.305 2) 12.3)))
+
+(defconst treed/hours-re
+  (rx (submatch (and (one-or-more digit) (zero-or-one (and "." (one-or-more digit))))) "h")
+  "A regex to parse 'org-mode' decimal hours.")
+
+(defun treed/hours-to-number (hours-str)
+  "Take an 'org-mode' decimal hours string in HOURS-STR and convert it to a number."
+  (save-match-data
+    (when (string-match #'treed/hours-re hours-str)
+      (string-to-number (match-string 1 hours-str)))))
+
+(ert-deftest treed/hours-to-number ()
+  (should (equal (treed/hours-to-number "1.5h") 1.5))
+  (should (equal (treed/hours-to-number "*2.5h*") 2.5))
+  (should (equal (treed/hours-to-number "aoeu77.8h") 77.8))
+  (should (equal (treed/hours-to-number "no-number") nil)))
+
+(defun treed/normalize-hours (hours-in days)
+  "Normalize HOURS-IN as hours per day in DAYS."
+  (let ((hours (treed/hours-to-number (if (consp hours-in) (treed/first-non-empty hours-in) hours-in))))
+    (when hours (concat (number-to-string (treed/round-to-place (/ hours days) 1)) "h"))))
+
+(ert-deftest treed/normalize-hours ()
+  (should (equal (treed/normalize-hours "10.0h" 10) "1.0h"))
+  (should (equal (treed/normalize-hours '("" "5.5h") 5) "1.1h"))
+  (should (equal (treed/normalize-hours '("7.0h" "") 2) "3.5h")))
+
+(defun treed/percentage-hours (hours-str total-hours-str)
+  "Get the percentage hours that HOURS-STR represents as a part of TOTAL-HOURS-STR."
+  (let ((hours (treed/hours-to-number hours-str))
+	(total-hours (treed/hours-to-number total-hours-str)))
+    (concat (number-to-string (treed/round-to-place (* (/ hours total-hours) 100) 1)) "%")))
+
+(ert-deftest treed/percentage-hours ()
+  (should (equal (treed/percentage-hours "1.0h" "8.0h") "12.5%")))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
