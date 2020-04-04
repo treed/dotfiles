@@ -439,18 +439,26 @@
 (use-package prettier-js
   :ensure t)
 
+(use-package typescript-mode
+  :mode "\\.ts$"
+  :config
+  (add-hook 'typescript-mode-hook #'setup-ts)
+  :ensure t)
+
 (use-package web-mode
-  :after (flycheck)
-  :mode "\\.tsx?$"
+  :after (lsp)
+  :mode "\\.tsx$"
   :config
   (setq web-mode-enable-auto-quoting nil)
-  (flycheck-add-mode 'typescript-tslint 'web-mode)
+;  (flycheck-add-mode 'typescript-tslint 'web-mode)
+  (add-hook 'web-mode-hook #'setup-ts)
   :ensure t)
 
 (use-package js2-mode
   :mode "\\.jsx?$"
   :ensure t)
 
+;; This is no longer used, leaving it here for a bit in case I need part of it for the LSP setup
 (defun setup-tide-mode ()
   "Set up Tide mode."
   (interactive)
@@ -466,13 +474,13 @@
   (add-node-modules-path)
   (prettier-js-mode))
 
-(use-package tide
-  :ensure t
-  :after (js2-mode web-mode company flycheck add-node-modules-path prettier-js)
-  :commands tide-setup
-  :init
-  (add-hook 'web-mode-hook #'setup-tide-mode)
-  (add-hook 'js2-mode-hook #'setup-tide-mode))
+(defun setup-ts ()
+  "Set up typescript editing."
+  (interactive)
+  (add-node-modules-path)
+  (lsp)
+  (prettier-js-mode)
+  (display-line-numbers-mode))
 
 (use-package groovy-mode
   :mode "\\.groovy$"
