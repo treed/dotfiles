@@ -616,16 +616,6 @@
 (ert-deftest treed/first-non-empty ()
   (should (equal (treed/first-non-empty '("" "0.5h")) "0.5h")))
 
-(defun treed/round-to-place (value places)
-  "Round VALUE to PLACES after the decimal point."
-  (let ((mult (expt 10 places)))
-    (/ (fround (* value mult)) mult)))
-
-(ert-deftest treed/round-to-place ()
-  (should (equal (treed/round-to-place 10.101 1) 10.1))
-  (should (equal (treed/round-to-place 12.345 2) 12.34))
-  (should (equal (treed/round-to-place 12.305 2) 12.3)))
-
 (defconst treed/hours-re
   (rx (submatch (and (one-or-more digit) (zero-or-one (and "." (one-or-more digit))))) "h")
   "A regex to parse 'org-mode' decimal hours.")
@@ -645,7 +635,7 @@
 (defun treed/normalize-hours (hours-in days)
   "Normalize HOURS-IN as hours per day in DAYS."
   (let ((hours (treed/hours-to-number (if (consp hours-in) (treed/first-non-empty hours-in) hours-in))))
-    (when hours (concat (number-to-string (treed/round-to-place (/ hours days) 1)) "h"))))
+    (when hours (format "%.1fh" (/ hours days)))))
 
 (ert-deftest treed/normalize-hours ()
   (should (equal (treed/normalize-hours "10.0h" 10) "1.0h"))
@@ -656,7 +646,7 @@
   "Get the percentage hours that HOURS-STR represents as a part of TOTAL-HOURS-STR."
   (let ((hours (treed/hours-to-number hours-str))
 	(total-hours (treed/hours-to-number total-hours-str)))
-    (concat (number-to-string (treed/round-to-place (* (/ hours total-hours) 100) 1)) "%")))
+    (format "%.1f%%" (* (/ hours total-hours) 100))))
 
 (ert-deftest treed/percentage-hours ()
   (should (equal (treed/percentage-hours "1.0h" "8.0h") "12.5%")))
