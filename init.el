@@ -623,7 +623,7 @@
 (defun treed/hours-to-number (hours-str)
   "Take an 'org-mode' decimal hours string in HOURS-STR and convert it to a number."
   (save-match-data
-    (when (string-match #'treed/hours-re hours-str)
+    (when (string-match treed/hours-re hours-str)
       (string-to-number (match-string 1 hours-str)))))
 
 (ert-deftest treed/hours-to-number ()
