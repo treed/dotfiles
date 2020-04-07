@@ -331,6 +331,7 @@
 (general-define-key
  :keymaps 'my-global-org-map
  "c" '(:keymap my-org-clock-map :wk "Clock")
+ "r" 'org-refile
  "o" 'org-capture)
 
 (setq my-cursors-map (make-sparse-keymap))
