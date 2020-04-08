@@ -234,6 +234,9 @@
   :bind ("C-=" . er/expand-region)
   :straight t)
 
+(use-package comment-dwim-2
+  :bind ("M-;" . comment-dwim-2)
+  :straight t)
 
 (use-package multiple-cursors
   :straight t)
