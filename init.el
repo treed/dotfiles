@@ -98,6 +98,11 @@
 (use-package counsel-projectile
   :straight t)
 
+(use-package ivy-prescient
+  :config
+  (ivy-prescient-mode +1)
+  (prescient-persist-mode +1)
+  :straight t)
 
 (use-package gnuplot
   :straight t)
