@@ -35,7 +35,6 @@
   :config
   (exec-path-from-shell-initialize)
 
-  (ensure-in-path "/usr/local/texlive/2018/bin/x86_64-darwin") ;; Necessary for latex in orgmode
   (ensure-in-path "/Users/treed/.nix-profile/bin") ;; Nix
 
   :straight t)
