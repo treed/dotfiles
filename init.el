@@ -1,22 +1,21 @@
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/lisp/"))
 
-(eval-when-compile
-  (require 'package)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(straight-use-package 'use-package)
 
-  (setq package-enable-at-startup nil)
-  (package-initialize)
-
-  (unless (package-installed-p 'use-package)
-    (progn
-      (package-refresh-contents)
-      (package-install 'use-package)))
-  (require 'use-package))
-
-(use-package dash :ensure t)
+(use-package dash :straight t)
 
 (defun ensure-in-path (newpath)
   "Ensures that newpath is present in PATH and exec-path, but only if it exists"
@@ -39,16 +38,13 @@
   (ensure-in-path "/usr/local/texlive/2018/bin/x86_64-darwin") ;; Necessary for latex in orgmode
   (ensure-in-path "/Users/treed/.nix-profile/bin") ;; Nix
 
-  :ensure t)
-
-(use-package paradox
-  :ensure t)
+  :straight t)
 
 (use-package delight
-  :ensure t)
+  :straight t)
 
 (use-package undo-tree
-  :ensure t
+  :straight t
   :delight
   :config
   (setq undo-tree-enable-undo-in-region t)
@@ -62,28 +58,28 @@
       mac-command-modfier 'super)
 
 (use-package general
-  :ensure t)
+  :straight t)
 
 (use-package god-mode
   :bind ("<escape>" . god-mode-all)
-  :ensure t)
+  :straight t)
 
 (use-package doom-themes
   :config
   (load-theme 'doom-solarized-light t)
-  :ensure t)
+  :straight t)
 
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
   :config
   (setq doom-modeline-minor-modes t
 	doom-modeline-checker-simple-format nil)
-  :ensure t)
+  :straight t)
 
 (use-package spacebar
   :config
   (spacebar-mode)
-  :ensure t)
+  :straight t)
 
 (use-package ivy
   :config
@@ -92,22 +88,23 @@
   (setq ivy-height 20)
   (ivy-mode 1)
   :delight
-  :ensure t)
+  :straight t)
 
 (use-package swiper
-  :ensure t)
+  :straight t)
 
 (use-package counsel
-  :ensure t)
+  :straight t)
 
 (use-package counsel-projectile
-  :ensure t)
+  :straight t)
+
 
 (use-package gnuplot
-  :ensure t)
+  :straight t)
 
 (use-package ob-http
-  :ensure t)
+  :straight t)
 
 (use-package org
   :after ob-http
@@ -196,10 +193,10 @@
   :after org
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  :ensure t)
+  :straight t)
 
 (use-package org-mru-clock
-  :ensure t
+  :straight t
   :bind* (("C-c C-x i" . org-mru-clock-in)
           ("C-c C-x C-j" . org-mru-clock-select-recent-task))
   :init
@@ -214,7 +211,7 @@
   :commands deadgrep
   :init
   (setq deadgrep-project-root-function 'projectile-project-root)
-  :ensure t)
+  :straight t)
 
 (use-package dumb-jump
   :bind (("M-g o" . dumb-jump-go-other-window)
@@ -224,39 +221,40 @@
          ("M-g x" . dumb-jump-go-prefer-external)
          ("M-g z" . dumb-jump-go-prefer-external-other-window))
   :config (setq dumb-jump-selector 'ivy)
-  :ensure t)
+  :straight t)
 
 (use-package string-inflection
-  :ensure t)
+  :straight t)
 
 (use-package expand-region
   :bind ("C-=" . er/expand-region)
-  :ensure t)
+  :straight t)
+
 
 (use-package multiple-cursors
-  :ensure t)
+  :straight t)
 
 (use-package ace-jump-mode
   :bind ("C-." . ace-jump-mode)
-  :ensure t)
+  :straight t)
 
 (use-package jump-char
   :bind (("M-m" . jump-char-forward)
 	 ("M-M" . jump-char-backward))
-  :ensure t)
+  :straight t)
 
 (use-package which-key
   :delight
   :config
   (which-key-mode)
-  :ensure t)
+  :straight t)
 
 (use-package ace-window
   :bind ("M-o" . ace-window)
   :init
   (setq aw-ignore-on t
 	aw-dispatch-when-more-than 0)
-  :ensure t)
+  :straight t)
 
 (winner-mode)
 (require 'windmove)
@@ -356,33 +354,33 @@
 (general-define-key "M-SPC" '(:keymap my-leader-map :wk "Leader"))
 
 (use-package dashboard
-  :ensure t
+  :straight t
   :config
   (dashboard-setup-startup-hook))
 
-(use-package w3m :ensure t)
+(use-package w3m :straight t)
 
 (use-package projectile
-  :ensure t
+  :straight t
   :delight
   :config
   (projectile-mode +1))
 
 (use-package direnv
-  :ensure t
+  :straight t
   :delight
   :config
   (direnv-mode))
 
 (use-package company
   :hook python
-  :ensure t)
+  :straight t)
 
 (use-package flycheck
   :delight
   :config
   (setq flycheck-checker-error-threshold 500)
-  :ensure t)
+  :straight t)
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -390,7 +388,7 @@
   :hook (python-mode . lsp-deferred)
   :config
   (setq lsp-prefer-flymake nil)
-  :ensure t)
+  :straight t)
 
 (use-package python
   :custom
@@ -405,28 +403,28 @@
   (setq lsp-ui-sideline-ignore-duplicate t)
   (setq lsp-ui-doc-position 'top)
   (setq lsp-ui-doc-alignment 'window)
-  :ensure t)
+  :straight t)
 
 (use-package company-lsp
   :after company lsp-mode
   :config (push 'company-lsp company-backends)
-  :ensure t)
+  :straight t)
 
 (use-package toml-mode
-  :ensure t)
+  :straight t)
 
 (use-package rust-mode
   :hook (rust-mode . lsp)
-  :ensure t)
+  :straight t)
 
 (use-package cargo
   :hook (rust-mode . cargo-minor-mode)
   :delight cargo-minor-mode
-  :ensure t)
+  :straight t)
 
 (use-package flycheck-rust
   :hook (rust-mode . flycheck-rust-setup)
-  :ensure t)
+  :straight t)
 
 (use-package go-mode
   :init
@@ -435,19 +433,19 @@
   (add-hook 'go-mode-hook #'flycheck-mode)
   (add-hook 'go-mode-hook #'lsp)
   :mode "\\.go$"
-  :ensure t)
+  :straight t)
 
 (use-package add-node-modules-path
-  :ensure t)
+  :straight t)
 
 (use-package prettier-js
-  :ensure t)
+  :straight t)
 
 (use-package typescript-mode
   :mode "\\.ts$"
   :config
   (add-hook 'typescript-mode-hook #'setup-ts)
-  :ensure t)
+  :straight t)
 
 (use-package web-mode
   :after (lsp)
@@ -456,11 +454,11 @@
   (setq web-mode-enable-auto-quoting nil)
 ;  (flycheck-add-mode 'typescript-tslint 'web-mode)
   (add-hook 'web-mode-hook #'setup-ts)
-  :ensure t)
+  :straight t)
 
 (use-package js2-mode
   :mode "\\.jsx?$"
-  :ensure t)
+  :straight t)
 
 ;; This is no longer used, leaving it here for a bit in case I need part of it for the LSP setup
 (defun setup-tide-mode ()
@@ -488,31 +486,31 @@
 
 (use-package groovy-mode
   :mode "\\.groovy$"
-  :ensure t)
+  :straight t)
 
 (use-package yaml-mode
   :mode "\\.ya?ml$"
-  :ensure t)
+  :straight t)
 
 (use-package jinja2-mode
   :mode "\\.j2$"
-  :ensure t)
+  :straight t)
 
 (use-package poly-ansible
-  :ensure t)
+  :straight t)
 
 (use-package json-mode
-  :ensure t)
+  :straight t)
 
 (use-package nix-mode
   :after json-mode
   :mode "\\.nix\\'"
-  :ensure t)
+  :straight t)
 
 (use-package magit
   :config
   (add-hook 'after-save-hook 'magit-after-save-refresh-status)
-  :ensure t)
+  :straight t)
 
 (let ((default-directory "/usr/local/share/emacs/site-lisp"))
   (normal-top-level-add-subdirs-to-load-path))
@@ -528,18 +526,18 @@
 
 (use-package graphviz-dot-mode
   :mode "\\.dot$"
-  :ensure t)
+  :straight t)
 
 (use-package omni-quotes
   :delight
   :init
   (omni-quotes-mode)
-  :ensure t)
+  :straight t)
 
 (use-package remind-bindings
   :after omni-quotes
   :hook (after-init . remind-bindings-initialise)
-  :ensure t)
+  :straight t)
 
 ;; Auto toggle embedded latex
 ;(require 'org-latex-cursor-toggle)
