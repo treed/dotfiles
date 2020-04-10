@@ -102,6 +102,7 @@
   :config
   (ivy-prescient-mode +1)
   (prescient-persist-mode +1)
+  (setq ivy-prescient-sort-commands '(:not swiper ivy-switch-buffer org-mru-clock-in))
   :straight t)
 
 (use-package gnuplot
