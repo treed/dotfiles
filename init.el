@@ -401,7 +401,9 @@
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :delight
-  :hook (python-mode . lsp-deferred)
+  :hook (python-mode . (lamdba ()
+			       (lsp-deferred)
+			       (display-line-numbers-mode)))
   :config
   (setq lsp-prefer-flymake nil)
   :straight t)
