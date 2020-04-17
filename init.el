@@ -468,7 +468,6 @@
   :mode "\\.tsx$"
   :config
   (setq web-mode-enable-auto-quoting nil)
-;  (flycheck-add-mode 'typescript-tslint 'web-mode)
   (add-hook 'web-mode-hook #'setup-ts)
   :straight t)
 
@@ -496,6 +495,7 @@
   "Set up typescript editing."
   (interactive)
   (add-node-modules-path)
+  (setq lsp-eslint-server-command `("node" ,(expand-file-name (car (last (file-expand-wildcards "/Users/treed/.vscode/extensions/dbaeumer.vscode-eslint-*/server/out/eslintServer.js")))) "--stdio"))
   (lsp)
   (prettier-js-mode)
   (display-line-numbers-mode))
