@@ -347,10 +347,18 @@
  "n" 'mc/mark-next-like-this-symbol
  "p" 'mc/mark-previous-like-this-symbol)
 
+(setq my-errors-map (make-sparse-keymap))
+(general-define-key
+ :keymaps 'my-errors-map
+ "n" 'flycheck-next-error
+ "p" 'flycheck-previous-error
+ "l" 'flycheck-list-errors)
+
 (setq my-leader-map (make-sparse-keymap))
 (general-define-key
  :keymaps 'my-leader-map
   "a" '(:keymap my-tabs-map :wk "Tabs")
+  "e" '(:keymap my-errors-map :wk "Errors")
   "f" '(:keymap my-files-map :wk "Files")
   "b" '(:keymap my-buffers-map :wk "Buffers")
   "o" '(:keymap my-global-org-map :wk "Org")
