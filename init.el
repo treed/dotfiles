@@ -408,6 +408,20 @@
   (setq lsp-prefer-flymake nil)
   :straight t)
 
+(use-package parinfer
+  :straight t
+  :bind
+  (("C-," . parinfer-toggle-mode))
+  :init
+  (progn
+    (setq parinfer-extensions
+          '(defaults       ; should be included.
+            pretty-parens  ; different paren styles for different modes.
+            paredit        ; Introduce some paredit commands.
+            smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+            smart-yank))   ; Yank behavior depend on mode.
+    (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)))
+
 (use-package python
   :custom
   (lsp-pyls-plugins-pycodestyle-enabled nil)
