@@ -524,10 +524,6 @@
   :mode "\\.nix\\'"
   :straight t)
 
-(use-package paredit
-  :mode "\\.el\\'"
-  :straight t)
-
 (use-package magit
   :config
   (add-hook 'after-save-hook 'magit-after-save-refresh-status)
