@@ -76,8 +76,7 @@
   :straight t)
 
 (use-package spacebar
-  :config
-  (spacebar-mode)
+  :hook (after-init . spacebar-mode)
   :straight t)
 
 (use-package ivy
