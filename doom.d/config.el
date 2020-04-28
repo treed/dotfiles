@@ -19,13 +19,14 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
-(setq doom-font (font-spec :family "Menlo" :size 14))
+(setq doom-font (font-spec :family "MesloLGM Nerd Font" :size 14))
 (setq doom-variable-pitch-font (font-spec :family "ETBembo" :size 18 :weight 'light))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-solarized-light)
+(setq doom-modeline-height 15)
 
 (setq ispell-aspell-dict-dir "/nix/store/gjl8w2yp4p9g3wfmsfa9m38zn3nmr311-aspell-dict-en-2019.10.06-0")
 
