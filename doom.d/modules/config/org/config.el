@@ -44,6 +44,7 @@
    `(org-document-title ((t (,@headline :height 2.0 :underline nil))))
    '(org-block                 ((t (:inherit fixed-pitch))))
    '(org-table                 ((t (:inherit fixed-pitch))))
+   '(org-headline-done         ((t (:foreground "#A6A6A6"))))
    '(org-agenda-done           ((t (:foreground "black"))))
    '(org-document-info         ((t (:foreground "dark orange"))))
    '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
