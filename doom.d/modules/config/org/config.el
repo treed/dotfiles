@@ -64,8 +64,6 @@
              (company-mode -1))
            #'org-display-inline-images)
 
-(doom-init-extra-fonts-h)
-
 (defun treed/first-non-empty (list)
   "Get the first non-empty string from LIST."
   (seq-some (lambda (elem) (when (> (length elem) 0) elem)) list))
