@@ -158,6 +158,8 @@
        ;;terra             ; Earth and Moon in alignment for performance.
        ;;web               ; the tubes
 
+       frontend
+
        :email
        ;;(mu4e +gmail)
        ;;notmuch
