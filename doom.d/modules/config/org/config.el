@@ -59,7 +59,9 @@
 (add-hook! 'org-mode-hook
            #'variable-pitch-mode
            #'visual-line-mode
-           (lambda () (display-line-numbers-mode -1))
+           (lambda ()
+             (display-line-numbers-mode -1)
+             (company-mode -1))
            #'org-display-inline-images)
 
 (doom-init-extra-fonts-h)
