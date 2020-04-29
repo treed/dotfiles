@@ -15,10 +15,11 @@
 (use-package! typescript-mode
   :mode "\\.ts\\'")
 
+(setq lsp-eslint-server-command `("node" ,(car (doom-glob "~/.vscode/extensions/dbaeumer.vscode-eslint-*/server/out/eslintServer.js")) "--stdio"))
+
 (add-hook! '(web-mode-hook typescript-mode-hook)
   (defun setup-ts ()
     (interactive)
     (add-node-modules-path)
-    (setq lsp-eslint-server-command `("node" ,(expand-file-name (car (last (file-expand-wildcards "/Users/treed/.vscode/extensions/dbaeumer.vscode-eslint-*/server/out/eslintServer.js")))) "--stdio"))
     (lsp)
     (prettier-js-mode)))
