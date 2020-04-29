@@ -1,9 +1,9 @@
 ;;; lang/frontend/config.el -*- lexical-binding: t; -*-
 
-(use-package prettier-js-mode
+(use-package! prettier-js-mode
   :commands prettier-js-mode)
 
-(use-package add-node-modules-path
+(use-package! add-node-modules-path
   :commands add-node-modules-path)
 
 (use-package! web-mode
