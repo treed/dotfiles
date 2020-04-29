@@ -29,6 +29,7 @@
 (setq doom-modeline-height 15)
 
 (setq ispell-aspell-dict-dir "/nix/store/gjl8w2yp4p9g3wfmsfa9m38zn3nmr311-aspell-dict-en-2019.10.06-0")
+(setq lsp-auto-guess-root nil)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
