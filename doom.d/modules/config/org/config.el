@@ -9,6 +9,13 @@
 	  ("wr" "Review" entry (file+headline "work.org" "Reviews")
 	   "*** Review %^{What} At %U\n%?\n\n" :clock-in t :clock-resume t)))
 
+(setq org-roam-capture-templates
+      '(("d" "default" plain (function org-roam--capture-get-point)
+         "%?"
+         :file-name "${slug}"
+         :head "#+TITLE: ${title}\n"
+         :unnarrowed t)))
+
 (after! org
   (plist-put org-format-latex-options :scale 2.0)
   (setq org-todo-keywords '((sequence "TODO" "DONE"))))
