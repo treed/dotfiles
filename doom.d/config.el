@@ -56,3 +56,6 @@
   (setq aw-ignore-on t
         aw-dispatch-when-more-than 0
         aw-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9 ?0)))
+
+(use-package! comment-dwim-2)
+(map! "M-;" #'comment-dwim-2)

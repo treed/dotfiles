@@ -47,3 +47,4 @@
 ;(package! builtin-package :recipe (:branch "develop"))
 
 (package! elpher)
+(package! comment-dwim-2)
