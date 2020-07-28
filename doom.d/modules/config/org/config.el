@@ -1,5 +1,6 @@
 (setq org-directory "~/Dropbox/Org")
 (setq org-roam-directory "~/Dropbox/Org")
+(setq org-roam-db-location (concat doom-cache-dir "org-roam.db"))
 (setq org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
 (setq org-capture-templates
 	'(("t" "Todo" entry (file "inbox.org")
